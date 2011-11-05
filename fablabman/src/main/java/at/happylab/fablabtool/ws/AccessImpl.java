@@ -9,7 +9,11 @@ public class AccessImpl implements Access {
 	 * @see at.happylab.fablabtool.ws.Access#mayEnter(java.lang.String)
 	 */
 	public String mayEnter(String rfid) {
-		return "denied";
+		if ("admin".equals(rfid)) {
+			return "welcome " + rfid;
+		} else {
+			return "keycard " + rfid +" must not enter";
+		}
 	}
 
 }
