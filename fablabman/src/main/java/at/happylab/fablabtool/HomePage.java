@@ -46,7 +46,11 @@ public class HomePage extends WebPage {
 		         @Override
 		         public void setObject(Serializable object)
 		         {
-		            rfid = object.toString();
+		        	 if (object == null) {
+		        		rfid = ""; 
+		        	 } else {
+		        		 rfid = object.toString();
+		        	 }
 		         }		         
 				});
 	    form.add(inputRfId);
