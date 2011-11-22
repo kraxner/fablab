@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	<link rel="stylesheet" type="text/css" href="form.css" />
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+
+<!-- Ein- und Ausblenden von Formfelder -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#txtPayment").change(function(){
+		if($(this).val() == "Lastschrift") {
+			$("#fldKontodaten").slideDown("fast");
+		}
+		else {
+			$("#fldKontodaten").slideUp("fast");
+		}
+	 }); 
+});	
+</script>
+
+</head>
+	
+<body>
+
+<div id="menubar">
+	<div style="float:left;">
+	<ul id="mainmenu">
+		<li class="selected"><a href="Mitgliederliste.html">Mitglieder</a></li>
+		<li><a href="">Rechnungen</a></li>
+		<li><a href="">Stammdaten</a></li>
+	</ul>
+	</div>
+	
+	<div style="float:right;">
+	Karim Jafarmadar
+	</div>
+</div>
+
+<div style="padding: 10px;">
+
+<h1>Max Mustermann</h1>
+
+<div style="margin-bottom: 20px;">
+	<button onclick="location.href='Mitglied-Stammdaten.html';" class="minimal">Stammdaten</button>
+	<button onclick="location.href='Mitglied-Zusatzpakete.html';" class="minimal">Zusatzpakete</button>
+	<button onclick="location.href='Mitglied-OffeneBuchungen.html';" class="minimal selected">Offene Buchungen</button>
+	<button onclick="location.href='Mitglied-Rechnungen.html';" class="minimal">Rechnungen</button>
+</div>
+
+
+<table border="1">
+<tr>
+	<th>&nbsp</th>
+	<th>Datum</th>
+	<th>Beschreibung</th>
+	<th>Einzelpreis</th>
+	<th>Anzahl</th>
+	<th>Gesamt</th>
+	<th>Aktionen</th>
+</tr>
+
+<tr>
+	<td> <input type="checkbox"> </td>
+	<td>27.10.2011</td>
+	<td>3D Druck</td>
+	<td style="text-align:right;">0,45 &euro;</td>
+	<td style="text-align:right;">105</td>
+	<td style="text-align:right;">47,25 &euro;</td>
+	<td> <a href="...">Details...</a> | <a href="...">löschen</a></td>
+</tr>
+<tr>
+	<td> <input type="checkbox"> </td>
+	<td>10.11.2011</td>
+	<td>Plotterfolie</td>
+	<td style="text-align:right;">10,00 &euro;</td>
+	<td style="text-align:right;">1,5</td>
+	<td style="text-align:right;">15,00 &euro;</td>
+	<td> <a href="...">Details...</a> | <a href="...">löschen</a></td>
+</tr>
+<tr>
+	<td> <input type="checkbox"> </td>
+	<td>19.11.2011</td>
+	<td>Stempelgummi</td>
+	<td style="text-align:right;">20 &euro;</td>
+	<td style="text-align:right;">1</td>
+	<td style="text-align:right;">20,00 &euro;</td>
+	<td> <a href="...">Details...</a> | <a href="...">löschen</a></td>
+</tr>
+<tr>
+	<td></td>
+	<td colspan="4"><b>Summe:</b></td>
+	<td style="text-align:right;"><b>82,25 &euro;</b></td>
+	<td></td>
+</tr>
+</table>
+<br />
+<button class="minimal">Buchung hinzufügen</button>
+
+<h2>Neue Rechnung erstellen</h2>
+
+<form action="" method="POST" class="yform" style="width:500px">
+
+<fieldset class="columnar">
+	<legend>Rechnungsdaten</legend>
+	<div class="type-text">
+		<label for="">Empfänger</label>
+		<input type="text" size="50" name="txtCompany">
+	</div>
+	<div class="type-text">
+		<label for="">Adresse</label>
+		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
+	</div>
+	<div class="type-text">
+		<label for="">Rechnungsdatum</label>
+		<input type="text" size="50" name="txtCompany">
+	</div>
+	<div class="type-text">
+		<label for="">Fällig am</label>
+		<input type="text" size="50" name="txtCompany">
+	</div>
+	<div class="type-select">
+		<label for="txtPayment">Zahlungsart</label>
+		<select name="txtPayment" id="txtPayment">
+			<option value="Lastschrift">Lastschrift</option>
+			<option value="bar">Bar</option>
+			<option value="Rechnung">Rechnung</option>
+		</select>
+	</div>
+	<div id="fldKontodaten">
+		<div class="type-text">
+			<label for="">Kontoinhaber</label>
+			<input type="text" size="50" name="txtAccountOwner">
+		</div>
+		<div class="type-text">
+			<label for="">Kontonummer</label>
+			<input type="text" size="50" name="txtBankAccountNo">
+		</div>
+		<div class="type-text">
+			<label for="">BLZ</label>
+			<input type="text" size="50" name="txtBankName">
+		</div>
+		<div class="type-text">
+			<label for="">Bank</label>
+			<input type="text" size="50" name="txtBankID">
+		</div>
+	</div>
+	
+	<div class="type-text">
+		<label for="">Anmerkung</br><small>(wird auf Rechnung gedruckt)</small></label>
+		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
+	</div>
+
+ 	 <input type="submit" value="Rechnung erstellen" class="minimal">
+</fieldset>
+
+</form>
+
+	
+</div>
+
+</body>
+</html>
