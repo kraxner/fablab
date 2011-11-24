@@ -14,9 +14,9 @@ public class FabLabManApplication extends SeamApplication
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class<HomePage> getHomePage()
+	public Class<DataTablePage> getHomePage()
 	{
-		return HomePage.class;
+		return DataTablePage.class;
 	}
 	
     @Override
