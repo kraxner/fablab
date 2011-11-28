@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import model.User;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -17,15 +16,20 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.EntityManagerProducer;
+import at.happylab.fablabtool.model.User;
 
 public class UserProvider extends SortableDataProvider implements Serializable{
 	
+	private static final long serialVersionUID = 2361648224662400716L;
+
 	@Inject
 	private EntityManager em;
 	
 	private List<User> list = new ArrayList<User>();
 	
 		class SortableDataProviderComparator implements Comparator<User>, Serializable {
+			private static final long serialVersionUID = -2398295952601030952L;
+
 			public int compare(final User o1, final User o2) {
 				PropertyModel<Comparable> model1 = new PropertyModel<Comparable>(o1, getSort().getProperty());
 				PropertyModel<Comparable> model2 = new PropertyModel<Comparable>(o2, getSort().getProperty());
@@ -44,8 +48,8 @@ public class UserProvider extends SortableDataProvider implements Serializable{
 		private SortableDataProviderComparator comparator = new SortableDataProviderComparator();
 
 		public UserProvider() {
-			EntityManagerProducer emProducer = new EntityManagerProducer();
-			em = emProducer.getEm();
+//			EntityManagerProducer emProducer = new EntityManagerProducer();
+//			em = emProducer.getEm();
 			// The default sorting
 			//setSort("name.first", true);
 			User u = new User();

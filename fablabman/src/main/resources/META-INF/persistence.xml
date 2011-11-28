@@ -5,8 +5,9 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
     http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
      
-<persistence-unit name="FabLabMan" transaction-type="RESOURCE_LOCAL">
+<persistence-unit name="fablabman" transaction-type="RESOURCE_LOCAL">
  		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+ 		<class>at.happylab.fablabtool.model.User</class>
         <properties>
             <property name="hibernate.archive.autodetecion" value="class, hbm" />
  
@@ -14,7 +15,7 @@
             <property name="hibernate.format_sql" value="true" />
  
             <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
-            <property name="hibernate.connection.url" value="jdbc:hsqldb:hsql://localhost/fablabmandb" />
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:hsql://localhost" />
  
             <property name="hibernate.connection.username" value="sa" />
  			<property name="hibernate.connection.password" value=""/>
