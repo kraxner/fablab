@@ -1,10 +1,17 @@
 package at.happylab.fablabtool.model;
 
 public enum PaymentMethod {
-	// Lastschrift
+
+	/**
+	 * Lastschrift
+	 */
 	DEBIT,
-	// auf Rechnung
+	/**
+	 * auf Rechnung 
+	 */
 	ON_ACCOUNT,
-	// Vorauskasse
+	/**
+	 * Vorauskasse 
+	 */
 	CASH_IN_ADVANCE
 }

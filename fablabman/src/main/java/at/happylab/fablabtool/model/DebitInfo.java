@@ -1,13 +1,12 @@
 package at.happylab.fablabtool.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Embeddable
 public class DebitInfo {
 	
+	@Column(name="debitinfo_name")
 	private String name;
 	private String iban;
 	private String bic;

@@ -1,6 +1,8 @@
 package at.happylab.fablabtool.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -8,28 +10,47 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Membership {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+public abstract class Membership {
+	
 	@Id @GeneratedValue
 	private long id;
 	
 	private boolean confirmed;
-	private Date entryDate;
-	private Date leavingDate;
 	
+	private Date entryDate;
+	
+	private Date leavingDate;
+
 	@Embedded
 	private DebitInfo bankDetails;
 	
 	private String comment;
+	
 	private String internalComment;
+	
+	/**
+	 * The maximal number of Users allowed for this membership
+	 */
 	private int maxUser;
 	
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod paymentMethod;
-	
+
 	@Enumerated(EnumType.STRING)
 	private MembershipType type;
+
+	/**
+	 * The users of this membership.
+	 * The number of users must not exceed {@link #maxUser}
+	 */
+	@OneToMany(mappedBy="membership")
+	private List<User> users = new ArrayList<User>();
 	
 	public Membership() {
 		
@@ -113,5 +134,13 @@ public class Membership {
 
 	public void setType(MembershipType type) {
 		this.type = type;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 }
