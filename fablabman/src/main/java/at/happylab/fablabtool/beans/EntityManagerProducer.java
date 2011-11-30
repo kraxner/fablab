@@ -12,10 +12,11 @@ public class EntityManagerProducer implements Serializable{
 	
 	private static final long serialVersionUID = 8103333652627698382L;
 	
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("fablabman");
+	//private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("fablabman");
 	
 	@Produces
 	public EntityManager getEm(){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("fablabman");
 		return emf.createEntityManager();
 	}
 	
