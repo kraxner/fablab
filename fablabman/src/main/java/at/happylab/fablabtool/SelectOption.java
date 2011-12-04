@@ -2,20 +2,36 @@ package at.happylab.fablabtool;
 
 import java.io.Serializable;
 
-public class SelectOption implements Serializable {
+import at.happylab.fablabtool.model.Gender;
+
+public class SelectOption<T> implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String key;
+	private T key;
 	private String value;
 
-	public SelectOption(String key, String value) {
+	public SelectOption(T key, String value){
 		this.key = key;
 		this.value = value;
 	}
+	
+	/*public SelectOption(String key, String value) {
+		Gender localkey = Gender.FEMALE;
 
-	public void setKey(String key){
+        for(Gender type : Gender.values()) {
+            if(type.toString().equalsIgnoreCase(key)) {
+                localkey = type;
+                break;
+            }
+        }
+
+		this.key = localkey;
+		this.value = value;
+	}*/
+
+	public void setKey(T key){
 		this.key = key;
 	}
 	
@@ -23,7 +39,7 @@ public class SelectOption implements Serializable {
 		this.value = value;
 	}
 	
-	public String getKey(){
+	public T getKey(){
 		return this.key;
 	}
 	

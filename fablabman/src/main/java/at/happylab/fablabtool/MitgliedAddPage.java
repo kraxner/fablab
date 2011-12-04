@@ -24,6 +24,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.model.Gender;
 import at.happylab.fablabtool.model.User;
 
 public class MitgliedAddPage extends BasePage{
@@ -63,20 +64,33 @@ public class MitgliedAddPage extends BasePage{
             lastname.add(StringValidator.maximumLength(20));
             add(lastname);
             
-            SelectOption[] options = new SelectOption[] {new SelectOption("FEMALE", "weiblich"), new SelectOption("MALE", "männlich")};
-            ChoiceRenderer choiceRenderer = new ChoiceRenderer("value", "key");
-            add(new DropDownChoice("gender", new Model<String>(), Arrays.asList(options), choiceRenderer));
+            /*SelectOption<Gender>[] options = new SelectOption<Gender>[] {new SelectOption<Gender>(Gender.FEMALE, "weiblich"), new SelectOption<Gender>(Gender.MALE, "männlich")};
+            ChoiceRenderer<Gender> choiceRenderer = new ChoiceRenderer<Gender>("value", "key");
+            add(new DropDownChoice<Gender>("gender", new Model<Gender>(), Arrays.asList(options), choiceRenderer));*/
             
-            /*DropDownChoice<String> gender = new DropDownChoice<String>("gender");
-            gender.setChoices(new LoadableDetachableModel<List<String>>() {
-				public List<String> load() {
-                    List<String> l = new ArrayList<String>(2);
-                    l.add("weiblich");
-                    l.add("männlich");
+            /*DropDownChoice<SelectOption<Gender>> gender = new DropDownChoice<SelectOption<Gender>>("gender");
+            ChoiceRenderer<SelectOption<Gender>> choiceRenderer = new ChoiceRenderer<SelectOption<Gender>>("value", "key");
+            gender.setChoiceRenderer(choiceRenderer);
+            gender.setChoices(new LoadableDetachableModel<List<SelectOption<Gender>>>() {
+				public List<SelectOption<Gender>> load() {
+                    List<SelectOption<Gender>> l = new ArrayList<SelectOption<Gender>>(2);
+                    l.add(new SelectOption<Gender>(Gender.FEMALE,"weiblich"));
+                    l.add(new SelectOption<Gender>(Gender.MALE,"männlich"));
                     return l;
                 }
-            });*/
-            //add(gender);
+            });
+            add(gender);*/
+            
+            DropDownChoice<Gender> gender = new DropDownChoice<Gender>("gender");
+            gender.setChoices(new LoadableDetachableModel<List<Gender>>() {
+				public List<Gender> load() {
+                    List<Gender> l = new ArrayList<Gender>(2);
+                    l.add(Gender.FEMALE);
+                    l.add(Gender.MALE);
+                    return l;
+                }
+            });
+            add(gender);
             
             //TODO birthdate datatype decided?
             
