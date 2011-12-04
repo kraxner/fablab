@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Invoice {
+public class Invoice implements Serializable{
+	private static final long serialVersionUID = -3982998472620768008L;
+
 	@Id @GeneratedValue
 	private long id;
 	

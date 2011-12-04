@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class ConsumationEntry {
+public class ConsumationEntry implements Serializable{
+	private static final long serialVersionUID = -8117193946412652454L;
+	
+
 	@Id @GeneratedValue
 	private long id;
 	

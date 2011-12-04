@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,7 +13,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Subscription {
+public class Subscription implements Serializable{
+	private static final long serialVersionUID = -624431396684560629L;
+
 	@Id @GeneratedValue
 	private long id;
 	

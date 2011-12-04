@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +17,10 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-public abstract class Membership {
+public abstract class Membership implements Serializable{
 	
+	private static final long serialVersionUID = 2316667102976971988L;
+
 	@Id @GeneratedValue
 	private long id;
 	
@@ -29,6 +32,9 @@ public abstract class Membership {
 
 	@Embedded
 	private DebitInfo bankDetails;
+	
+	@Embedded
+	private Address address;
 	
 	private String comment;
 	
@@ -143,4 +149,11 @@ public abstract class Membership {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 }

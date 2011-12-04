@@ -1,11 +1,15 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Device {
+public class Device implements Serializable{
+	private static final long serialVersionUID = 5826674586901952593L;
+
 	@Id @GeneratedValue
 	private long id;
 	
