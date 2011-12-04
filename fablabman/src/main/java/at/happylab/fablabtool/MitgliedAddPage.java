@@ -113,8 +113,8 @@ public class MitgliedAddPage extends BasePage{
     				user = (User) getForm().getModelObject();
     				//user.setFirstname((String)firstname.getModelObject());
     				//user.setLastname((String)lastname.getModelObject());
-    				membershipMgmt.addMembership(user);
-    				setResponsePage(MitgliedAddPage.class);
+    				//membershipMgmt.addMembership(user);
+    				//setResponsePage(MitgliedAddPage.class);
     			}
     		};
     		add(newMemberButton);

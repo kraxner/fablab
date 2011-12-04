@@ -1,6 +1,7 @@
 <wicket:extend>
 <div style="padding: 10px;">
-<form action="" method="POST" class="yform" style="width:500px">
+<span wicket:id="feedback"></span>
+<form wicket:id="form" action="" method="POST" class="yform" style="width:500px">
 <!--parse-form.php-->
 <fieldset class="columnar">
 	<legend>Art der Mitgliedschaft</legend>
@@ -15,6 +16,7 @@
 	<div class="type-text">
 		<label for="">Vorname</label>
 		<input type="text" size="50" name="txtPersonFirstname">
+<!-- 		<input wicket:id="users.firstname" type="text" size="50" name="txtPersonFirstname"> -->
 	</div>
 	<div class="type-text">
 		<label for="">Nachname</label>
@@ -130,7 +132,8 @@
 		</div>
 		<div class="type-text">
 			<label for="">Kontonummer</label>
-			<input type="text" size="50" name="txtBankAccountNo">
+<!-- 			<input type="text" size="50" name="txtBankAccountNo"> -->
+			<input wicket:id="bankDetails.iban" type="text" size="50" name="txtBankAccountNo">
 		</div>
 		<div class="type-text">
 			<label for="">BLZ</label>
@@ -141,9 +144,13 @@
 			<input type="text" size="50" name="txtBankID">
 		</div>
 	</div>
+	<div class="type-text">
+		<label for="">Kommentar</label>
+		<textarea wicket:id="comment" name="" cols="50" rows="4"></textarea>
+	</div>
 </fieldset>
 
-<input type="submit" value="Hinzuf&uuml;gen" class="minimal">
+<input wicket:id="submit" type="submit" value="Hinzuf&uuml;gen" class="minimal">
 
 
 </form>

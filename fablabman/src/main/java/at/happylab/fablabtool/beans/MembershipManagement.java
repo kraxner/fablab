@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import at.happylab.fablabtool.model.User;
+import at.happylab.fablabtool.model.Membership;
 
 public class MembershipManagement implements Serializable{
 
@@ -15,7 +15,7 @@ public class MembershipManagement implements Serializable{
 
 	@Inject	private EntityManager em;
 	
-	public void addMembership(User member) {
+	public void addMembership(Membership member) {
 		em.getTransaction().begin();
 		em.persist(member);
 		em.getTransaction().commit();
