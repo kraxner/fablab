@@ -49,21 +49,6 @@ public class UserProviderX extends SortableDataProvider {
 		list.add(new Contact(new Name("Ernie", "Vuntang")));
 		list.add(new Contact(new Name("Frank", "Unter")));
 		
-//		User a = new User();
-//		
-//		a.setFirstname("Johannes");
-//		a.setLastname("Bauer");
-//		a.setId(1);
-//		
-//		Membership m = new Membership() {
-//		};
-//
-//		m.setType(MembershipType.REGULAR);
-//		
-//		a.setMembership(m);
-//		
-//		list.add(a);
-		
 	}
 	
 	public int getCount()
