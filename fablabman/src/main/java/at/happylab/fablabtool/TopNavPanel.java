@@ -9,8 +9,8 @@ public class TopNavPanel extends Panel {
 
 	public TopNavPanel(String id) {
         super(id);
-        add(new BookmarkablePageLink("mitglieder", MitgliederPage.class));
-        add(new BookmarkablePageLink("rechnungen", RechnungenPage.class));
-        add(new BookmarkablePageLink("stammdaten", StammdatenPage.class));
+        add(new BookmarkablePageLink("mitgliederLink", MitgliederPage.class));
+        add(new BookmarkablePageLink("rechnungenLink", RechnungenPage.class));
+        add(new BookmarkablePageLink("stammdatenLink", StammdatenPage.class));
     }
 }

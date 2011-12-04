@@ -1,17 +1,43 @@
+<wicket:head>
+<!-- Ein- und Ausblenden von Formfelder -->
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".fldBusiness").css("display","none");
+    //$("#fldNonProfit").css("display","none");
+        
+	$(".membertype").click(function(){
+		if ($('input[name=optMemberType]:checked').val() == "Non-Profit" ) {
+			$("#fldNonProfit").slideDown("fast"); //Slide Down Effect
+			$(".fldBusiness").slideUp("fast");
+		} else {
+			$("#fldNonProfit").slideUp("fast");  //Slide Up Effect
+			$(".fldBusiness").slideDown("fast");
+		}
+	 });
+	 
+	$("#txtPayment").change(function(){
+		if($(this).val() == "Lastschrift") {
+			$("#fldKontodaten").slideDown("fast");
+		}
+		else {
+			$("#fldKontodaten").slideUp("fast");
+		}
+	 }); 
+});	
+</script>
+</wicket:head>
 <wicket:panel>
-<span wicket:id="topNavPanel">
-	<div id="menubar">
-		<div style="float:left;">
-		<ul id="mainmenu">
-			<li class="selected"><a wicket:id="mitglieder" href="">Mitglieder</a></li>
-			<li><a wicket:id="rechnungen" href="">Rechnungen</a></li>
-			<li><a wicket:id="stammdaten" href="">Stammdaten</a></li>
-		</ul>
-		</div>
-		
-		<div style="float:right;">
-		Karim Jafarmadar
-		</div>
+<div id="menubar">
+	<div style="float:left;">
+	<ul id="mainmenu">
+		<li class="selected"><a wicket:id="mitgliederLink" href="">Mitglieder</a></li>
+		<li><a wicket:id="rechnungenLink" href="">Rechnungen</a></li>
+		<li><a wicket:id="stammdatenLink" href="">Stammdaten</a></li>
+	</ul>
 	</div>
-</span>
+	
+	<div style="float:right;">
+	Karim Jafarmadar
+	</div>
+</div>
 </wicket:panel>

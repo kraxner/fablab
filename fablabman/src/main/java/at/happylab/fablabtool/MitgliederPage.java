@@ -26,7 +26,7 @@ public class MitgliederPage extends BasePage {
 		form.add(new BookmarkablePageLink("mitgliedPaketeLink", MitgliedPaketePage.class));
 		form.add(new BookmarkablePageLink("mitgliedBuchungenLink", MitgliedBuchungenPage.class));
 		form.add(new BookmarkablePageLink("mitgliedRechnungenLink", MitgliedRechnungenPage.class));
-        //add(new BookmarkablePageLink("mitgliedAddLink", MitgliedDatenPage.class));
+        form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
         
 		final Component newMemberButton = new AjaxButton("newMember") {
 
@@ -39,7 +39,7 @@ public class MitgliederPage extends BasePage {
 				
 			}
 		};
-		form.add(newMemberButton);
+		//form.add(newMemberButton);
 		add(form);
 	}
 	
