@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -9,8 +10,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class AccessGrant {
+public class AccessGrant implements Serializable {
 	
+	private static final long serialVersionUID = -6434558465566036904L;
+
 	@Id @GeneratedValue
 	private long id;
 	

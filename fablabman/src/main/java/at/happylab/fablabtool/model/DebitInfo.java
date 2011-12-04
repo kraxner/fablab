@@ -1,10 +1,13 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class DebitInfo {
+public class DebitInfo implements Serializable{
+	private static final long serialVersionUID = 2723095130207733502L;
 	
 	@Column(name="debitinfo_name")
 	private String name;

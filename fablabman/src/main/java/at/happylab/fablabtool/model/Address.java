@@ -1,9 +1,13 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Address {
+public class Address implements Serializable{
+	private static final long serialVersionUID = -437232982157469881L;
+	
 	private String street;
 	private String city;
 	private String zipCode;

@@ -1,14 +1,16 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Entity
-public class KeyCard {
+public class KeyCard implements Serializable{
 	
+	private static final long serialVersionUID = -1408771679299915583L;
+
 	@Id @GeneratedValue
 	private long id;
 	

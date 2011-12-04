@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import javax.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("extrakey")
-public class ExtraKey extends KeyCard {
+public class ExtraKey extends KeyCard implements Serializable {
+	private static final long serialVersionUID = -3234000243062893652L;
+	
 	@OneToMany
 	List<AccessGrant> accessGrants = new ArrayList<AccessGrant>();
 	

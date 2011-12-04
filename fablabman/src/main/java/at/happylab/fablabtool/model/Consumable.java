@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
@@ -7,8 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Consumable {
-	
+public class Consumable implements Serializable{
+	private static final long serialVersionUID = 7175005651541439247L;
+
 	@Id @GeneratedValue
 	private long id;
 	
