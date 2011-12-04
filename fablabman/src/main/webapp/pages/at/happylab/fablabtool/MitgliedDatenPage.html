@@ -11,16 +11,16 @@
 	</div>
 </fieldset>	
 
-<fieldset id="fldNonProfit" class="columnar">
+<fieldset wicket:id="list" id="fldNonProfit" class="columnar">
 	<legend>Non-Profit</legend>
 	<div class="type-text">
 		<label for="">Vorname</label>
-		<input type="text" size="50" name="txtPersonFirstname">
+		<input wicket:id="first" type="text" size="50" name="txtPersonFirstname">
 <!-- 		<input wicket:id="users.firstname" type="text" size="50" name="txtPersonFirstname"> -->
 	</div>
 	<div class="type-text">
 		<label for="">Nachname</label>
-		<input type="text" size="50" name="txtPersonSurename">
+		<input wicket:id="last" type="text" size="50" name="txtPersonSurename">
 	</div>
 	<div class="type-select">
 		<label for="">Geschlecht</label>
@@ -32,11 +32,11 @@
 	</div>
 	<div class="type-text">
 		<label for="">Email</label>
-		<input type="text" size="50" name="txtPersonEmail">
+		<input wicket:id="email" type="text" size="50" name="txtPersonEmail">
 	</div>
 	<div class="type-text">
 		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPersonPhone">
+		<input wicket:id="mobile" type="text" size="50" name="txtPersonPhone">
 	</div>
 	<div class="type-text">
 		<label for="">Adresse</label>

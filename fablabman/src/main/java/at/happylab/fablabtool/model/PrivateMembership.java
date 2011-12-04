@@ -13,6 +13,7 @@ public class PrivateMembership extends Membership implements Serializable{
 
 	public PrivateMembership() {
 		setMaxUser(1);
+		getUsers().add(new User());
 	}
 
 }

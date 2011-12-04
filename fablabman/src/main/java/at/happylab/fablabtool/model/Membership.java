@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,7 +56,7 @@ public abstract class Membership implements Serializable{
 	 * The users of this membership.
 	 * The number of users must not exceed {@link #maxUser}
 	 */
-	@OneToMany(mappedBy="membership")
+	@OneToMany(mappedBy="membership",cascade=CascadeType.ALL)
 	private List<User> users = new ArrayList<User>();
 	
 	public Membership() {
