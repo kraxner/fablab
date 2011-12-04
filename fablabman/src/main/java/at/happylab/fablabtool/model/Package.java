@@ -13,7 +13,15 @@ import javax.persistence.Id;
 public class Package implements Serializable{
 	
 	private static final long serialVersionUID = 355872449251526129L;
-
+	
+	public Package() {
+		
+	}
+	
+	public Package(String n) {
+		name = n;
+	}
+	
 	@Id @GeneratedValue
 	private long id;
 	
