@@ -2,6 +2,7 @@ package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
 
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,6 +32,9 @@ public class EntityManagerProducer implements Serializable{
 		return emf.createEntityManager();
 	}
 	
+	public void destroy(@Disposes EntityManager em) {
+		em.close();
+	}
 	
 
 }
