@@ -11,10 +11,12 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColu
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.model.PrivateMembership;
 import at.happylab.fablabtool.model.User;
 
 public class MitgliederPage extends BasePage {
@@ -48,7 +50,12 @@ public class MitgliederPage extends BasePage {
 
 		form.add(table);
 
-		form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
+		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
+		form.add(new Link("mitgliedAddLink") {
+            public void onClick() {
+                setResponsePage(new MitgliedDatenPage(new PrivateMembership(), membershipMgmt));
+            }
+        });
 
 		add(form);
 	}
