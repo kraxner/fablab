@@ -11,6 +11,14 @@ import javax.persistence.Id;
 @Entity
 public class Package {
 	
+	public Package() {
+		
+	}
+	
+	public Package(String n) {
+		name = n;
+	}
+	
 	@Id @GeneratedValue
 	private long id;
 	

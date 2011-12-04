@@ -32,6 +32,9 @@ public class MitgliedAddPage extends BasePage{
 	@Inject private MembershipManagement membershipMgmt;
 	
 	public MitgliedAddPage() {
+		
+		navigation.selectMitglieder();
+		
 		setDefaultModel(new CompoundPropertyModel(new LoadableDetachableModel() {
             protected Object load() {
                 return new User();

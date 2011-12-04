@@ -43,7 +43,7 @@ a:hover {
 	padding-right: 5px;
 }
 
-#mainmenu a:hover, #mainmenu li.selected a {
+#mainmenu a:hover, #mainmenu a.selected {
 	color: white;
 	border-top: 3px white solid;
 }
