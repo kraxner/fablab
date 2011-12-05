@@ -101,7 +101,7 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 		}
 
 		public void onSubmit() {
-			membershipMgmt.addMembership(member);
+			membershipMgmt.storeMembership(member);
 			//setResponsePage(new MitgliedDatenPage(member, membershipMgmt));
 			//setResponsePage(new MitgliederPage());
 			//setResponsePage(MitgliederPage.class);

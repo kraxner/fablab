@@ -5,18 +5,22 @@ import javax.inject.Inject;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.dataprovider.MembershipProvider;
 import at.happylab.fablabtool.model.PrivateMembership;
 
 public class MitgliederPage extends BasePage {
 
 	@Inject
 	private MembershipManagement membershipMgmt;
+	
+	@Inject MembershipProvider membershipProvider;
 
 	public MitgliederPage() {
 		add(new Label("mitgliederLabel", "Mitglieder"));
@@ -33,14 +37,16 @@ public class MitgliederPage extends BasePage {
 		// MitgliedRechnungenPage.class));
 		
 		final UserProviderX userProvider = new UserProviderX();
+		
 
 		IColumn[] columns = new IColumn[2];
-		columns[0] = new PropertyColumn(new Model<String>("First Name"), "name.first","name.first");
-		columns[1] = new PropertyColumn(new Model<String>("Last Name"), "name.last", "name.last");
+		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id"); 
+		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
+		 
 		
-		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, userProvider, 5);
+		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5);
 		
-		form.add(new Label("mitgliederAnzahl", userProvider.getCount() + " Datensätze"));
+		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datensätze"));
 
 		form.add(table);
 

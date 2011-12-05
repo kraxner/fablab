@@ -15,17 +15,11 @@ public class MembershipManagement implements Serializable{
 
 	@Inject	private EntityManager em;
 	
-	public void addMembership(Membership member) {
+	public void storeMembership(Membership member) {
 		em.getTransaction().begin();
 		em.persist(member);
 		em.getTransaction().commit();
-		Logger.getLogger("Membershipmanagement").info("number of Users: " + String.valueOf(em.createQuery("select count(u) from User u ").getSingleResult()));
-		//Logger.getLogger("Membershiopmanagement").info("info of Users: " + String.valueOf(em.createQuery("select gender from User u ").getSingleResult()));
+		Logger.getLogger("Membershipmanagement").info("number of Members: " + String.valueOf(em.createQuery("select count(m) from Membership m ").getSingleResult()));
 	}
-	
-	
-	
-	
-	
 
 }
