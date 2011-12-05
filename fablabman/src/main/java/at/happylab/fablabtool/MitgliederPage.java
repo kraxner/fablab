@@ -15,6 +15,7 @@ import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
+import at.happylab.fablabtool.model.BusinessMembership;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PrivateMembership;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
@@ -27,6 +28,8 @@ public class MitgliederPage extends BasePage {
 	@Inject MembershipProvider membershipProvider;
 
 	public MitgliederPage() {
+		navigation.selectMitglieder();
+		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
 		Form<String> form = new Form<String>("main");
@@ -74,9 +77,15 @@ public class MitgliederPage extends BasePage {
 		form.add(table);
 
 		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
-		form.add(new Link("mitgliedAddLink") {
+		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
                 setResponsePage(new MitgliedDatenPage(new PrivateMembership(), membershipMgmt));
+            }
+        });
+
+		form.add(new Link("addBusinessMembershipLink") {
+            public void onClick() {
+                setResponsePage(new MitgliedDatenPage(new BusinessMembership(), membershipMgmt));
             }
         });
 

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -31,13 +33,28 @@ import at.happylab.fablabtool.model.User;
 
 public class MitgliedDatenPage extends MitgliedDetailPage {
 	
-	//@Inject private MembershipManagement membershipMgmt;
+	@Inject
 	private MembershipManagement membershipMgmt;
 	private Membership member;
+	
+	public MitgliedDatenPage(PageParameters params) {
+		super(params);
+	    int id = params.getInt("id");
+	    member = membershipMgmt.loadMembership(id);
+	    add(new Label("mitgliedDetailLabel"));
+	    
+		add(new FeedbackPanel("feedback"));
+		add(new MemberForm("form", member));
+	}
 
 	public MitgliedDatenPage(Membership member, MembershipManagement membershipMgmt) {
+		super(member, membershipMgmt);
+		
 		this.member = member;
 		this.membershipMgmt = membershipMgmt;
+		
+	    add(new Label("mitgliedDetailLabel"));
+		
 		add(new FeedbackPanel("feedback"));
 		add(new MemberForm("form", member));
 	}
@@ -74,7 +91,7 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 			DropDownChoice<MembershipType> memType = new DropDownChoice<MembershipType>("type");
 			memType.setChoices(new LoadableDetachableModel<List<MembershipType>>() {
 				public List<MembershipType> load() {
-                    List<MembershipType> list = new ArrayList<MembershipType>(2);
+                    List<MembershipType> list = new ArrayList<MembershipType>(3);
                     list.add(MembershipType.REGULAR);
                     list.add(MembershipType.ASSOCIATE);
                     list.add(MembershipType.HONORARY);
@@ -86,7 +103,7 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
             DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod");
             payMeth.setChoices(new LoadableDetachableModel<List<PaymentMethod>>() {
 				public List<PaymentMethod> load() {
-                    List<PaymentMethod> list = new ArrayList<PaymentMethod>(2);
+                    List<PaymentMethod> list = new ArrayList<PaymentMethod>(3);
                     list.add(PaymentMethod.DEBIT);
                     list.add(PaymentMethod.CASH_IN_ADVANCE);
                     list.add(PaymentMethod.ON_ACCOUNT);

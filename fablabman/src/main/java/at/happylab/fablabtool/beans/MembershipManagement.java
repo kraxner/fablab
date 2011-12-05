@@ -21,5 +21,9 @@ public class MembershipManagement implements Serializable{
 		em.getTransaction().commit();
 		Logger.getLogger("Membershipmanagement").info("number of Members: " + String.valueOf(em.createQuery("select count(m) from Membership m ").getSingleResult()));
 	}
+	
+	public Membership loadMembership(long id) {
+		return em.find(Membership.class, id);
+	}
 
 }
