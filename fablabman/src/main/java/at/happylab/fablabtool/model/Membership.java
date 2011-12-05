@@ -16,8 +16,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Membership implements Serializable{
@@ -158,5 +156,25 @@ public abstract class Membership implements Serializable{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	/**
+	 * adds the user to this membership
+	 * 
+	 * @param u
+	 */
+	public void addUser(User u) {
+		if ((u.getMembership() != this) &&(u.getMembership() != null)) {
+			u.getMembership().removeUser(u);
+		}
+		u.setMembership(this);
+		if (! users.contains(u)) {
+			users.add(u);
+		}
+	}
 
+	public void removeUser(User u) {
+		if (users.remove(u)) {
+			u.setMembership(null);
+		}
+	}
 }

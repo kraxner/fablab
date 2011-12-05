@@ -13,7 +13,22 @@ public class PrivateMembership extends Membership implements Serializable{
 
 	public PrivateMembership() {
 		setMaxUser(1);
-		getUsers().add(new User());
+		addUser(new User());
+	}
+	
+	public String getName() {
+		if (getUsers().isEmpty()) {
+			return null;
+		}
+		User u = getUsers().get(0);
+		if (u != null){
+			return u.getFullname();
+		}
+		return null;
+			
+	}
+	public void setName(String name){
+		
 	}
 
 }

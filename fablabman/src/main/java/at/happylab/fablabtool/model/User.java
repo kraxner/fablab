@@ -68,6 +68,20 @@ public class User implements Serializable {
 		
 	}
 	
+	public String getFullname(){
+		
+		String name = lastname;
+		if (name != null) {
+			if (firstname != null) {
+				name = name + " " + firstname;
+			}
+		} else {
+			name = firstname;
+		}
+		return name;
+		
+	}
+	
 	public long getId() {
 		return id;
 	}
