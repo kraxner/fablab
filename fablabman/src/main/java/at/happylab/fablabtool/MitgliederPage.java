@@ -9,11 +9,15 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextF
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
+import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PrivateMembership;
+import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class MitgliederPage extends BasePage {
 
@@ -40,7 +44,16 @@ public class MitgliederPage extends BasePage {
 		
 
 		IColumn[] columns = new IColumn[2];
-		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id"); 
+		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Membership m = (Membership) model.getObject();
+				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				
+			}
+			 
+		};
 		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
 		 
 		
