@@ -43,7 +43,7 @@ public class MitgliederPage extends BasePage {
 		final UserProviderX userProvider = new UserProviderX();
 		
 
-		IColumn[] columns = new IColumn[2];
+		IColumn[] columns = new IColumn[3];
 		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
 
 			@Override
@@ -55,6 +55,16 @@ public class MitgliederPage extends BasePage {
 			 
 		};
 		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
+		columns[2] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Membership m = (Membership) model.getObject();
+				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				
+			}
+			 
+		};
 		 
 		
 		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5);
