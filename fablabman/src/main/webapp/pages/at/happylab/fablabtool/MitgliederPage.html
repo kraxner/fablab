@@ -1,69 +1,33 @@
 <wicket:extend>
-<div style="padding: 10px;">
+	<div style="padding: 10px;">
 
-<h1 wicket:id="mitgliederLabel">overwrite this</h1>
+		<h1 wicket:id="mitgliederLabel">overwrite this</h1>
 
-<form wicket:id="main">
+		<form wicket:id="main">
 
-<div>
-	<div style="float:left;">
-		Anzeige: 
-		<input type="checkbox" name="chkPreRegistrations"> Vorameldungen
-		<input type="checkbox" name="chkPostRegistrations"> ausgetretene Mitglieder
+			<div>
+				<div style="float: left;">
+					Anzeige: <input type="checkbox" name="chkPreRegistrations">
+					Vorameldungen <input type="checkbox" name="chkPostRegistrations">
+					ausgetretene Mitglieder
+				</div>
+				<div style="float: right;">
+					Filter: <input type="text" name="">
+				</div>
+			</div>
+			<br>
+			<br>
+
+			<div>
+				<table wicket:id="mitgliederTabelle"></table>
+			</div>
+
+			<br> <span wicket:id="mitgliederAnzahl"></span> <br>
+			<br>
+
+			<div>
+				<button wicket:id="mitgliedAddLink" class="minimal">Neues Privates Mitglied</button>
+			</div>
+		</form>
 	</div>
-	<div style="float:right;;">
-		Filter: <input type="text" name="">
-	</div>
-</div>
-<br>
-<table width="100%">
-<tr>
-	<th>Nr</th>
-	<th>Vorname</th>
-	<th>Nachname</th>
-	<th>Firma</th>
-	<th>Aktionen</th>
-</tr>
-
-<tr>
-	<td> 1 </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> <a wicket:id="mitgliedDatenLink" href="">Stammdaten</a> | <a wicket:id="mitgliedPaketeLink" href="">Zusatzpakete</a> | <a wicket:id="mitgliedBuchungenLink" href="">Buchungen</a> | <a wicket:id="mitgliedRechnungenLink" href="">Rechnung</a></td>
-</tr>
-
-<tr>
-	<td> 2 </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> <a href="">Stammdaten</a> | <a href="">Zusatzpakete</a> | <a href="">Buchungen</a> | <a href="">Rechnung</a></td>
-</tr>
-
-
-<tr>
-	<td> 3 </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> <a href="">Stammdaten</a> | <a href="">Zusatzpakete</a> | <a href="">Buchungen</a> | <a href="">Rechnung</a></td>
-</tr>
-
-<tr>
-	<td> 4 </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> &nbsp </td>
-	<td> <a href="">Stammdaten</a> | <a href="">Zusatzpakete</a> | <a href="">Buchungen</a> | <a href="">Rechnung</a></td>
-</tr>
-</table>
-4 Datens&auml;tze 
-	
-<div>
-<!-- <button wicket:id="newMember" class="minimal">Neues Mitglied</button> -->
-<button wicket:id="mitgliedAddLink" class="minimal">Neues Mitglied</button>
-</div>	
-</form>	
-</div>
 </wicket:extend>

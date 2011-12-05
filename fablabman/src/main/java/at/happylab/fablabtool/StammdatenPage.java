@@ -2,6 +2,7 @@ package at.happylab.fablabtool;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+
 import at.happylab.fablabtool.model.Package;
 
 public class StammdatenPage extends BasePage {

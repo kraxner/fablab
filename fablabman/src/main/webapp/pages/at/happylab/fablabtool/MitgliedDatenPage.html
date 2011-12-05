@@ -1,6 +1,7 @@
 <wicket:extend>
 <div style="padding: 10px;">
-<form action="" method="POST" class="yform" style="width:500px">
+<span wicket:id="feedback"></span>
+<form wicket:id="form" action="" method="POST" class="yform" style="width:500px">
 <!--parse-form.php-->
 <fieldset class="columnar">
 	<legend>Art der Mitgliedschaft</legend>
@@ -10,19 +11,20 @@
 	</div>
 </fieldset>	
 
-<fieldset id="fldNonProfit" class="columnar">
+<fieldset wicket:id="list" id="fldNonProfit" class="columnar">
 	<legend>Non-Profit</legend>
 	<div class="type-text">
 		<label for="">Vorname</label>
-		<input type="text" size="50" name="txtPersonFirstname">
+		<input wicket:id="first" type="text" size="50" name="txtPersonFirstname">
+<!-- 		<input wicket:id="users.firstname" type="text" size="50" name="txtPersonFirstname"> -->
 	</div>
 	<div class="type-text">
 		<label for="">Nachname</label>
-		<input type="text" size="50" name="txtPersonSurename">
+		<input wicket:id="last" type="text" size="50" name="txtPersonSurename">
 	</div>
 	<div class="type-select">
 		<label for="">Geschlecht</label>
-		<select name="txtPersonSex"><option>weiblich</option><option>m&auml;nnich</option></select>
+		<select wicket:id="gender" name="txtPersonSex"><option>weiblich</option><option>m&auml;nnich</option></select>
 	</div>
 	<div class="type-text">
 		<label for="">Geburtsdatum</label>
@@ -30,18 +32,33 @@
 	</div>
 	<div class="type-text">
 		<label for="">Email</label>
-		<input type="text" size="50" name="txtPersonEmail">
+		<input wicket:id="email" type="text" size="50" name="txtPersonEmail">
 	</div>
 	<div class="type-text">
 		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPersonPhone">
+		<input wicket:id="mobile" type="text" size="50" name="txtPersonPhone">
 	</div>
-	<div class="type-text">
-		<label for="">Adresse</label>
-		<textarea name="txtPersonAddress" cols="50" rows="4"></textarea>
-	</div>
+<!-- 	<div class="type-text"> -->
+<!-- 		<label for="">Adresse</label> -->
+<!-- 		<textarea name="txtPersonAddress" cols="50" rows="4"></textarea> -->
+<!-- 	</div> -->
 </fieldset>
 
+<fieldset id="fldNonProfit" class="columnar">
+	<legend>Adresse</legend>
+	<div class="type-text">
+		<label for="">Straﬂe/Hausnummer</label>
+		<input wicket:id="Address.street" type="text" size="50" name="txtPersonBirthday">
+	</div>
+	<div class="type-text">
+		<label for="">Ort</label>
+		<input wicket:id="Address.city" type="text" size="50" name="txtPersonEmail">
+	</div>
+	<div class="type-text">
+		<label for="">Postleitzahl</label>
+		<input wicket:id="Address.zipCode" type="text" size="50" name="txtPersonPhone">
+	</div>
+</fieldset>
 	
 <fieldset class="columnar fldBusiness">
 	<legend>Business</legend>
@@ -105,7 +122,7 @@
 	<legend>Allgemeine Daten</legend>
 	<div class="type-select">
 		<label for="">Art der Mitgliedschaft</label>
-		<select name="txtPayment">
+		<select wicket:id="type" name="txtPayment">
 			<option>au&szlig;erordentlich</option>
 			<option>ordentlich</option>
 			<option>Ehrenmitglied</option>
@@ -117,7 +134,7 @@
 	</div>
 	<div class="type-select">
 		<label for="">Default Zahlungsart</label>
-		<select name="txtPayment" id="txtPayment">
+		<select wicket:id="paymentMethod" name="txtPayment" id="txtPayment">
 			<option value="Lastschrift">Lastschrift</option>
 			<option value="bar">Bar</option>
 			<option value="Rechnung">Rechnung</option>
@@ -130,7 +147,8 @@
 		</div>
 		<div class="type-text">
 			<label for="">Kontonummer</label>
-			<input type="text" size="50" name="txtBankAccountNo">
+<!-- 			<input type="text" size="50" name="txtBankAccountNo"> -->
+			<input wicket:id="bankDetails.iban" type="text" size="50" name="txtBankAccountNo">
 		</div>
 		<div class="type-text">
 			<label for="">BLZ</label>
@@ -141,9 +159,13 @@
 			<input type="text" size="50" name="txtBankID">
 		</div>
 	</div>
+	<div class="type-text">
+		<label for="">Kommentar</label>
+		<textarea wicket:id="comment" name="" cols="50" rows="4"></textarea>
+	</div>
 </fieldset>
 
-<input type="submit" value="Hinzuf&uuml;gen" class="minimal">
+<input wicket:id="submit" type="submit" value="Hinzuf&uuml;gen" class="minimal">
 
 
 </form>

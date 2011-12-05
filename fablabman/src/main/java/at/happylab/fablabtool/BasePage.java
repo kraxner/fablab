@@ -3,13 +3,9 @@ package at.happylab.fablabtool;
 import java.io.Serializable;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 public class BasePage extends WebPage implements Serializable {
-	
-	//private static final long serialVersionUID = -1L;
-	
 	TopNavPanel navigation;
 	
     public BasePage() {
