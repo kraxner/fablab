@@ -1,1 +1,1 @@
-mvn exec:java -Dexec.mainClass="org.hsqldb.Server" -Dexec.args="-database.0 file:target/data/db" 
+mvn exec:java -Dsqlfile.charset="UTF-8" -Dexec.mainClass="org.hsqldb.Server" -Dexec.args="-database.0 file:target/data/db" 

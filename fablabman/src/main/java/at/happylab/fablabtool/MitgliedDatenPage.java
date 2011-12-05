@@ -25,6 +25,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.model.BusinessMembership;
 import at.happylab.fablabtool.model.Gender;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
@@ -84,6 +85,14 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 			listView.setReuseItems(true);
 			add(listView);
 			
+			add(new TextField("name") {
+				public boolean isVisible() {
+					Object model = getForm().getModelObject();
+					boolean result = (model) instanceof BusinessMembership; 
+					return true; 
+				}
+			});
+			
 			add(new TextField("Address.street"));
 			add(new TextField("Address.city"));
 			add(new TextField("Address.zipCode"));
@@ -114,6 +123,8 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
             
 			add(new TextField("bankDetails.iban"));
 			add(new TextArea<String>("comment"));
+			
+			
 			add(new Button("submit"));
 		}
 

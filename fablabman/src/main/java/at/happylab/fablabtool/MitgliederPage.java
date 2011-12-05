@@ -43,7 +43,6 @@ public class MitgliederPage extends BasePage {
 		// form.add(new BookmarkablePageLink("mitgliedRechnungenLink",
 		// MitgliedRechnungenPage.class));
 		
-		final UserProviderX userProvider = new UserProviderX();
 		
 
 		IColumn[] columns = new IColumn[3];
