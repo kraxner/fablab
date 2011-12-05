@@ -9,11 +9,16 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextF
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
+import at.happylab.fablabtool.model.BusinessMembership;
+import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PrivateMembership;
+import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class MitgliederPage extends BasePage {
 
@@ -23,6 +28,8 @@ public class MitgliederPage extends BasePage {
 	@Inject MembershipProvider membershipProvider;
 
 	public MitgliederPage() {
+		navigation.selectMitglieder();
+		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
 		Form<String> form = new Form<String>("main");
@@ -39,9 +46,28 @@ public class MitgliederPage extends BasePage {
 		final UserProviderX userProvider = new UserProviderX();
 		
 
-		IColumn[] columns = new IColumn[2];
-		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id"); 
+		IColumn[] columns = new IColumn[3];
+		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Membership m = (Membership) model.getObject();
+				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				
+			}
+			 
+		};
 		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
+		columns[2] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Membership m = (Membership) model.getObject();
+				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				
+			}
+			 
+		};
 		 
 		
 		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5);
@@ -51,9 +77,15 @@ public class MitgliederPage extends BasePage {
 		form.add(table);
 
 		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
-		form.add(new Link("mitgliedAddLink") {
+		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
                 setResponsePage(new MitgliedDatenPage(new PrivateMembership(), membershipMgmt));
+            }
+        });
+
+		form.add(new Link("addBusinessMembershipLink") {
+            public void onClick() {
+                setResponsePage(new MitgliedDatenPage(new BusinessMembership(), membershipMgmt));
             }
         });
 

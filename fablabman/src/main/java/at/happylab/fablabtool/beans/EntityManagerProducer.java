@@ -2,6 +2,7 @@ package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -26,9 +27,9 @@ public class EntityManagerProducer implements Serializable{
 	 * 
 	 * @return
 	 */
-	@Produces
+	@Produces @SessionScoped
 	public EntityManager getEm(){
-		emf = Persistence.createEntityManagerFactory("fablabman");
+		//emf = Persistence.createEntityManagerFactory("fablabman");
 		return emf.createEntityManager();
 	}
 	
