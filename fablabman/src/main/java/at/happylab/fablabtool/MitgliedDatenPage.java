@@ -104,7 +104,7 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 			membershipMgmt.storeMembership(member);
 			//setResponsePage(new MitgliedDatenPage(member, membershipMgmt));
 			//setResponsePage(new MitgliederPage());
-			//setResponsePage(MitgliederPage.class);
+			setResponsePage(MitgliederPage.class);
 		}
 	}
 
