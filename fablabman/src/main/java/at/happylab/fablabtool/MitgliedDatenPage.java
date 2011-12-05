@@ -25,6 +25,8 @@ import org.apache.wicket.model.PropertyModel;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Gender;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.MembershipType;
+import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.User;
 
 public class MitgliedDatenPage extends MitgliedDetailPage {
@@ -64,7 +66,35 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 			};
 			listView.setReuseItems(true);
 			add(listView);
+			
+			add(new TextField("Address.street"));
+			add(new TextField("Address.city"));
+			add(new TextField("Address.zipCode"));
 
+			DropDownChoice<MembershipType> memType = new DropDownChoice<MembershipType>("type");
+			memType.setChoices(new LoadableDetachableModel<List<MembershipType>>() {
+				public List<MembershipType> load() {
+                    List<MembershipType> list = new ArrayList<MembershipType>(2);
+                    list.add(MembershipType.REGULAR);
+                    list.add(MembershipType.ASSOCIATE);
+                    list.add(MembershipType.HONORARY);
+                    return list;
+                }
+            });
+            add(memType);
+            
+            DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod");
+            payMeth.setChoices(new LoadableDetachableModel<List<PaymentMethod>>() {
+				public List<PaymentMethod> load() {
+                    List<PaymentMethod> list = new ArrayList<PaymentMethod>(2);
+                    list.add(PaymentMethod.DEBIT);
+                    list.add(PaymentMethod.CASH_IN_ADVANCE);
+                    list.add(PaymentMethod.ON_ACCOUNT);
+                    return list;
+                }
+            });
+            add(payMeth);
+            
 			add(new TextField("bankDetails.iban"));
 			add(new TextArea<String>("comment"));
 			add(new Button("submit"));
