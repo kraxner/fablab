@@ -24,6 +24,19 @@ public class MembershipManagement implements Serializable{
 		Logger.getLogger("Membershipmanagement").info("number of Members: " + String.valueOf(em.createQuery("select count(m) from Membership m ").getSingleResult()));
 	}
 	
+	/**
+	 * Removes a membership and all dependent objects
+	 * 
+	 * @param member
+	 */
+	public void removeMembership(Membership member) {
+		if (!em.getTransaction().isActive()) {
+			em.getTransaction().begin();
+		}
+		em.remove(member);
+		em.getTransaction().commit();
+	}
+	
 	public Membership loadMembership(long id) {
 		return em.find(Membership.class, id);
 	}

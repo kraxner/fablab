@@ -47,6 +47,14 @@ public class MembershipListPage extends BasePage {
 
 		IColumn[] columns = new IColumn[3];
 		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Membership m = (Membership) model.getObject();
+				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
+				
+			}
+		};
+		columns[1] = new LinkPropertyColumn(new Model<String>("Name"),  "name","name") {
 
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
@@ -56,14 +64,14 @@ public class MembershipListPage extends BasePage {
 			}
 			 
 		};
-		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
-		columns[2] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+				//new TextFilteredPropertyColumn(new Model<String>("Name"),);
+		
+		columns[2] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("löschen")) {
 
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
-				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
-				
+				membershipMgmt.removeMembership(m);
 			}
 			 
 		};
