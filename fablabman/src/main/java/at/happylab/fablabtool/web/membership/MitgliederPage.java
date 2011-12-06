@@ -1,4 +1,4 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web.membership;
 
 import javax.inject.Inject;
 
@@ -13,6 +13,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
 import at.happylab.fablabtool.model.BusinessMembership;
@@ -28,7 +29,6 @@ public class MitgliederPage extends BasePage {
 	@Inject MembershipProvider membershipProvider;
 
 	public MitgliederPage() {
-		navigation.selectMitglieder();
 		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
@@ -51,7 +51,7 @@ public class MitgliederPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
-				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				setResponsePage(new MitgliedDetailPage(m, membershipMgmt));
 				
 			}
 			 
@@ -62,7 +62,7 @@ public class MitgliederPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
-				setResponsePage(new MitgliedDatenPage(m, membershipMgmt));
+				setResponsePage(new MitgliedDetailPage(m, membershipMgmt));
 				
 			}
 			 
@@ -78,13 +78,13 @@ public class MitgliederPage extends BasePage {
 		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
 		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
-                setResponsePage(new MitgliedDatenPage(new PrivateMembership(), membershipMgmt));
+                setResponsePage(new MitgliedDetailPage(new PrivateMembership(), membershipMgmt));
             }
         });
 
 		form.add(new Link("addBusinessMembershipLink") {
             public void onClick() {
-                setResponsePage(new MitgliedDatenPage(new BusinessMembership(), membershipMgmt));
+                setResponsePage(new MitgliedDetailPage(new BusinessMembership(), membershipMgmt));
             }
         });
 

@@ -1,0 +1,1 @@
+mvn exec:java -Dsqlfile.charset="UTF-8" -Dexec.mainClass="org.hsqldb.util.DatabaseManager"  

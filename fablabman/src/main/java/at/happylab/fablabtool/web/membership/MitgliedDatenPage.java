@@ -1,24 +1,16 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web.membership;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -32,73 +24,68 @@ import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.User;
 
-public class MitgliedDatenPage extends MitgliedDetailPage {
+public class MitgliedDatenPage extends Panel{
+	private static final long serialVersionUID = -5731106086301274951L;
 	
-	@Inject
+	
 	private MembershipManagement membershipMgmt;
 	private Membership member;
 	
-	public MitgliedDatenPage(PageParameters params) {
-		super(params);
-	    int id = params.getInt("id");
-	    member = membershipMgmt.loadMembership(id);
-	    add(new Label("mitgliedDetailLabel"));
-	    
-		add(new FeedbackPanel("feedback"));
-		add(new MemberForm("form", member));
-	}
 
-	public MitgliedDatenPage(Membership member, MembershipManagement membershipMgmt) {
-		super(member, membershipMgmt);
+	public MitgliedDatenPage(String id, Membership member,  MembershipManagement membershipMgmt) {
+		super(id);
 		
 		this.member = member;
 		this.membershipMgmt = membershipMgmt;
-		
-	    add(new Label("mitgliedDetailLabel"));
-		
-		add(new FeedbackPanel("feedback"));
-		add(new MemberForm("form", member));
 	}
 
-	class MemberForm extends Form {
-		public MemberForm(String s, final Membership member) {
-			super(s, new CompoundPropertyModel(member));
+	class MemberForm extends Form<Object> {
+		private static final long serialVersionUID = -416444319008642513L;
 
-			ListView listView = new ListView("list", member.getUsers()) {
-				protected void populateItem(ListItem item)
+		public MemberForm(String s, final Membership member) {
+			super(s, new CompoundPropertyModel<Object>(member));
+
+			ListView<Object> listView = new ListView<Object>("list", member.getUsers()) {
+				private static final long serialVersionUID = 5922287160870873368L;
+
+				protected void populateItem(ListItem<Object> item)
 				{
 					User user = (User)item.getModelObject();
 					user.setId(member.getId());
-					item.add(new TextField("first", new PropertyModel(user, "firstname")));
-					item.add(new TextField("last", new PropertyModel(user, "lastname")));
+					item.add(new TextField<Object>("first", new PropertyModel<Object>(user, "firstname")));
+					item.add(new TextField<Object>("last", new PropertyModel<Object>(user, "lastname")));
 					
 					List<Gender> l = new ArrayList<Gender>(2);
                     l.add(Gender.FEMALE);
                     l.add(Gender.MALE);
-					DropDownChoice<Gender> gender = new DropDownChoice<Gender>("gender", new PropertyModel(user, "gender"), l);
+					DropDownChoice<Gender> gender = new DropDownChoice<Gender>("gender", new PropertyModel<Gender>(user, "gender"), l);
 		            item.add(gender);
 		            
-					item.add(new TextField("email", new PropertyModel(user, "email")));
-					item.add(new TextField("mobile", new PropertyModel(user, "mobile")));
+					item.add(new TextField<Object>("email", new PropertyModel<Object>(user, "email")));
+					item.add(new TextField<Object>("mobile", new PropertyModel<Object>(user, "mobile")));
 				}
 			};
 			listView.setReuseItems(true);
 			add(listView);
 			
-			add(new TextField("name") {
+			add(new TextField<Object>("name") {
+				private static final long serialVersionUID = 1L;
+
 				public boolean isVisible() {
 					Object model = getForm().getModelObject();
 					boolean result = (model) instanceof BusinessMembership; 
-					return true; 
+					return result; 
 				}
 			});
 			
-			add(new TextField("Address.street"));
-			add(new TextField("Address.city"));
-			add(new TextField("Address.zipCode"));
+			add(new TextField<Object>("Address.street"));
+			add(new TextField<Object>("Address.city"));
+			add(new TextField<Object>("Address.zipCode"));
 
 			DropDownChoice<MembershipType> memType = new DropDownChoice<MembershipType>("type");
 			memType.setChoices(new LoadableDetachableModel<List<MembershipType>>() {
+				private static final long serialVersionUID = -314703471719830931L;
+
 				public List<MembershipType> load() {
                     List<MembershipType> list = new ArrayList<MembershipType>(3);
                     list.add(MembershipType.REGULAR);
@@ -111,6 +98,8 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
             
             DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod");
             payMeth.setChoices(new LoadableDetachableModel<List<PaymentMethod>>() {
+				private static final long serialVersionUID = 4420436576098934666L;
+
 				public List<PaymentMethod> load() {
                     List<PaymentMethod> list = new ArrayList<PaymentMethod>(3);
                     list.add(PaymentMethod.DEBIT);
@@ -121,7 +110,7 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
             });
             add(payMeth);
             
-			add(new TextField("bankDetails.iban"));
+			add(new TextField<Object>("bankDetails.iban"));
 			add(new TextArea<String>("comment"));
 			
 			
@@ -135,5 +124,4 @@ public class MitgliedDatenPage extends MitgliedDetailPage {
 			setResponsePage(MitgliederPage.class);
 		}
 	}
-
 }
