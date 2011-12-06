@@ -72,7 +72,7 @@ public class MitgliederPage extends BasePage {
 		
 		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5);
 		
-		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datens‰tze"));
+		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datens√§tze"));
 
 		form.add(table);
 

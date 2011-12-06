@@ -1,7 +1,13 @@
 package at.happylab.fablabtool;
 
+import java.math.BigDecimal;
+
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.settings.IResourceSettings;
+import org.apache.wicket.util.convert.ConverterLocator;
 import org.jboss.seam.wicket.SeamApplication;
+
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -25,5 +31,12 @@ public class FabLabManApplication extends SeamApplication
     	 IResourceSettings resourceSettings = getResourceSettings();
          resourceSettings.addResourceFolder("");    	
     }	
+    
+    @Override
+    protected IConverterLocator newConverterLocator() {
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set(BigDecimal.class, new CustomBigDecimalConverter());
+        return converterLocator;
+    }
 
 }

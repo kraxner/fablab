@@ -1,18 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <wicket:extend>
-<div style="padding: 10px;">
-<h1>Neues Paket</h1>
+	<div style="padding: 10px;">
+		<h1>Neues Paket</h1>
 
-<form wicket:id="form" action="" method="POST" class="yform" style="width:500px">
+		<form wicket:id="form" action="" method="POST" class="yform"
+			style="width: 500px">
 
-<fieldset id="fldNonProfit" class="columnar">
-	<legend>Non-Profit</legend>
-	<div class="type-text">
-		<label for="">Name</label>
-		<input wicket:id="name" type="text"/>
+			<fieldset id="fldNonProfit" class="columnar">
+				<legend>Non-Profit</legend>
+				<div class="type-text">
+					<label for="name">Name</label>
+					<input wicket:id="name" type="text" />
+				</div>
+				
+				<div class="type-text">
+					<label for="description">Beschreibung</label>
+					<textarea wicket:id="description" cols="50" rows="4"></textarea>
+				</div>
+				
+				<div class="type-text">
+					<label for="price">Preis</label>
+					<input wicket:id="price" type="text" size="50">
+				</div>
+				
+				<div class="type-select">
+					<label for="">Typ</label>
+					<select name="type">
+						<option value="1">-select-</option>
+					</select>
+				</div>
+				
+				<div class="type-select">
+					<label for="">Abrechnungsperiode</label>
+					<select name="billingCycle">
+						<option value="1">Monat</option>
+						<option value="3">Quartal</option>
+						<option value="12">Jahr</option>
+					</select>
+				</div>
+				
+				<div class="type-select">
+					<label for="">Kündigung möglich</label>
+					<select name="cancelationPeriod">
+						<option value="1">Ende des Monat</option>
+						<option value="3">Ende des Quartals</option>
+						<option value="12">Ende des Jahres</option>
+					</select>
+				</div>
+				
+				<div class="type-text">
+					<label for="">Kündigungsfrist (Monate)</label>
+					<input type="text" size="50" name="cancelationPeriodAdvance">
+				</div>
+
+			</fieldset>
+			
+			<input type="submit" value="Speichern" class="minimal">
+		</form>
 	</div>
-	
-</fieldset>
-
-</form>
-</div>
 </wicket:extend>

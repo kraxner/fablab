@@ -3,38 +3,42 @@ package at.happylab.fablabtool;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import javax.inject.Inject;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import at.happylab.fablabtool.dataprovider.PackageProvider;
 import at.happylab.fablabtool.model.Package;
+import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class PackageList extends BasePage {
-
-	private List packageList;
+	
+	@Inject PackageProvider packageProvider;
 	
 	public PackageList() {
+		navigation.selectStammdaten();
 		
-		packageList = new ArrayList();
-		packageList.add(new Package("Test"));
-		packageList.add(new Package("Noch ein Test"));
+		IColumn[] columns = new IColumn[4];
 		
-		ListView listview = new ListView("packageList", packageList) {
-			protected void populateItem(ListItem item) {
-				final Package p = (Package) item.getModelObject();
-				
-				item.add(new Label("label", p.getName()));
-				
-				item.add(new Link("editPackage") {
-                    public void onClick() {
-                        setResponsePage(new PackageAddPage(p));
-                    }
-                });
+		columns[0] = new TextFilteredPropertyColumn(new Model<String>("Name"), "name","name");
+		columns[1] = new TextFilteredPropertyColumn(new Model<String>("Beschreibung"), "description","description");
+		columns[2] = new TextFilteredPropertyColumn(new Model<String>("Preis"), "price","price");
+		columns[3] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Package p = (Package) model.getObject();
+				setResponsePage(new PackageAddPage(p));
 				
 			}
 		};
-		add(listview);
+		 
+		
+		DefaultDataTable table = new DefaultDataTable("packageTable", columns, packageProvider, 5);
+		add(table);
 		
 	}
 	
