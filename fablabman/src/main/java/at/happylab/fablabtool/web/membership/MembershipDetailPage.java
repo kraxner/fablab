@@ -74,8 +74,12 @@ public class MembershipDetailPage extends BasePage {
 				  return new InvoicePanel(panelId, member, membershipMgmt);
 			  }
 		   });
-				
-		add(new AjaxTabbedPanel("tabs", tabs));
+		AjaxTabbedPanel panel = new AjaxTabbedPanel("tabs", tabs);		
+		add(panel);
+		panel.setSelectedTab(1);
+		panel.setSelectedTab(0);
+		
+		
 	}
 	
 	

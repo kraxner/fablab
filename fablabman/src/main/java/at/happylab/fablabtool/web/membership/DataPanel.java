@@ -3,6 +3,9 @@ package at.happylab.fablabtool.web.membership;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -14,6 +17,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
@@ -46,6 +50,8 @@ public class DataPanel extends Panel{
 
 		public MemberForm(String s, final Membership member) {
 			super(s, new CompoundPropertyModel<Object>(member));
+			
+			final boolean isBusiness = member instanceof BusinessMembership;
 
 			ListView<Object> listView = new ListView<Object>("list", member.getUsers()) {
 				private static final long serialVersionUID = 5922287160870873368L;
@@ -70,15 +76,16 @@ public class DataPanel extends Panel{
 			listView.setReuseItems(true);
 			add(listView);
 			
-			add(new TextField<Object>("name") {
-				private static final long serialVersionUID = 1L;
-
+			MarkupContainer enclosure = new WebMarkupContainer("businessEnclosure") {
 				public boolean isVisible() {
-					Object model = getForm().getModelObject();
-					boolean result = (model) instanceof BusinessMembership; 
-					return result; 
+					return isBusiness; 
 				}
-			});
+			};
+
+			enclosure.add(new TextField<Object>("name"));
+			enclosure.add(new TextField<Object>("contactPerson"));
+			add(enclosure);
+			
 			
 			add(new TextField<Object>("Address.street"));
 			add(new TextField<Object>("Address.city"));

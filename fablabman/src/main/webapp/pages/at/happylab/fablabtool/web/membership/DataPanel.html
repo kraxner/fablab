@@ -13,6 +13,32 @@
 	</div>
 </fieldset>	
  -->
+ <wicket:container wicket:id="businessEnclosure">	
+<fieldset class="columnar fldBusiness"> 
+	<legend>Business</legend>
+	<div class="type-text">
+		<label for="">Firma</label>
+		<input wicket:id="name" type="text" size="50" />
+	</div>
+	<div class="type-text">
+		<label for="">Kontaktperson</label>
+		<input wicket:id="contactPerson" type="text" size="50" name="txtContactperson" />
+	</div>
+	<div class="type-text">
+		<label for="">Email</label>
+		<input type="text" size="50" name="txtEmail"/>
+	</div>
+	<div class="type-text">
+		<label for="">Telefon</label>
+		<input type="text" size="50" name="txtPhone"/>
+	</div>
+	<div class="type-text">
+		<label for="">Adresse</label>
+		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
+	</div>
+</fieldset>
+</wicket:container>
+
 <fieldset wicket:id="list" id="fldNonProfit" class="columnar">
 	<legend>Personendaten</legend>
 	<div class="type-text">
@@ -62,32 +88,7 @@
 		<input wicket:id="Address.zipCode" type="text" size="50" name="txtPersonPhone">
 	</div>
 </fieldset>
-<wicket:enclosure child="name">	
-<fieldset class="columnar fldBusiness"> 
-	<legend>Business</legend>
-	<div class="type-text">
-		<label for="">Firma</label>
-		<input wicket:id="name" type="text" size="50" />
-	</div>test
-	<div class="type-text">
-		<label for="">Kontaktperson</label>
-		<input type="text" size="50" name="txtContactperson" />
-	</div>
-	<div class="type-text error">
-		<strong class="message">Fehlermeldung!</strong>
-		<label for="">Email</label>
-		<input type="text" size="50" name="txtEmail"/>
-	</div>
-	<div class="type-text">
-		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPhone"/>
-	</div>
-	<div class="type-text">
-		<label for="">Adresse</label>
-		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
-	</div>
-</fieldset>	
-</wicket:enclosure>
+
 <fieldset class="columnar">
 	<legend>Allgemeine Daten</legend>
 	<div class="type-select">
