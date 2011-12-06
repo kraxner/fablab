@@ -67,3 +67,48 @@ td, th {
 	padding-left: 5px; 
 	padding-right: 5px;
 }
+
+/* tab panel styles */
+div.tabpanel div.tab-row{
+  float:left;
+  width:100%;
+  background:#DAE0DD bottom;
+  line-height:normal;
+  }
+
+div.tabpanel div.tab-row ul {
+  margin:0;
+  padding:10px 10px 0;
+  list-style:none;
+  }
+  
+div.tabpanel div.tab-row li {
+  float:left;
+  margin:0;
+  padding:0 0 0 9px;
+  }
+  
+div.tabpanel div.tab-row a {
+  display:block;
+  padding:5px 15px 4px 6px;
+  text-decoration:none;
+  font-weight:bold;
+  white-space:nowrap;
+  color:#eee;
+  }
+  
+div.tab-panel {
+	clear: left;
+}
+  
+div.tabpanel div.tab-row a:hover {
+  color:#fff;
+  }
+  
+div.tabpanel div.tab-row li.selected {
+  }
+  
+div.tabpanel div.tab-row li.selected a {
+  color:#333;
+  padding-bottom:5px;
+  }

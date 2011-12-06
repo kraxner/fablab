@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wicket:extend>
+<html>
+<wicket:panel>
 <div style="padding: 10px;">
-<span wicket:id="feedback"></span>
+<span id="feedback"></span>
 <form wicket:id="form" action="" method="POST" class="yform" style="width:500px">
 <!--parse-form.php-->
+<!-- 
 <fieldset class="columnar">
 	<legend>Art der Mitgliedschaft</legend>
 	<div class="type-select">
@@ -11,9 +13,35 @@
 		<input type="radio" name="optMemberType" value="Non-Profit" class="membertype" checked="checked">Non-Profit</input> <input type="radio" name="optMemberType" value="Business"  class="membertype"> Business</input>
 	</div>
 </fieldset>	
+ -->
+ <wicket:container wicket:id="businessEnclosure">	
+<fieldset class="columnar fldBusiness"> 
+	<legend>Business</legend>
+	<div class="type-text">
+		<label for="">Firma</label>
+		<input wicket:id="name" type="text" size="50" />
+	</div>
+	<div class="type-text">
+		<label for="">Kontaktperson</label>
+		<input wicket:id="contactPerson" type="text" size="50" name="txtContactperson" />
+	</div>
+	<div class="type-text">
+		<label for="">Email</label>
+		<input type="text" size="50" name="txtEmail"/>
+	</div>
+	<div class="type-text">
+		<label for="">Telefon</label>
+		<input type="text" size="50" name="txtPhone"/>
+	</div>
+	<div class="type-text">
+		<label for="">Adresse</label>
+		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
+	</div>
+</fieldset>
+</wicket:container>
 
 <fieldset wicket:id="list" id="fldNonProfit" class="columnar">
-	<legend>Non-Profit</legend>
+	<legend>Personendaten</legend>
 	<div class="type-text">
 		<label for="">Vorname</label>
 		<input wicket:id="first" type="text" size="50" name="txtPersonFirstname">
@@ -45,6 +73,7 @@
 <!-- 	</div> -->
 </fieldset>
 
+
 <fieldset id="fldNonProfit" class="columnar">
 	<legend>Adresse</legend>
 	<div class="type-text">
@@ -60,65 +89,7 @@
 		<input wicket:id="Address.zipCode" type="text" size="50" name="txtPersonPhone">
 	</div>
 </fieldset>
-	
-<fieldset class="columnar fldBusiness">
-	<legend>Business</legend>
-	<div class="type-text">
-		<label for="">Firma</label>
-		<input type="text" size="50" name="txtCompanyName">
-	</div>
-	<div class="type-text">
-		<label for="">Kontaktperson</label>
-		<input type="text" size="50" name="txtContactperson">
-	</div>
-	<div class="type-text error">
-		<strong class="message">Fehlermeldung!</strong>
-		<label for="">Email</label>
-		<input type="text" size="50" name="txtEmail">
-	</div>
-	<div class="type-text">
-		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPhone">
-	</div>
-	<div class="type-text">
-		<label for="">Adresse</label>
-		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
-	</div>
-</fieldset>	
 
-<fieldset class="columnar fldBusiness">
-	<legend>Personendaten</legend>
-	<div class="type-text">
-		<label for="">Vorname</label>
-		<input type="text" size="50" name="txtPersonFirstname">
-	</div>
-	<div class="type-text">
-		<label for="">Nachname</label>
-		<input type="text" size="50" name="txtPersonSurename">
-	</div>
-	<div class="type-select">
-		<label for="">Geschlecht</label>
-		<select name="txtPersonSex"><option>weiblich</option><option>m&auml;nnich</option></select>
-	</div>
-	<div class="type-text">
-		<label for="">Geburtsdatum</label>
-		<input type="text" size="50" name="txtPersonBirthday">
-	</div>
-	<div class="type-text">
-		<label for="">Email</label>
-		<input type="text" size="50" name="txtPersonEmail">
-	</div>
-	<div class="type-text">
-		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPersonPhone">
-	</div>
-	<div class="type-text">
-		<label for="">Adresse</label>
-		<textarea name="txtPersonAddress" cols="50" rows="4"></textarea>
-	</div>
-</fieldset>
-
-	
 <fieldset class="columnar">
 	<legend>Allgemeine Daten</legend>
 	<div class="type-select">
@@ -171,4 +142,5 @@
 
 </form>
 </div>
-</wicket:extend>
+</wicket:panel>
+</html>

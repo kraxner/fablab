@@ -4,6 +4,8 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import at.happylab.fablabtool.web.membership.MembershipListPage;
+
 public class TopNavPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
@@ -15,7 +17,7 @@ public class TopNavPanel extends Panel {
 	public TopNavPanel(String id) {
         super(id);
         
-        mitglieder = new BookmarkablePageLink("mitgliederLink", MitgliederPage.class); 
+        mitglieder = new BookmarkablePageLink("mitgliederLink", MembershipListPage.class); 
         add(mitglieder);
         
         rechnungen = new BookmarkablePageLink("rechnungenLink", RechnungenPage.class); 
