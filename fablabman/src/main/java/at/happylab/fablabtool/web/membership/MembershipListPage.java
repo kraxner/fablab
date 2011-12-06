@@ -21,14 +21,14 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PrivateMembership;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
-public class MitgliederPage extends BasePage {
+public class MembershipListPage extends BasePage {
 
 	@Inject
 	private MembershipManagement membershipMgmt;
 	
 	@Inject MembershipProvider membershipProvider;
 
-	public MitgliederPage() {
+	public MembershipListPage() {
 		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
@@ -51,7 +51,7 @@ public class MitgliederPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
-				setResponsePage(new MitgliedDetailPage(m, membershipMgmt));
+				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
 				
 			}
 			 
@@ -62,7 +62,7 @@ public class MitgliederPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
-				setResponsePage(new MitgliedDetailPage(m, membershipMgmt));
+				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
 				
 			}
 			 
@@ -78,13 +78,13 @@ public class MitgliederPage extends BasePage {
 		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
 		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
-                setResponsePage(new MitgliedDetailPage(new PrivateMembership(), membershipMgmt));
+                setResponsePage(new MembershipDetailPage(new PrivateMembership(), membershipMgmt));
             }
         });
 
 		form.add(new Link("addBusinessMembershipLink") {
             public void onClick() {
-                setResponsePage(new MitgliedDetailPage(new BusinessMembership(), membershipMgmt));
+                setResponsePage(new MembershipDetailPage(new BusinessMembership(), membershipMgmt));
             }
         });
 

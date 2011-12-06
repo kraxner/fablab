@@ -3,7 +3,7 @@ package at.happylab.fablabtool;
 import org.apache.wicket.settings.IResourceSettings;
 import org.jboss.seam.wicket.SeamApplication;
 
-import at.happylab.fablabtool.web.membership.MitgliederPage;
+import at.happylab.fablabtool.web.membership.MembershipListPage;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -16,9 +16,9 @@ public class FabLabManApplication extends SeamApplication
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class<MitgliederPage> getHomePage()
+	public Class<MembershipListPage> getHomePage()
 	{
-		return MitgliederPage.class;
+		return MembershipListPage.class;
 	}
 	
     @Override

@@ -24,7 +24,7 @@ import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.User;
 
-public class MitgliedDatenPage extends Panel{
+public class DataPanel extends Panel{
 	private static final long serialVersionUID = -5731106086301274951L;
 	
 	
@@ -32,11 +32,13 @@ public class MitgliedDatenPage extends Panel{
 	private Membership member;
 	
 
-	public MitgliedDatenPage(String id, Membership member,  MembershipManagement membershipMgmt) {
+	public DataPanel(String id, Membership member,  MembershipManagement membershipMgmt) {
 		super(id);
 		
 		this.member = member;
 		this.membershipMgmt = membershipMgmt;
+		
+		add(new MemberForm("form", member));
 	}
 
 	class MemberForm extends Form<Object> {
@@ -121,7 +123,7 @@ public class MitgliedDatenPage extends Panel{
 			membershipMgmt.storeMembership(member);
 			//setResponsePage(new MitgliedDatenPage(member, membershipMgmt));
 			//setResponsePage(new MitgliederPage());
-			setResponsePage(MitgliederPage.class);
+			setResponsePage(MembershipListPage.class);
 		}
 	}
 }

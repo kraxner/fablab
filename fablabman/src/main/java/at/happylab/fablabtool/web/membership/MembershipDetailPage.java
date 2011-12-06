@@ -19,21 +19,21 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.web.membership.MitgliedDatenPage.MemberForm;
+import at.happylab.fablabtool.web.membership.DataPanel.MemberForm;
 
-public class MitgliedDetailPage extends BasePage {
+public class MembershipDetailPage extends BasePage {
 	@Inject
 	private MembershipManagement membershipMgmt;
 	private Membership member;
 	
 
-	public MitgliedDetailPage(PageParameters params) {
+	public MembershipDetailPage(PageParameters params) {
 	    int id = params.getInt("id");
 	    this.member = membershipMgmt.loadMembership(id);
 		
 	    addTabs();
 	}
-	public MitgliedDetailPage(Membership member, MembershipManagement membershipMgmt) {
+	public MembershipDetailPage(Membership member, MembershipManagement membershipMgmt) {
 		this.member = member;
 		this.membershipMgmt = membershipMgmt;
 
@@ -43,15 +43,38 @@ public class MitgliedDetailPage extends BasePage {
 	private void addTabs() {
 		List<ITab> tabs = new ArrayList<ITab>();
 		
-		tabs.add(new AbstractTab(new Model<String>("daten")) {
+		tabs.add(new AbstractTab(new Model<String>("Stammdaten")) {
 			private static final long serialVersionUID = 7504247263312822569L;
 
 			public Panel getPanel(String panelId) {
-				  return new MitgliedDatenPage(panelId, member, membershipMgmt);
+				  return new DataPanel(panelId, member, membershipMgmt);
+			  }
+		   });
+		
+		tabs.add(new AbstractTab(new Model<String>("Pakete")) {
+			private static final long serialVersionUID = 7504247263312822569L;
+
+			public Panel getPanel(String panelId) {
+				  return new SubscriptionPanel(panelId, member, membershipMgmt);
+			  }
+		   });
+		
+		tabs.add(new AbstractTab(new Model<String>("Buchungen")) {
+			private static final long serialVersionUID = 7504247263312822569L;
+
+			public Panel getPanel(String panelId) {
+				  return new ConsumationPanel(panelId, member, membershipMgmt);
+			  }
+		   });
+		   
+		tabs.add(new AbstractTab(new Model<String>("Rechnungen")) {
+			private static final long serialVersionUID = 7504247263312822569L;
+
+			public Panel getPanel(String panelId) {
+				  return new InvoicePanel(panelId, member, membershipMgmt);
 			  }
 		   });
 				
-		
 		add(new AjaxTabbedPanel("tabs", tabs));
 	}
 	
