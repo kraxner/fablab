@@ -34,17 +34,6 @@ public class MembershipListPage extends BasePage {
 
 		Form<String> form = new Form<String>("main");
 
-		// form.add(new BookmarkablePageLink("mitgliedDatenLink",
-		// MitgliedDatenPage.class));
-		// form.add(new BookmarkablePageLink("mitgliedPaketeLink",
-		// MitgliedPaketePage.class));
-		// form.add(new BookmarkablePageLink("mitgliedBuchungenLink",
-		// MitgliedBuchungenPage.class));
-		// form.add(new BookmarkablePageLink("mitgliedRechnungenLink",
-		// MitgliedRechnungenPage.class));
-		
-		
-
 		IColumn[] columns = new IColumn[3];
 		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
 			@Override
@@ -64,10 +53,7 @@ public class MembershipListPage extends BasePage {
 			}
 			 
 		};
-				//new TextFilteredPropertyColumn(new Model<String>("Name"),);
-		
 		columns[2] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("löschen")) {
-
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
@@ -75,21 +61,16 @@ public class MembershipListPage extends BasePage {
 			}
 			 
 		};
-		 
-		
-		DefaultDataTable table = new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5);
-		
-		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " DatensÃ¤tze"));
 
-		form.add(table);
+		form.add(new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5));
+		
+		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datensätze"));
 
-		//form.add(new BookmarkablePageLink("mitgliedAddLink", MitgliedAddPage.class));
 		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
                 setResponsePage(new MembershipDetailPage(new PrivateMembership(), membershipMgmt));
             }
         });
-
 		form.add(new Link("addBusinessMembershipLink") {
             public void onClick() {
                 setResponsePage(new MembershipDetailPage(new BusinessMembership(), membershipMgmt));

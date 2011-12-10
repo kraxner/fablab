@@ -87,7 +87,7 @@ public class DataPanel extends Panel{
 			add(enclosure);
 			
 			
-			add(new TextField<Object>("Address.street"));
+			add(new TextField<Object>("Address.street"));	// in HTML code
 			add(new TextField<Object>("Address.city"));
 			add(new TextField<Object>("Address.zipCode"));
 

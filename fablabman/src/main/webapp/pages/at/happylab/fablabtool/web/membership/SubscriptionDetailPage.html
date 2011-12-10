@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wicket:extend>
+	<div style="padding: 10px;">
+		<span id="feedback"></span>
+		<form wicket:id="form" action="" method="POST" class="yform"
+			style="width: 500px">
+
+			<fieldset class="columnar">
+				<legend>Pakete</legend>
+
+				<div class="type-select">
+					<label for="">Paket</label> <select wicket:id="booksPackage"></select>
+				</div>
+
+				<div class="type-text">
+					<label for="">Anmeldung seit</label> <input wicket:id="ValidFrom"
+						type="text">
+				</div>
+				<div class="type-text">
+					<label for="">G&uuml;ltig bis</label> <input wicket:id="ValidTo"
+						type="text">
+				</div>
+				<div class="type-text">
+					<label for="">Preis</label> <input wicket:id="PriceOverruled"
+						type="text">
+				</div>
+
+			</fieldset>
+
+			<input wicket:id="submit" type="submit" value="Speichern"
+				class="minimal">
+		</form>
+	</div>
+
+</wicket:extend>

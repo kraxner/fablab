@@ -35,9 +35,8 @@ public class PackageList extends BasePage {
 				
 			}
 		};
-		 
 		
-		DefaultDataTable table = new DefaultDataTable("packageTable", columns, packageProvider, 5);
+		DefaultDataTable<Package> table = new DefaultDataTable("packageTable", columns, packageProvider, 5);
 		add(table);
 		
 	}

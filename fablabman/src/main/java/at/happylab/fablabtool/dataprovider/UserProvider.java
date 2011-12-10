@@ -70,6 +70,15 @@ public class UserProvider extends SortableDataProvider implements Serializable{
 			// Return the data for the current page - this can be determined only after sorting
 			return list.iterator();//newList.subList(first, first + count).iterator();
 		}
+		
+		
+		// by Johannes
+		public int getUserCount()
+		{
+			list = em.createQuery("select u from User u").getResultList();
+			
+			return list.size();
+		}
 
 		public IModel<User> model(final Object object) {
 			return new AbstractReadOnlyModel<User>() {

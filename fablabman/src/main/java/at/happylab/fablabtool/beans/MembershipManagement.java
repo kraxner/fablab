@@ -15,6 +15,18 @@ public class MembershipManagement implements Serializable{
 
 	@Inject	private EntityManager em;
 	
+	
+	public MembershipManagement(EntityManager em)
+	{	
+		this.em = em;
+	}
+	
+	
+	public MembershipManagement()
+	{	
+
+	}
+	
 	public void storeMembership(Membership member) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
@@ -40,5 +52,7 @@ public class MembershipManagement implements Serializable{
 	public Membership loadMembership(long id) {
 		return em.find(Membership.class, id);
 	}
+	
+	
 
 }

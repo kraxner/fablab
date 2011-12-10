@@ -103,5 +103,9 @@ public class Package implements Serializable{
 	public void setType(PackageType type) {
 		this.type = type;
 	}
+	
+	public String toString() {
+		return this.name;
+	}
 
 }
