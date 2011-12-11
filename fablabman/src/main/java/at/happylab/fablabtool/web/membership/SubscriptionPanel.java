@@ -1,5 +1,7 @@
 package at.happylab.fablabtool.web.membership;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -58,7 +60,7 @@ public class SubscriptionPanel extends Panel {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				subscriptionMgmt.cancelSubscription(s);
+				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s, true));
 			}
 			 
 		};
@@ -71,7 +73,9 @@ public class SubscriptionPanel extends Panel {
 			private static final long serialVersionUID = 9170539765267094210L;
 
 			public void onClick() {
-                setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, new Subscription()));
+				Subscription s = new Subscription();
+				s.setValidFrom(new Date());
+                setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
             }
         });
 

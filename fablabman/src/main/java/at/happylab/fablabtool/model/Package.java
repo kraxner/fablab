@@ -96,16 +96,24 @@ public class Package implements Serializable{
 		this.cancelationPeriod = cancelationPeriod;
 	}
 
-	public PackageType getType() {
+	public PackageType getPackageType() {
 		return type;
 	}
 
-	public void setType(PackageType type) {
+	public void setPackageType(PackageType type) {
 		this.type = type;
 	}
 	
 	public String toString() {
 		return this.name;
+	}
+
+	public int getCancelationPeriodAdvance() {
+		return cancelationPeriodAdvance;
+	}
+
+	public void setCancelationPeriodAdvance(int cancelationPeriodAdvance) {
+		this.cancelationPeriodAdvance = cancelationPeriodAdvance;
 	}
 
 }
