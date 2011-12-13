@@ -6,7 +6,7 @@ import at.happylab.fablabtool.model.Gender;
 
 public class SelectOption<T> implements Serializable {
 	/**
-	 * 
+	 * FIXME currently not working!
 	 */
 	private static final long serialVersionUID = 1L;
 	private T key;
