@@ -35,7 +35,18 @@ public class MembershipDetailPage extends BasePage {
 		addTabs();
 	}
 	
-	private void addTabs() {
+	public MembershipDetailPage(Membership member, MembershipManagement membershipMgmt, int tab) {
+		this.member = member;
+		this.membershipMgmt = membershipMgmt;
+
+		addTabs(tab);
+	}
+	
+	private void addTabs(){
+		addTabs(0);
+	}
+	
+	private void addTabs(int tab) {
 		List<ITab> tabs = new ArrayList<ITab>();
 		
 		tabs.add(new AbstractTab(new Model<String>("Stammdaten")) {
@@ -71,7 +82,7 @@ public class MembershipDetailPage extends BasePage {
 		add(panel);
 		
 		panel.setSelectedTab(1);
-		panel.setSelectedTab(0);
+		panel.setSelectedTab(tab);
 		
 		
 	}

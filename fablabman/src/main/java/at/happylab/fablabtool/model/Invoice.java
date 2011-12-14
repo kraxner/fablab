@@ -61,7 +61,10 @@ public class Invoice implements Serializable{
 	private Membership relatedTo;
 	
 	@OneToMany
-	private List<ConsumationEntry> includesConsumationEntries; 
+	private List<ConsumationEntry> includesConsumationEntries;
+	
+	@Enumerated(EnumType.STRING)
+	private InvoiceState state;
 	
 	public Invoice(){
 		
@@ -171,5 +174,12 @@ public class Invoice implements Serializable{
 			List<ConsumationEntry> includesConsumationEntries) {
 		this.includesConsumationEntries = includesConsumationEntries;
 	}
-
+	
+	public InvoiceState getState() {
+		return state;
+	}
+	
+	public void setState(InvoiceState state) {
+		this.state = state;
+	}
 }

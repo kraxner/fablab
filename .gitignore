@@ -4,3 +4,7 @@
 .metadata
 **/target
 *.war
+
+/fablabman/DB_M.bat
+/fablabman/DB_start.bat
+/fablabman/InvoiceINSERT.txt
