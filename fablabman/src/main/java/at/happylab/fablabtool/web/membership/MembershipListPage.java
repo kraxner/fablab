@@ -53,7 +53,7 @@ public class MembershipListPage extends BasePage {
 			}
 			 
 		};
-		columns[2] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("löschen")) {
+		columns[2] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("lÃ¶schen")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = (Membership) model.getObject();
@@ -64,7 +64,7 @@ public class MembershipListPage extends BasePage {
 
 		form.add(new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5));
 		
-		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datensätze"));
+		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " DatensÃ¤tze"));
 
 		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {

@@ -41,22 +41,29 @@ public class SubscriptionPanel extends Panel {
 
 		Form<String> form = new Form<String>("main");
 
-		IColumn[] columns = new IColumn[8];
+		IColumn[] columns = new IColumn[9];
 		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
 				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
-				
 			}
 		};
 		columns[1] = new PropertyColumn(new Model<String>("Paket"), "booksPackage.name", "booksPackage.name");
 		columns[2] = new PropertyColumn(new Model<String>("angemeldet seit"), "validFrom", "validFrom");
 		columns[3] = new PropertyColumn(new Model<String>("angemeldet bis"), "validTo", "validTo");
-		columns[4] = new PropertyColumn(new Model<String>("Preis"), "priceOverruled", "priceOverruled");
-		columns[5] = new PropertyColumn(new Model<String>("Zahlungsperiode"), "payedUntil", "payedUntil");
-		columns[6] = new PropertyColumn(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil");
-		columns[7] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("kündigen")) {
+		columns[4] = new PropertyColumn(new Model<String>("Preis"), "priceOverruled", "priceOverruled");	
+		columns[5] = new PropertyColumn(new Model<String>("Zahlungsperiode"), "payedUntil", "payedUntil");	// TODO
+		columns[6] = new PropertyColumn(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil");		// TODO
+		columns[7] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Subscription s = (Subscription) model.getObject();
+				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
+			}
+			 
+		};
+		columns[8] = new LinkPropertyColumn(new Model<String>("KÃ¼ndigen"), new Model("cancel")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -67,7 +74,7 @@ public class SubscriptionPanel extends Panel {
 		
 		form.add(new DefaultDataTable("subscriptionsTable", columns, subscriptionsFromMembershipProvider, 5));
 
-		form.add(new Label("subscriptionsCount", subscriptionsFromMembershipProvider.size() + " Datensätze"));
+		form.add(new Label("subscriptionsCount", subscriptionsFromMembershipProvider.size() + " DatensÃ¤tze"));
 		
 		form.add(new Link("addSubscription") {
 			private static final long serialVersionUID = 9170539765267094210L;
