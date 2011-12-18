@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wicket:extend>
+	<div style="padding: 10px;">
+		<span id="feedback"></span>
+		<form wicket:id="form" action="" method="POST" class="yform"
+			style="width: 500px">
+
+			<fieldset class="columnar">
+				<legend>Neue Buchung</legend>
+
+				<div class="type-text">
+					<label for="">Datum</label> <input wicket:id="date" type="text">
+				</div>
+				
+				<div class="type-text">
+					<label for="">Beschreibung</label> <input wicket:id="text" type="text">
+				</div>
+				
+				<div class="type-text">
+					<label for="">Einzelpreis</label> <input wicket:id="price" type="text">
+				</div>
+				
+				<div class="type-text">
+					<label for="">Anzahl</label> <input wicket:id="quantity" type="text">
+				</div>
+
+			</fieldset>
+
+			<input wicket:id="submit" type="submit" value="Speichern"
+				class="minimal">
+		</form>
+	</div>
+
+</wicket:extend>

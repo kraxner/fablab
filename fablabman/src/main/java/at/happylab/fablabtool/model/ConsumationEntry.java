@@ -14,7 +14,6 @@ import javax.persistence.TemporalType;
 @Entity
 public class ConsumationEntry implements Serializable{
 	private static final long serialVersionUID = -8117193946412652454L;
-	
 
 	@Id @GeneratedValue
 	private long id;
@@ -37,6 +36,12 @@ public class ConsumationEntry implements Serializable{
 	@ManyToOne
 	private Membership consumedBy;
 
+	// initialize with default values
+	public ConsumationEntry() {
+		quantity = 1;
+		date = new Date();
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -75,6 +80,10 @@ public class ConsumationEntry implements Serializable{
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+	
+	public BigDecimal getSum() {
+		return price.multiply(BigDecimal.valueOf(quantity));
 	}
 
 	public Consumable getConsumedItem() {

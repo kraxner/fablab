@@ -67,7 +67,7 @@ public class MembershipDetailPage extends BasePage {
 			private static final long serialVersionUID = 7504247263312822569L;
 
 			public Panel getPanel(String panelId) {
-				  return new ConsumationPanel(panelId, member, membershipMgmt);
+				  return new EntryPanel(panelId, member, membershipMgmt);
 			  }
 		   });
 		tabs.add(new AbstractTab(new Model<String>("Rechnungen")) {

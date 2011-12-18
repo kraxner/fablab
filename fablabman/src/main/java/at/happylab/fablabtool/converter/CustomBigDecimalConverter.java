@@ -13,18 +13,16 @@ public class CustomBigDecimalConverter extends BigDecimalConverter {
         // NB: this isn't universal & your mileage problably varies!
         // (Specifically, this breaks if '.' is used as thousands separator)
     	
-    	System.out.println(locale.getLanguage());
-    	
-        if ("de".equals(locale.getLanguage())) {
-            value = value.replace('.', ',');
-        }
-        return super.convertToObject(value, locale);
+       value = value.replace('.', ',');
+       return super.convertToObject(value, Locale.GERMAN);
     }
     
     @Override
     public String convertToString(Object value, Locale locale) {
-        NumberFormat fmt = getNumberFormat(locale);
+        NumberFormat fmt = getNumberFormat(Locale.GERMAN);
         fmt.setMaximumFractionDigits(2); // By default this is 3.
+        fmt.setMinimumFractionDigits(2);
+       
         return fmt.format(value);
     }
 }

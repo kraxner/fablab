@@ -69,6 +69,26 @@ public class Invoice implements Serializable{
 	public Invoice(){
 		
 	}
+	
+	public Invoice (Membership member) {
+		
+		this.setRelatedTo(member);
+		
+		// copy default values from member
+		if (member instanceof BusinessMembership) {
+			BusinessMembership b = (BusinessMembership)member;
+			
+			recipient = b.getName();
+		}
+		else {
+			PrivateMembership p = (PrivateMembership)member;
+			
+			recipient = p.getName();
+		}
+		
+		address = member.getAddress();
+		date = new Date();
+	}
 
 	public long getId() {
 		return id;

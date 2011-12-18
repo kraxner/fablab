@@ -45,11 +45,11 @@ class PackageAddPage extends BasePage {
 
 			final TextField<String> name = new TextField<String>("name");
 			name.setRequired(true);
-			name.add(StringValidator.maximumLength(15));
+			name.add(StringValidator.maximumLength(50));
 			add(name);
 
 			final TextArea<String> description = new TextArea<String>("description");
-			description.setRequired(true);
+			description.setRequired(false);
 			add(description);
 
 			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>(
@@ -60,7 +60,7 @@ class PackageAddPage extends BasePage {
 			l.add(PackageType.MEMBERSHIP);
 			l.add(PackageType.ACCESS);
 			l.add(PackageType.STORAGE);
-			DropDownChoice<PackageType> packageType = new DropDownChoice<PackageType>( "PackageType", new PropertyModel<PackageType>(p, "PackageType"), l);
+			DropDownChoice<PackageType> packageType = new DropDownChoice<PackageType>("PackageType", new PropertyModel<PackageType>(p, "PackageType"), l);
 			add(packageType);
 
 			DropDownChoice<Integer> paymentCycle = new DropDownChoice<Integer>(

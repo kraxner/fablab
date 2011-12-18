@@ -323,7 +323,7 @@
   * html .yform { padding-top:10px; }
   
   
-  button.minimal, input.minimal {
+  button.minimal, input.minimal, .tabpanel ul li {
   background: #e3e3e3;
   border: 1px solid #bbb;
   -webkit-border-radius: 3px;
@@ -343,7 +343,7 @@
   text-align: center;
   text-shadow: 0 1px 0 #fff;
   width: 150px; }
-  button.minimal:hover, input.minimal:hover {
+  button.minimal:hover, input.minimal:hover,  .tabpanel ul li:hover {
     background: #d9d9d9;
     -webkit-box-shadow: inset 0 0 1px 1px #eaeaea;
     -moz-box-shadow: inset 0 0 1px 1px #eaeaea;
@@ -352,7 +352,7 @@
     box-shadow: inset 0 0 1px 1px #eaeaea;
     color: #222;
     cursor: pointer; }
-  button.minimal:active, input.minimal:active, button.selected {
+  button.minimal:active, input.minimal:active, button.selected,  .tabpanel ul li:active {
     background: #d0d0d0;
     -webkit-box-shadow: inset 0 0 1px 1px #e3e3e3;
     -moz-box-shadow: inset 0 0 1px 1px #e3e3e3;

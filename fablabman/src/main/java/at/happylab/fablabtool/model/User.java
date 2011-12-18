@@ -73,7 +73,7 @@ public class User implements Serializable {
 		String name = lastname;
 		if (name != null) {
 			if (firstname != null) {
-				name = name + " " + firstname;
+				name = firstname + " " + name;
 			}
 		} else {
 			name = firstname;

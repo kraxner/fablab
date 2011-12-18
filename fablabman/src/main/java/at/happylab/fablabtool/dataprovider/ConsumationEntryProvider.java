@@ -12,6 +12,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
+import at.happylab.fablabtool.model.Membership;
 
 public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEntry> implements Serializable {
 
@@ -21,6 +22,7 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 	private EntityManager em;
 
 	private Invoice inv;
+	private Membership member;
 	
 	
 	public ConsumationEntryProvider()
@@ -33,14 +35,27 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 		this.inv=inv;
 	}
 	
+	public void setMember(Membership member)
+	{
+		this.member=member;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public Iterator<ConsumationEntry> iterator(int first, int count) {
-		if(inv == null)
-			return em.createQuery("FROM consumationentry").setFirstResult(first)
+		if(inv == null && member == null) {
+			return em.createQuery("FROM ConsumationEntry").setFirstResult(first)
 					.setMaxResults(count).getResultList().iterator();
-		else
-			return inv.getIncludesConsumationEntries().iterator();
+		}
+		else {
+			if (inv != null) {
+				return inv.getIncludesConsumationEntries().iterator();
+			}
+			else {
+				return em.createQuery("FROM ConsumationEntry WHERE consumedBy_id = " + member.getId()).setFirstResult(first)
+						.setMaxResults(count).getResultList().iterator();
+			}
+		}
 	}
 	
 	public IModel<ConsumationEntry> model(final ConsumationEntry object) {
@@ -56,14 +71,18 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 	public int size() {
 		Long count = 0L;
 		
-		if(inv == null)
-		{
-			count = (Long) em.createQuery("SELECT count(*) FROM consumationentry")
+		if(inv == null && member == null) {
+			count = (Long) em.createQuery("SELECT count(*) FROM ConsumationEntry")
 				.getSingleResult();
-		}
-		else
-		{
-			count = (long) inv.getIncludesConsumationEntries().size();
+		} 
+		else {
+			if (inv != null) {
+				count = (long) inv.getIncludesConsumationEntries().size();
+			}
+			else {
+				count = (Long) em.createQuery("SELECT count(*) FROM ConsumationEntry WHERE consumedBy_id = " + member.getId())
+						.getSingleResult();
+			}
 		}
 		return count.intValue();
 	}
