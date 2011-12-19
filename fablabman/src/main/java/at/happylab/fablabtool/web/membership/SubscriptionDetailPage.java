@@ -2,6 +2,7 @@ package at.happylab.fablabtool.web.membership;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -92,7 +93,7 @@ class SubscriptionDetailPage extends BasePage {
 				}
 			});
 
-			final DateTextField validFrom = new DateTextField("ValidFrom");
+			final RequiredTextField<Date> validFrom = new RequiredTextField<Date>("ValidFrom");
 			validFrom.setRequired(true);
 			add(validFrom);
 
@@ -106,7 +107,7 @@ class SubscriptionDetailPage extends BasePage {
 				}
 			};
 			
-			final DateTextField ValidTo = new DateTextField("ValidTo");
+			final RequiredTextField<Date> ValidTo = new RequiredTextField<Date>("ValidTo");
 			enclosure.add(ValidTo);
 			add(enclosure);
 
