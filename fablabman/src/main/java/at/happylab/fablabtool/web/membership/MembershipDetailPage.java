@@ -23,9 +23,9 @@ public class MembershipDetailPage extends BasePage {
 	
 	public MembershipDetailPage(PageParameters params) {
 	    int id = params.getInt("id");
-	    this.member = membershipMgmt.loadMembership(id);
-		
-	    addTabs();
+    	member = membershipMgmt.loadMembership(id);
+	    int tab = params.getInt("tab");
+	    addTabs(tab);
 	}
 	
 	public MembershipDetailPage(Membership member, MembershipManagement membershipMgmt) {
@@ -80,11 +80,6 @@ public class MembershipDetailPage extends BasePage {
 		
 		AjaxTabbedPanel panel = new AjaxTabbedPanel("tabs", tabs);		
 		add(panel);
-		
-		panel.setSelectedTab(1);
-		panel.setSelectedTab(tab);
-		
-		
 	}
 	
 	

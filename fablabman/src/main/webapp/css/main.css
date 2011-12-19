@@ -115,3 +115,15 @@ div.tabpanel div.tab-row li.selected a {
   color:#333;
   padding-bottom:5px;
   }
+
+label.choice {
+	display:inline;
+	position:relative;
+	margin-left: 0.2em;
+	_top:0.2em;
+}
+
+input.radio {
+	display: inline;
+	margin-left: 0.5em;
+}

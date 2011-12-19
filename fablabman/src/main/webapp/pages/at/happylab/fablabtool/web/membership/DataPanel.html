@@ -1,112 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
 <wicket:panel>
 <div style="padding: 10px;">
-<span id="feedback"></span>
-<form wicket:id="form" action="" method="POST" class="yform" style="width:500px">
-<!--parse-form.php-->
-<!-- 
+<form wicket:id="form"  method="POST" class="yform" style="width:500px">
+ 
 <fieldset class="columnar">
 	<legend>Art der Mitgliedschaft</legend>
-	<div class="type-select">
-		<label for="optMemberType">Art der Mitgliedschaft</label>
-		<input type="radio" name="optMemberType" value="Non-Profit" class="membertype" checked="checked">Non-Profit</input> <input type="radio" name="optMemberType" value="Business"  class="membertype"> Business</input>
-	</div>
-</fieldset>	
- -->
- <wicket:container wicket:id="businessEnclosure">	
-<fieldset class="columnar fldBusiness"> 
+	<span class="radiogroup" wicket:id="membershipType">
+		<input type="radio" value="Non-Profit" /> 
+		<input type="radio" value="Business"/>
+	</span>
+</fieldset>
+	
+<div wicket:id="container">
+<div wicket:id="feedback" style="color:red;"/>
+
+<!-- business membership -->
+<div wicket:id="businessContainer">
+<fieldset class="columnar"> 
 	<legend>Business</legend>
 	<div class="type-text">
-		<label for="">Firma</label>
-		<input wicket:id="name" type="text" size="50" />
+		<label for="companyName">Firma</label>
+		<input wicket:id="companyName" type="text" size="50" id="companyName"/>
 	</div>
 	<div class="type-text">
-		<label for="">Kontaktperson</label>
-		<input wicket:id="contactPerson" type="text" size="50" name="txtContactperson" />
+		<label for="contactPerson">Kontaktperson</label>
+		<input wicket:id="contactPerson" type="text" size="50" id="contactPerson" />
 	</div>
 	<div class="type-text">
-		<label for="">Email</label>
-		<input type="text" size="50" name="txtEmail"/>
+		<label for="email">Email</label>
+		<input wicket:id="companyEmail" type="text" size="50" id="email"/>
 	</div>
 	<div class="type-text">
-		<label for="">Telefon</label>
-		<input type="text" size="50" name="txtPhone"/>
+		<label for="phone">Telefon</label>
+		<input wicket:id="companyPhone" type="text" size="50" id="phone"/>
 	</div>
-	<div class="type-text">
-		<label for="">Adresse</label>
-		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
-	</div>
+	<fieldset class="columnar">
+	   <legend>Adresse</legend>
+	   <div class="type-text">
+	      <label for="address-street">Stra&szlig;e/Hausnummer</label>
+	      <input wicket:id="address.street" type="text" size="50" id="address-street"/>
+	   </div>
+	   <div class="type-text">
+	      <label for="address-city">Ort</label>
+	      <input wicket:id="address.city" type="text" size="50" id="address-city"/>
+	   </div>
+	   <div class="type-text">
+	      <label for="address-zipcode">Postleitzahl</label>
+	      <input wicket:id="address.zipCode" type="text" size="50" id="address-zipcode"/>
+	   </div>
+	</fieldset>
 </fieldset>
-</wicket:container>
+<!-- display all users of this business membership -->
+<fieldset>
+<legend>Personendaten</legend>
 
-<fieldset wicket:id="list" id="fldNonProfit" class="columnar">
-	<legend>Personendaten</legend>
-	<div class="type-text">
-		<label for="">Vorname</label>
-		<input wicket:id="first" type="text" size="50" name="txtPersonFirstname">
-<!-- 		<input wicket:id="users.firstname" type="text" size="50" name="txtPersonFirstname"> -->
-	</div>
-	<div class="type-text">
-		<label for="">Nachname</label>
-		<input wicket:id="last" type="text" size="50" name="txtPersonSurename">
-	</div>
-	<div class="type-select">
-		<label for="">Geschlecht</label>
-		<select wicket:id="gender" name="txtPersonSex"></select>
-	</div>
-	<div class="type-text">
-		<label for="">Geburtsdatum</label>
-		<input type="text" size="50" name="txtPersonBirthday">
-	</div>
-	<div class="type-text">
-		<label for="">Email</label>
-		<input wicket:id="email" type="text" size="50" name="txtPersonEmail">
-	</div>
-	<div class="type-text">
-		<label for="">Telefon</label>
-		<input wicket:id="mobile" type="text" size="50" name="txtPersonPhone">
-	</div>
-<!-- 	<div class="type-text"> -->
-<!-- 		<label for="">Adresse</label> -->
-<!-- 		<textarea name="txtPersonAddress" cols="50" rows="4"></textarea> -->
-<!-- 	</div> -->
+<div wicket:id="users" style="width:98%; border-bottom: 2px #DDD solid; background: #E7E7E7;" class="columnar" >
+   <!-- <legend>Benutzer <span wicket:id="fullname"/></legend>  -->
+   <div class="type-text">
+      <b><span wicket:id="fullname"/></b>
+   </div>
+   <div class="type-text">
+      <label for="firstname">Vorname</label>
+      <input wicket:id="firstname" type="text" size="50" id="firstname"/>
+   </div>
+   <div class="type-text">
+      <label for="lastname">Nachname</label>
+      <input wicket:id="lastname" type="text" size="50" id="lastname"/>
+   </div>
+   <div class="type-select">
+      <label for="gender">Geschlecht</label>
+      <select wicket:id="gender" id="gender"></select>
+   </div>
+   <div class="type-text">
+      <label for="birthday">Geburtsdatum</label>
+      <input wicket:id="birthday" type="text" size="50" id="birthday"/>
+   </div>
+   <div class="type-text">
+      <label for="email">Email</label>
+      <input wicket:id="email" type="text" size="50" id="email"/>
+   </div>
+   <div class="type-text">
+      <label for="phone">Telefon</label>
+      <input wicket:id="phone" type="text" size="50" id="phone"/>
+   </div>
+<!--    
+   <fieldset class="columnar">
+      <legend>Adresse</legend>
+ -->      
+      <div class="type-text">
+         <label for="address-street">Stra&szlig;e/Hausnummer</label>
+         <input wicket:id="address.street" type="text" size="50" id="address-street"/>
+      </div>
+      <div class="type-text">
+         <label for="address-city">Ort</label>
+         <input wicket:id="address.city" type="text" size="50" id="address-city"/>
+      </div>
+      <div class="type-text">
+         <label for="address-zipcode">Postleitzahl</label>
+         <input wicket:id="address.zipCode" type="text" size="50" id="address-zipcode"/>
+      </div>
+<!--    </fieldset> -->
+   <input wicket:id="removeUserButton" type="submit" value="Benutzer entfernen" class="minimal"/>   
+</div>
+<input wicket:id="addUserButton" type="submit" value="Benutzer hinzufügen" class="minimal"/>
+</fieldset>
+</div>
+<!-- non-profit memberhsip -->
+<fieldset wicket:id="non-profitContainer" class="columnar">
+   <legend>Non-Profit</legend>
+   <div class="type-text">
+      <label for="firstname">Vorname</label>
+      <input wicket:id="firstname" type="text" size="50" id="firstname"/>
+   </div>
+   <div class="type-text">
+      <label for="lastname">Nachname</label>
+      <input wicket:id="lastname" type="text" size="50" id="lastname"/>
+   </div>
+   <div class="type-select">
+      <label for="gender">Geschlecht</label>
+      <select wicket:id="gender" id="gender"></select>
+   </div>
+   <div class="type-text">
+      <label for="birthday">Geburtsdatum</label>
+      <input wicket:id="birthday" type="text" size="50" id="birthday"/>
+   </div>
+   <div class="type-text">
+      <label for="email">Email</label>
+      <input wicket:id="email" type="text" size="50" id="email"/>
+   </div>
+   <div class="type-text">
+      <label for="phone">Telefon</label>
+      <input wicket:id="phone" type="text" size="50" id="phone"/>
+   </div>
+   <fieldset class="columnar">
+      <legend>Adresse</legend>
+      <div class="type-text">
+         <label for="address-street">Stra&szlig;e/Hausnummer</label>
+         <input wicket:id="address.street" type="text" size="50" id="address-street"/>
+      </div>
+      <div class="type-text">
+         <label for="address-city">Ort</label>
+         <input wicket:id="address.city" type="text" size="50" id="address-city"/>
+      </div>
+      <div class="type-text">
+         <label for="address-zipcode">Postleitzahl</label>
+         <input wicket:id="address.zipCode" type="text" size="50" id="address-zipcode"/>
+      </div>
+   </fieldset>
 </fieldset>
 
-
-<fieldset id="fldNonProfit" class="columnar">
-	<legend>Adresse</legend>
-	<div class="type-text">
-		<label for="">Stra&szlig;e/Hausnummer</label>
-		<input wicket:id="Address.street" type="text" size="50" name="txtPersonBirthday">
-	</div>
-	<div class="type-text">
-		<label for="">Ort</label>
-		<input wicket:id="Address.city" type="text" size="50" name="txtPersonEmail">
-	</div>
-	<div class="type-text">
-		<label for="">Postleitzahl</label>
-		<input wicket:id="Address.zipCode" type="text" size="50" name="txtPersonPhone">
-	</div>
-</fieldset>
-
+<!-- common data which all memberships have in common -->
 <fieldset class="columnar">
 	<legend>Allgemeine Daten</legend>
 	<div class="type-select">
-		<label for="">Art der Mitgliedschaft</label>
-		<select wicket:id="type" name="txtMembershipType">
+		<label for="membershipstatus">Art der Mitgliedschaft</label>
+		<select wicket:id="type" id="membershipstatus">
 			<option>au&szlig;erordentlich</option>
 			<option>ordentlich</option>
 			<option>Ehrenmitglied</option>
 		</select>
 	</div>
 	<div class="type-text">
-		<label for="">Mitglied seit</label>
-		<input type="text" size="50" name="txtMemberStartDate">
+		<label for="startdate">Mitglied seit</label>
+		<input wicket:id="entryDate" type="text" size="50" id="startdate"/>
 	</div>
 	<div class="type-select">
-		<label for="">Default Zahlungsart</label>
-		<select wicket:id="paymentMethod" name="txtPaymentMethod" id="txtPaymentMethod">
+		<label for="paymentmethod">Default Zahlungsart</label>
+		<select wicket:id="paymentMethod" id="paymentmethod">
 			<option value="Lastschrift">Lastschrift</option>
 			<option value="bar">Bar</option>
 			<option value="Rechnung">Rechnung</option>
@@ -114,31 +175,25 @@
 	</div>
 	<div id="fldKontodaten">
 		<div class="type-text">
-			<label for="">Kontoinhaber</label>
-			<input type="text" size="50" name="txtAccountOwner">
+			<label for="bankDetails.name">Kontoinhaber</label>
+			<input wicket:id="bankDetails.name" type="text" size="50" id="bankDetails.name"/>
 		</div>
 		<div class="type-text">
-			<label for="">Kontonummer</label>
-<!-- 			<input type="text" size="50" name="txtBankAccountNo"> -->
-			<input wicket:id="bankDetails.iban" type="text" size="50" name="txtBankAccountNo">
+			<label for="bankDetails.iban">IBAN</label>
+			<input wicket:id="bankDetails.iban" type="text" size="50" id="bankDetails.iban"/>
 		</div>
 		<div class="type-text">
-			<label for="">BLZ</label>
-			<input type="text" size="50" name="txtBankName">
-		</div>
-		<div class="type-text">
-			<label for="">Bank</label>
-			<input type="text" size="50" name="txtBankID">
+			<label for="bankDetails.bic">BIC</label>
+			<input wicket:id="bankDetails.bic" type="text" size="50" id="bankDetails.bic"/>
 		</div>
 	</div>
 	<div class="type-text">
-		<label for="">Kommentar</label>
-		<textarea wicket:id="comment" name="" cols="50" rows="4"></textarea>
+		<label for="comment">Kommentar</label>
+		<textarea wicket:id="comment" id="comment" cols="50" rows="4"></textarea>
 	</div>
 </fieldset>
-
-<input wicket:id="submit" type="submit" value="Speichern" class="minimal">
-
+</div>
+<input wicket:id="submit" type="submit" value="Speichern" class="minimal"/>
 
 </form>
 </div>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,12 +38,13 @@ public class User implements Serializable {
 	private String mobile;
 	private String fax;
 	
+	
 	/**
 	 * TODO decide if we really want to use a Date type, 
 	 *      or if we want to use a string representation instead (which would allows us to handle exotic birthdays) 
 	 */
 	@Temporal(TemporalType.DATE)
-	private Date birthdate;
+	private Date birthday;
 	
 	private String birthplace;
 	
@@ -63,6 +65,11 @@ public class User implements Serializable {
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Device> trainedForDevices = new ArrayList<Device>();
+
+	private String phone;
+	
+	@Embedded
+	private Address address;
 	
 	public User(){
 		
@@ -141,12 +148,12 @@ public class User implements Serializable {
 		this.fax = fax;
 	}
 
-	public Date getBirthdate() {
-		return birthdate;
+	public Date getBirthday() {
+		return birthday;
 	}
 
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getBirthplace() {
@@ -195,6 +202,21 @@ public class User implements Serializable {
 
 	public void setTrainedForDevices(List<Device> trainedForDevices) {
 		this.trainedForDevices = trainedForDevices;
+	}
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 }

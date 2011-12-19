@@ -19,7 +19,6 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
-import at.happylab.fablabtool.model.BusinessMembership;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
