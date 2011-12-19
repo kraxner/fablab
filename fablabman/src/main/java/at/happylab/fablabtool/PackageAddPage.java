@@ -26,7 +26,7 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 
-class PackageAddPage extends BasePage {
+public class PackageAddPage extends BasePage {
 
 	@Inject
 	private EntityManager em;

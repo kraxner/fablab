@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -40,30 +41,41 @@ public class SubscriptionPanel extends Panel {
 		subscriptionsFromMembershipProvider.setMember(member);
 
 		Form<String> form = new Form<String>("main");
+		
+		form.add(new CheckBox("showCancelledPackages", new Model<Boolean>() ) {
+			private static final long serialVersionUID = 9170539765267094210L;
+
+			protected boolean wantOnSelectionChangedNotifications() {
+				return true;
+			}
+			public void onSelectionChanged(Object showCancelledSubscriptions) {
+				subscriptionsFromMembershipProvider.setShowCancelledSubscriptions((Boolean)showCancelledSubscriptions);
+            }
+        });
 
 		IColumn[] columns = new IColumn[9];
-		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
+		columns[0] = new LinkPropertyColumn<String>(new Model<String>("Nr"), "id", "id") {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
+				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s, false));
 			}
 		};
-		columns[1] = new PropertyColumn(new Model<String>("Paket"), "booksPackage.name", "booksPackage.name");
-		columns[2] = new PropertyColumn(new Model<String>("angemeldet seit"), "validFrom", "validFrom");
-		columns[3] = new PropertyColumn(new Model<String>("angemeldet bis"), "validTo", "validTo");
-		columns[4] = new PropertyColumn(new Model<String>("Preis"), "priceOverruled", "priceOverruled");	
-		columns[5] = new PropertyColumn(new Model<String>("Zahlungsperiode"), "payedUntil", "payedUntil");	// TODO
-		columns[6] = new PropertyColumn(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil");		// TODO
-		columns[7] = new LinkPropertyColumn(new Model<String>("Bearbeiten"), new Model("edit")) {
+		columns[1] = new PropertyColumn<String>(new Model<String>("Paket"), "booksPackage.name", "booksPackage.name");
+		columns[2] = new PropertyColumn<String>(new Model<String>("angemeldet seit"), "validFrom", "validFrom");
+		columns[3] = new PropertyColumn<String>(new Model<String>("angemeldet bis"), "validTo", "validTo");
+		columns[4] = new PropertyColumn<String>(new Model<String>("Preis"), "priceOverruled", "priceOverruled");	
+		columns[5] = new PropertyColumn<String>(new Model<String>("Zahlungsperiode"), "payedUntil", "payedUntil");	// TODO
+		columns[6] = new PropertyColumn<String>(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil");
+		columns[7] = new LinkPropertyColumn<String>(new Model<String>("Bearbeiten"), new Model("edit")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
+				setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s, false));
 			}
 			 
 		};
-		columns[8] = new LinkPropertyColumn(new Model<String>("Kündigen"), new Model("cancel")) {
+		columns[8] = new LinkPropertyColumn<String>(new Model<String>("Kündigen"), new Model("cancel")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -82,7 +94,7 @@ public class SubscriptionPanel extends Panel {
 			public void onClick() {
 				Subscription s = new Subscription();
 				s.setValidFrom(new Date());
-                setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s));
+                setResponsePage(new SubscriptionDetailPage(member, membershipMgmt, s, false));
             }
         });
 

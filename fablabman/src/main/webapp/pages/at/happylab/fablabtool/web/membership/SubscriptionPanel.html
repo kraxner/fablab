@@ -1,24 +1,24 @@
 <html>
 <wicket:panel>
 	<div style="padding: 10px;">
-		<div style="">
-			<div style="float: left;">
-				Anzeige: <input type="checkbox" name="chkPreRegistrations">
-				stornierte Packete
-			</div>
-		</div>
-		<br style="clear: both;" />
-		
-		
 		<form wicket:id="main">
+
+			<div style="">
+				<div style="float: left;">
+					Anzeige: <input type="checkbox" wicket:id="showCancelledPackages"></input>
+					zeige auch stornierte Packete
+				</div>
+			</div>
+			<br style="clear: both;" />
 
 			<div>
 				<table wicket:id="subscriptionsTable"></table>
 			</div>
 
 			<br> <span wicket:id="subscriptionsCount"></span> <br> <br>
-			
-			<input wicket:id="addSubscription" type="submit" value="Zusatzpaket buchen" class="minimal">
+
+			<input wicket:id="addSubscription" type="submit"
+				value="Zusatzpaket buchen" class="minimal">
 		</form>
 	</div>
 </wicket:panel>

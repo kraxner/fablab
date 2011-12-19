@@ -13,35 +13,43 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 
-public class SubscriptionProvider extends
-		SortableDataProvider<Subscription> implements Serializable {
+public class SubscriptionProvider extends SortableDataProvider<Subscription>
+		implements Serializable {
 
 	private static final long serialVersionUID = 8746292597567302072L;
 
 	@Inject
 	private EntityManager em;
-	
+
 	private Membership member;
-	
-	
-	public SubscriptionProvider()
-	{
-		this.member=null;
+	private boolean showCancelledSubscriptions;
+
+	public SubscriptionProvider() {
+		this.member = null;
+		this.showCancelledSubscriptions = false;
 	}
-	
-	public void setMember(Membership member)
-	{
-		this.member=member;
+
+	public void setMember(Membership member) {
+		this.member = member;
+	}
+
+	public void setShowCancelledSubscriptions(boolean showCancelledSubscriptions) {
+		this.showCancelledSubscriptions = showCancelledSubscriptions;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Iterator<Subscription> iterator(int first, int count) {
-		if(member == null)
-			return em.createQuery("FROM Subscription").setFirstResult(first)
-					.setMaxResults(count).getResultList().iterator();
-		else
-			return em.createQuery("FROM Subscription WHERE bookedby_id = " + member.getId()).setFirstResult(first)
-					.setMaxResults(count).getResultList().iterator();
+
+		String sqlString = "FROM Subscription WHERE 1=1";
+
+		if (!this.showCancelledSubscriptions)
+			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
+
+		if (member != null)
+			sqlString += " AND bookedby_id = " + member.getId();
+
+		return em.createQuery(sqlString).setFirstResult(first)
+				.setMaxResults(count).getResultList().iterator();
 
 	}
 
@@ -57,21 +65,19 @@ public class SubscriptionProvider extends
 
 	public int size() {
 		Long count = 0L;
-		
-		if(member == null)
-		{
-			count = (Long) em.createQuery("select count(*) from Subscription")
-				.getSingleResult();
-		}
-		else
-		{
-			count = (Long) em.createQuery("select count(*) from Subscription WHERE bookedby_id = " + member.getId())
-					.getSingleResult();
-		}
-		
+
+		String sqlString = "SELECT count (*) FROM Subscription WHERE 1=1";
+
+		if (!this.showCancelledSubscriptions)
+			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
+
+		if (member != null)
+			sqlString += " AND bookedby_id = " + member.getId();
+
+
+		count = (Long) em.createQuery(sqlString).getSingleResult();
+
 		return count.intValue();
 	}
-	
-	
 
 }
