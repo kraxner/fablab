@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
@@ -26,8 +25,9 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.Subscription;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-class SubscriptionDetailPage extends BasePage {
+class SubscriptionDetailPage extends AdminBasePage {
 
 	@Inject
 	private EntityManager em;

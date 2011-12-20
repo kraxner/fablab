@@ -127,3 +127,7 @@ input.radio {
 	display: inline;
 	margin-left: 0.5em;
 }
+
+#signInPanel form.table {
+	border : 0px;
+}

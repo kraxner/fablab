@@ -11,15 +11,15 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-public class MembershipListPage extends BasePage {
+public class MembershipListPage extends AdminBasePage {
 
 	@Inject
 	private MembershipManagement membershipMgmt;

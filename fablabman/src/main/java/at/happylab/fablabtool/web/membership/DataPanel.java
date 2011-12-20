@@ -67,7 +67,13 @@ public class DataPanel extends Panel{
 		private final RepeatingView userListView;
 		private final WebMarkupContainer container;
 		private final AjaxButton addUserButton;
-		
+
+		/**
+		 * Adds User related fields to the given <code>parent</code> component.
+		 * 
+		 * @param parent
+		 * @param user
+		 */
 		private void addUserFields(MarkupContainer parent, User user) {
 			parent.add(new TextField<Object>("firstname"));
 			parent.add(new TextField<Object>("lastname"));
@@ -102,6 +108,7 @@ public class DataPanel extends Panel{
 			view.add(item);
 			item.add(new Label("fullname"));
 			addUserFields(item, user);
+			
 			item.add(new AjaxButton("removeUserButton")
 	        {
 				private static final long serialVersionUID = 1L;
@@ -109,13 +116,16 @@ public class DataPanel extends Panel{
 				@Override
 	            protected void onSubmit( AjaxRequestTarget target, Form<?> f)
 				{
+					// remove the related component from the view
 					view.remove(item);
+					// and also the user from the list
 					member.removeUser(user);
 	                target.addComponent(container);
 	            }
 				
 				@Override
 				public boolean isVisible(){
+					// we want to keep at least one user
 					return member.getUsers().size() > 1;
 				}
 	        });
@@ -144,13 +154,15 @@ public class DataPanel extends Panel{
 			RadioChoice<MembershipType> memberTypeChoice = new RadioChoice<MembershipType>("membershipType", 
 					Arrays.asList(MembershipType.values()), 
 					new EnumChoiceRenderer<MembershipType>(this)).setSuffix("");
+			
 			memberTypeChoice.add(new AjaxFormChoiceComponentUpdatingBehavior() { 
 	            private static final long serialVersionUID = 1L; 
 
 	            @Override 
 	            protected void onUpdate(AjaxRequestTarget target) {
+	            	// adjust the number of max allowed users for this type of membership 
+	            	// - but we do not remove users beyond this number, this has to be done before persisting
 	            	Membership m = getModelObject();
-	                System.out.println(m.getMembershipType());
 	                m.adjustMaxUser();
 	                target.addComponent(container);
 	            } 
@@ -164,7 +176,7 @@ public class DataPanel extends Panel{
 				
 				@Override
 				public boolean isVisible() {
-					//configure();
+					configure();
 					boolean isBusiness = member.getMembershipType() == MembershipType.BUSINESS;
 					return isBusiness;
 				}
@@ -206,6 +218,8 @@ public class DataPanel extends Panel{
 				
 				@Override
 				public boolean isVisible(){
+					configure();
+					// show this button only, if the maximum number of allowed users has not been reached yet
 					return member.getMaxUser() > member.getUsers().size();
 				}
 	        };
@@ -227,7 +241,7 @@ public class DataPanel extends Panel{
 				
 				@Override
 				public boolean isVisible() {
-					//configure();
+					configure();
 					boolean isPrivate = member.getMembershipType() == MembershipType.PRIVATE;
 					return isPrivate;
 				}

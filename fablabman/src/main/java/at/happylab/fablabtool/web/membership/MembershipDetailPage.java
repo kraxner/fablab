@@ -12,11 +12,11 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-public class MembershipDetailPage extends BasePage {
+public class MembershipDetailPage extends AdminBasePage {
 	@Inject
 	private MembershipManagement membershipMgmt;
 	private Membership member;
