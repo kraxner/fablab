@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wicket:extend>
+	<div style="padding: 10px;">
+		<h1>Accessgrant</h1>
+
+		<form wicket:id="form" action="" method="POST" class="yform"
+			style="width: 500px">
+
+			<fieldset id="fldDetails" class="columnar">
+				<legend>Details</legend>
+
+				<div class="type-text">
+					<label for="rfid">Name</label> <input wicket:id="Name" type="text">
+				</div>
+
+				<div class="type-select">
+					<label for="">Wochentag</label> <select wicket:id="DayOfWeek"></select>
+				</div>
+
+				<div class="type-text">
+					<label for="timeFrom">Von (Uhrzeit)</label> <input wicket:id="TimeFrom" type="text">
+				</div>
+				
+				<div class="type-text">
+					<label for="timeUntil">Bis (Uhrzeit)</label> <input wicket:id="TimeUntil" type="text">
+				</div>
+
+			</fieldset>
+
+			<input type="submit" value="Speichern" class="minimal">
+		</form>
+	</div>
+</wicket:extend>

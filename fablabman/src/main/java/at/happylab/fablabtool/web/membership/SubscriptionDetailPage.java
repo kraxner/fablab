@@ -15,21 +15,20 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.Subscription;
-import at.happylab.fablabtool.model.Package;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-class SubscriptionDetailPage extends BasePage {
+class SubscriptionDetailPage extends AdminBasePage {
 
 	@Inject
 	private EntityManager em;
@@ -59,61 +58,55 @@ class SubscriptionDetailPage extends BasePage {
 		if (this.subs.getPaymentMethod() == null)
 			this.subs.setPaymentMethod(this.member.getPaymentMethod());
 
-		add(new SubscriptionForm("form", sub, cancelSubscription));
-	}
-
-	public SubscriptionDetailPage(Membership member,
-			MembershipManagement membershipMgmt, Subscription sub) {
-
-		this(member, membershipMgmt, sub, false);
+		add(new SubscriptionForm("form", this.subs, cancelSubscription));
 
 	}
 
-	class SubscriptionForm extends Form {
-		private static final long serialVersionUID = -7480286477673641461L;
+	class SubscriptionForm extends Form<Object> {
+		private static final long serialVersionUID = -416444319008642513L;
 
 		public SubscriptionForm(String s, final Subscription sub,
 				final boolean cancelSubscription) {
 			super(s, new CompoundPropertyModel<Object>(sub));
 
-			add(new DropDownChoice<Package>("booksPackage",
-					packageMgmt.getAllPackages()) {
+			final RequiredTextField<BigDecimal> PriceOverruled = new RequiredTextField<BigDecimal>(
+					"priceOverruled", BigDecimal.class);
+			add(PriceOverruled);
+
+			final DropDownChoice<Package> availablePackages = new DropDownChoice<Package>(
+					"booksPackage", packageMgmt.getAllPackages()) {
 
 				private static final long serialVersionUID = -385671748734684239L;
 
 				protected boolean wantOnSelectionChangedNotifications() {
 					return true;
 				}
-				
-				/*
-				 * When selecting a package the price of the subscription is supposed to change.
-				 */
+
 				protected void onSelectionChanged(final Package p) {
-					sub.setPriceOverruled(p.getPrice());	// TODO: Doesn't work this way
+					sub.setPriceOverruled(p.getPrice());
+
+					PriceOverruled.setModelValue(new String[] { p.getPrice()
+							.toPlainString().replace(",", "") });
 				}
-			});
+			};
+
+			add(availablePackages);
 
 			final RequiredTextField<Date> validFrom = new RequiredTextField<Date>("ValidFrom");
 			validFrom.setRequired(true);
 			add(validFrom);
 
+			@SuppressWarnings("serial")
 			MarkupContainer enclosure = new WebMarkupContainer(
 					"cancelSubscription") {
-
-				private static final long serialVersionUID = -2812361648172827138L;
-
 				public boolean isVisible() {
-					return cancelSubscription;
+					return cancelSubscription || (sub.getValidTo() != null);
 				}
 			};
-			
+
 			final RequiredTextField<Date> ValidTo = new RequiredTextField<Date>("ValidTo");
 			enclosure.add(ValidTo);
 			add(enclosure);
-
-			final RequiredTextField<BigDecimal> PriceOverruled = new RequiredTextField<BigDecimal>(
-					"PriceOverruled");
-			add(PriceOverruled);
 
 			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>(
 					"paymentMethod");
@@ -128,10 +121,19 @@ class SubscriptionDetailPage extends BasePage {
 					return list;
 				}
 			});
-
 			add(payMeth);
 
 			add(new Button("submit"));
+			
+			final Link btnCancelCancelation = new Link("cancelCancelation") {
+	            public void onClick() {
+	            	sub.setValidTo(null);
+	            	onSubmit();
+	            }
+	        };
+	        btnCancelCancelation.setVisible(sub.getValidTo() != null);
+	        
+			add(btnCancelCancelation);
 		}
 
 		public void onSubmit() {

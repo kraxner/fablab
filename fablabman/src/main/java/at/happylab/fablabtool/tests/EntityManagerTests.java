@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import at.happylab.fablabtool.beans.EntityManagerProducer;
 import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.model.PrivateMembership;
+import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.User;
 
 public class EntityManagerTests {
@@ -36,10 +36,10 @@ public class EntityManagerTests {
 		
 		u.setFirstname("Johannes");
 		u.setLastname("Bauer");
-		u.setMembership(new PrivateMembership());
+		u.setMembership(new Membership());
 		
 		
-		PrivateMembership m = new PrivateMembership();
+		Membership m = new Membership();
 		
 		m.addUser(u);
 		m.setId(1);

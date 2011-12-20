@@ -12,20 +12,20 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-public class MembershipDetailPage extends BasePage {
+public class MembershipDetailPage extends AdminBasePage {
 	@Inject
 	private MembershipManagement membershipMgmt;
 	private Membership member;
 	
 	public MembershipDetailPage(PageParameters params) {
 	    int id = params.getInt("id");
-	    this.member = membershipMgmt.loadMembership(id);
-		
-	    addTabs();
+    	member = membershipMgmt.loadMembership(id);
+	    int tab = params.getInt("tab");
+	    addTabs(tab);
 	}
 	
 	public MembershipDetailPage(Membership member, MembershipManagement membershipMgmt) {
@@ -80,11 +80,6 @@ public class MembershipDetailPage extends BasePage {
 		
 		AjaxTabbedPanel panel = new AjaxTabbedPanel("tabs", tabs);		
 		add(panel);
-		
-		panel.setSelectedTab(1);
-		panel.setSelectedTab(tab);
-		
-		
 	}
 	
 	

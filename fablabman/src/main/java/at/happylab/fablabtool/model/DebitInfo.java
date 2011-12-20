@@ -17,7 +17,11 @@ public class DebitInfo implements Serializable{
 	public DebitInfo() {
 		
 	}
-	
+	public void assign(DebitInfo d) {
+		name = d.name;
+		iban = d.iban;
+		bic = d.bic;
+	}
 	public String getName() {
 		return name;
 	}
