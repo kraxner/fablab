@@ -23,6 +23,9 @@ public class Membership implements Serializable{
 
 	@Id @GeneratedValue
 	private long id;
+
+	@GeneratedValue
+	private long memberId;
 	
 	@Enumerated(EnumType.STRING)
 	private MembershipType membershipType;
@@ -94,6 +97,42 @@ public class Membership implements Serializable{
 		} else {
 			if (users.size()>0) {
 				return users.get(0).getFullname();
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	/**
+	 * Returns the phone number associated with this membership
+	 * - for business memberships this is the {@link #companyPhone}
+	 * - for non-profit memberships this is the {@link User#getPhone()} of the first user
+	 * @return
+	 */
+	public String getPhone() {
+		if (membershipType == MembershipType.BUSINESS) {
+			return companyPhone;
+		} else {
+			if (users.size()>0) {
+				return users.get(0).getPhone();
+			} else {
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * Returns the email associated with this membership
+	 * - for business memberships this is the {@link #companyEmail}
+	 * - for non-profit memberships this is the {@link User#getEmail()} of the first user
+	 * @return
+	 */
+	public String getEmail() {
+		if (membershipType == MembershipType.BUSINESS) {
+			return companyEmail;
+		} else {
+			if (users.size()>0) {
+				return users.get(0).getEmail();
 			} else {
 				return null;
 			}
@@ -301,5 +340,13 @@ public class Membership implements Serializable{
 
 	public void setCompanyPhone(String companyPhone) {
 		this.companyPhone = companyPhone;
+	}
+
+	public long getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
 	}
 }

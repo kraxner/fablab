@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
 <wicket:head>
 <!-- Ein- und Ausblenden von Formfelder -->
 <script type="text/javascript">
@@ -25,10 +26,9 @@ $(document).ready(function(){
       		
 	</ul>
 	</div>
-	
 	<div style="float:right;">
-	<wicket:link><a href="/at/happylab/fablabtool/web/authentication/FablabSignOutPage.html">Abmelden: </a></wicket:link>
-	Karim Jafarmadar
+	<wicket:link><a href="/at/happylab/fablabtool/web/authentication/FablabSignOutPage.html"><span wicket:id="loggedInUser" /> abmelden</a></wicket:link>
 	</div>
 </div>
 </wicket:panel>
+</html>

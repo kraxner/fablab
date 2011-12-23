@@ -1,21 +1,34 @@
 package at.happylab.fablabtool.web.membership;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
 import javax.inject.Inject;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.lang.EnumeratedType;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.dataprovider.MembershipProvider;
+import at.happylab.fablabtool.converter.EnumConverter;
+import at.happylab.fablabtool.dataprovider.UserProvider;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.MembershipStatus;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
+import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
@@ -24,46 +37,62 @@ public class MembershipListPage extends AdminBasePage {
 	@Inject
 	private MembershipManagement membershipMgmt;
 	
-	@Inject MembershipProvider membershipProvider;
+	@Inject UserProvider userProvider;
 
 	public MembershipListPage() {
 		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
-		Form<String> form = new Form<String>("main");
+		final Form<String> form = new Form<String>("main");
 
-		IColumn[] columns = new IColumn[3];
-		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "id", "id") {
+		IColumn[] columns = new IColumn[11];
+		// nr, Vorname, Nachname, Art der Mitgliedschaft, Firmenname, Telefonnummer, Email, Eintrittsdatum, (evtl. Austrittsdatum), Kommentar )
+		columns[0] = new LinkPropertyColumn(new Model<String>("Nr"), "memberId", "membership.memberId") {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
-				Membership m = (Membership) model.getObject();
+				Membership m = ((User)model.getObject()).getMembership();
 				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
 				
 			}
 		};
-		columns[1] = new LinkPropertyColumn(new Model<String>("Name"),  "name","name") {
-
-			
+		columns[1] = new PropertyColumn<String>(new Model<String>("Vorname"), "firstname", "firstname");
+		columns[2] = new PropertyColumn<String>(new Model<String>("Nachname"), "lastname", "lastname");
+		columns[3] = new EnumPropertyColumn<MembershipStatus>(new Model<String>("Art"), "type", "membership.type", MembershipStatus.class, this);
+//		columns[3] = new PropertyColumn<MembershipStatus>(new Model<String>("Art"), "type", "membership.type") {
+//			@Override
+//			public void populateItem(
+//					Item<ICellPopulator<MembershipStatus>> item,
+//					String componentId, IModel<MembershipStatus> rowModel) {
+//				
+//				
+//				item.add(new Label(componentId, new PropertyModel(rowModel, getPropertyExpression())){
+//					private static final long serialVersionUID = 1L;
+//
+//					@Override
+//					public IConverter getConverter(Class<?> type) {
+//						return new EnumConverter<MembershipStatus>(MembershipStatus.class, this);
+//					}
+//				});
+//			}
+//		};
+		columns[4] = new PropertyColumn<String>(new Model<String>("Firmenname"), "companyName", "membership.companyName");
+		columns[5] = new PropertyColumn<String>(new Model<String>("Telefonnummer"), "phone", "membership.phone");
+		columns[6] = new PropertyColumn<String>(new Model<String>("Email"), "email", "membership.email");
+		columns[7] = new PropertyColumn<Date>(new Model<String>("Eintrittsdatum"), "entryDate", "membership.entryDate");
+		columns[8] = new PropertyColumn<Date>(new Model<String>("Austrittsdatum"), "leavingDate", "membership.leavingDate");
+		columns[9] = new PropertyColumn<String>(new Model<String>("Kommentar"), "comment", "membership.comment");
+		columns[10] = new LinkPropertyColumn(new Model<String>("Edit"),new Model<String>("Edit")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
-				Membership m = (Membership) model.getObject();
+				Membership m = ((User)model.getObject()).getMembership();
 				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
 				
 			}
-			 
 		};
-		columns[2] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("löschen")) {
-			@Override
-			public void onClick(Item item, String componentId, IModel model) {
-				Membership m = (Membership) model.getObject();
-				membershipMgmt.removeMembership(m);
-			}
-			 
-		};
-
-		form.add(new DefaultDataTable("mitgliederTabelle", columns, membershipProvider, 5));
 		
-		form.add(new Label("mitgliederAnzahl", membershipProvider.size() + " Datensätze"));
+		form.add(new DefaultDataTable("mitgliederTabelle", columns, userProvider, 5));
+		
+		form.add(new Label("mitgliederAnzahl", userProvider.size() + " DatensÃ¤tze"));
 
 		form.add(new Link("addPrivateMembershipLink") {
             public void onClick() {
@@ -73,17 +102,10 @@ public class MembershipListPage extends AdminBasePage {
                 setResponsePage(new MembershipDetailPage(m, membershipMgmt));
             }
         });
-//		form.add(new Link("addBusinessMembershipLink") {
-//            public void onClick() {
-//               Membership m = new Membership();
-//               m.setMembershipType(MembershipType.BUSINESS);
-//               setResponsePage(new MembershipDetailPage(m, membershipMgmt));
-//            }
-//        });
-
 		add(form);
 	}
 
 }
+
 
 

@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -20,20 +18,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class User implements Serializable {
+public class User extends WebUser implements Serializable {
 
 	private static final long serialVersionUID = 5102948341740922385L;
 
-	@Id
-	@GeneratedValue
-	private long id;
-	
-	private String username;
-	private String password;
-	
-	private String firstname;
-	private String lastname;
-	
 	private String email;
 	private String mobile;
 	private String fax;
@@ -75,55 +63,6 @@ public class User implements Serializable {
 		
 	}
 	
-	public String getFullname(){
-		
-		String name = lastname;
-		if (name != null) {
-			if (firstname != null) {
-				name = firstname + " " + name;
-			}
-		} else {
-			name = firstname;
-		}
-		return name;
-		
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
 	public String getEmail() {
 		return email;
 	}
