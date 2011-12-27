@@ -26,6 +26,7 @@ import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.converter.CustomDateConverter;
+import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.web.authentication.FablabSignInPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 

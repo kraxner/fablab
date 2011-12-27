@@ -11,7 +11,6 @@ public class BasePage extends WebPage implements Serializable {
     public BasePage() {
         add(new StyleSheetReference("stylesheetMain", BasePage.class, "/css/main.css"));
         add(new StyleSheetReference("stylesheetForm", BasePage.class, "/css/form.css"));
-        
         navigation = new TopNavPanel("topNavPanel"); 
         add(navigation);
     }

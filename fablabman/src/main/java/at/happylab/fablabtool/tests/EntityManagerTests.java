@@ -5,10 +5,10 @@ import javax.persistence.EntityManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.happylab.fablabtool.beans.EntityManagerProducer;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.User;
+import at.happylab.fablabtool.session.SessionScopeProducer;
 
 public class EntityManagerTests {
 
@@ -20,7 +20,7 @@ public class EntityManagerTests {
 	public static void setUpBeforeClass() throws Exception {
 		EntityManager em = null;
 
-		EntityManagerProducer p = new EntityManagerProducer();
+		SessionScopeProducer p = new SessionScopeProducer();
 		
 		em = p.getEm();
 		
