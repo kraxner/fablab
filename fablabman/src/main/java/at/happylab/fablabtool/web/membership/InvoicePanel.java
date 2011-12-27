@@ -53,7 +53,7 @@ public class InvoicePanel extends Panel {
 		};
 		columns[1] = new PropertyColumn(new Model<String>("Datum"), "dueDate", "dueDate");
 		columns[2] = new PropertyColumn(new Model<String>("Status"), "state", "state");
-		columns[3] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("status ‰ndern")) {
+		columns[3] = new LinkPropertyColumn(new Model<String>("Aktion"), new Model("status √§ndern")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Invoice i = (Invoice) model.getObject();
@@ -64,7 +64,7 @@ public class InvoicePanel extends Panel {
 
 		form.add(new DefaultDataTable("invTable", columns, invoicesOfMember, 5));
 		
-		form.add(new Label("invCount", invoicesOfMember.size() + " Datens‰tze"));
+		form.add(new Label("invCount", invoicesOfMember.size() + " Datens√§tze"));
 
 		add(form);
 	}
