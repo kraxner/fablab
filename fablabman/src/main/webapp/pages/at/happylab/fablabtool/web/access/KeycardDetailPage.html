@@ -8,25 +8,31 @@
 
 			<fieldset id="fldDetails" class="columnar">
 				<legend>Details</legend>
-				
+
 				<div class="type-text">
-					<label for="active">Keycard aktiv</label>
-					<input wicket:id="active" type="checkbox"/>
+					<label for="active">Keycard aktiv</label> <input wicket:id="active"
+						type="checkbox" />
 				</div>
-				
+
 				<div class="type-text">
 					<label for="description">Beschreibung</label>
 					<textarea wicket:id="description" cols="50" rows="4"></textarea>
 				</div>
-				
+
 				<div class="type-text">
-					<label for="rfid">RFID</label>
-					<input wicket:id="rfid" type="text">
+					<label for="rfid">RFID</label> <input wicket:id="rfid" type="text">
 				</div>
-				
+
 
 			</fieldset>
-			
+
+			<fieldset id="fldAccessGrants" class="columnar">
+				<legend>Zutrittszeiten</legend>
+				<table wicket:id="AccessGrantsFromKeycardTable" border="0"></table>
+				<br>
+				<button wicket:id="addAccessGrantToKeyCard" class="minimal">Zutrittszeiten &auml;ndern</button>
+			</fieldset>
+
 			<input type="submit" value="Speichern" class="minimal">
 		</form>
 	</div>

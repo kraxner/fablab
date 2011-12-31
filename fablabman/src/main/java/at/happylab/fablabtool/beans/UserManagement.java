@@ -1,39 +1,38 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import at.happylab.fablabtool.model.AccessGrant;
 
-public class AccessGrantManagement implements Serializable {
+import at.happylab.fablabtool.model.User;
+
+public class UserManagement implements Serializable {
 
 	private static final long serialVersionUID = -3130705490590748129L;
 
 	@Inject
 	private EntityManager em;
 
-	public AccessGrantManagement(EntityManager em) {
-		this.em = em;
-	}
-	
-	public AccessGrantManagement() {
+	public UserManagement() {
 		
 	}
+	
+	public UserManagement(EntityManager em) {
+		this.em = em;
+	}
 
-	public void storeAccessGrant(AccessGrant ag) {
+	public void storeUser(User u) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
-		em.persist(ag);
+		em.persist(u);
 		em.getTransaction().commit();
-		Logger.getLogger("AccessGrantManagement").info(
-				"number of AccessGrants: "
+		Logger.getLogger("UserManagement").info(
+				"number of Users: "
 						+ String.valueOf(em.createQuery(
-								"select count(a) from AccessGrant a ")
+								"select count(d) from User d ")
 								.getSingleResult()));
 	}
 
@@ -42,7 +41,7 @@ public class AccessGrantManagement implements Serializable {
 	 * 
 	 * @param member
 	 */
-	public void removeAccessGrant(AccessGrant ag) {
+	public void removeUser(User ag) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
@@ -50,8 +49,9 @@ public class AccessGrantManagement implements Serializable {
 		em.getTransaction().commit();
 	}
 
-	public AccessGrant loadAccessGrant(long id) {
-		return em.find(AccessGrant.class, id);
+	public User loadUser(long id) {
+		return em.find(User.class, id);
 	}
+
 
 }

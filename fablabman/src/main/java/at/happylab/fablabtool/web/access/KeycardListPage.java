@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.web.accessgrant;
+package at.happylab.fablabtool.web.access;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,17 +32,11 @@ public class KeycardListPage extends BasePage {
 	KeycardManagement keycardMgmt;
 
 	public KeycardListPage() {
-		// navigation.selectStammdaten();
 
 		List<IColumn<KeyCard>> columns = new ArrayList<IColumn<KeyCard>>();
-		columns.add(new PropertyColumn<KeyCard>(new Model<String>("ID"), "id",
-				"id"));
-		columns.add(new PropertyColumn<KeyCard>(new Model<String>("Aktiv"),
-				"active", "active"));
-		columns.add(new PropertyColumn<KeyCard>(new Model<String>("RFID"),
-				"rfid", "rfid"));
-		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>(
-				"Bearbeiten"), new Model<String>("edit")) {
+		columns.add(new PropertyColumn<KeyCard>(new Model<String>("Aktiv"), "active", "active"));
+		columns.add(new PropertyColumn<KeyCard>(new Model<String>("RFID"), "rfid", "rfid"));
+		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				KeyCard k = (KeyCard) model.getObject();
@@ -50,8 +44,7 @@ public class KeycardListPage extends BasePage {
 
 			}
 		});
-		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>(
-				"Entfernen"), new Model<String>("delete")) {
+		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				KeyCard k = (KeyCard) model.getObject();
@@ -59,9 +52,7 @@ public class KeycardListPage extends BasePage {
 			}
 		});
 
-		DefaultDataTable<KeyCard> table = new DefaultDataTable<KeyCard>(
-				"keycardTable", columns, keycardProvider, 5);
-		add(table);
+		add(new DefaultDataTable<KeyCard>("keycardTable", columns, keycardProvider, 5));
 
 		add(new Label("keycardCount", keycardProvider.size() + " Datensätze"));
 

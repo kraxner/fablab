@@ -1,39 +1,47 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import at.happylab.fablabtool.model.AccessGrant;
 
-public class AccessGrantManagement implements Serializable {
+import at.happylab.fablabtool.SelectOption;
+import at.happylab.fablabtool.model.AccessGrant;
+import at.happylab.fablabtool.model.Device;
+import at.happylab.fablabtool.model.Package;
+
+public class DeviceManagement implements Serializable {
 
 	private static final long serialVersionUID = -3130705490590748129L;
 
 	@Inject
 	private EntityManager em;
 
-	public AccessGrantManagement(EntityManager em) {
+	public DeviceManagement(EntityManager em) {
 		this.em = em;
 	}
-	
-	public AccessGrantManagement() {
-		
+
+	public DeviceManagement() {
+
 	}
 
-	public void storeAccessGrant(AccessGrant ag) {
+	public void storeDevice(Device ag) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
 		em.persist(ag);
 		em.getTransaction().commit();
-		Logger.getLogger("AccessGrantManagement").info(
-				"number of AccessGrants: "
+		Logger.getLogger("DeviceManagement").info(
+				"number of Devices: "
 						+ String.valueOf(em.createQuery(
-								"select count(a) from AccessGrant a ")
+								"select count(d) from Device d ")
 								.getSingleResult()));
 	}
 
@@ -42,7 +50,7 @@ public class AccessGrantManagement implements Serializable {
 	 * 
 	 * @param member
 	 */
-	public void removeAccessGrant(AccessGrant ag) {
+	public void removeDevice(Device ag) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
@@ -50,8 +58,9 @@ public class AccessGrantManagement implements Serializable {
 		em.getTransaction().commit();
 	}
 
-	public AccessGrant loadAccessGrant(long id) {
-		return em.find(AccessGrant.class, id);
+	public Device loadDevice(long id) {
+		return em.find(Device.class, id);
 	}
+
 
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wicket:extend>
+	<div style="padding: 10px;">
+		<h1>Ger&auml;t</h1>
+
+		<form wicket:id="form" action="" method="POST" class="yform"
+			style="width: 500px">
+
+			<fieldset id="fldDetails" class="columnar">
+				<legend>Details</legend>
+
+				<div class="type-text">
+					<label for="deviceID">Device ID</label> <input wicket:id="deviceId" type="text">
+				</div>
+				<div class="type-text">
+					<label for="name">Name</label> <input wicket:id="name" type="text">
+				</div>
+
+				<div class="type-text">
+					<label for="description">Beschreibung</label>
+					<textarea wicket:id="description" cols="50" rows="4"></textarea>
+				</div>
+			</fieldset>
+
+
+			<input type="submit" value="Speichern" class="minimal">
+		</form>
+	</div>
+</wicket:extend>

@@ -6,30 +6,36 @@ import org.apache.wicket.model.LoadableDetachableModel;
 
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
-import at.happylab.fablabtool.model.Package;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-public class AccessGrantProvider extends SortableDataProvider<AccessGrant> implements
-		Serializable {
+public class AccessGrantsFromKeycardProvider extends
+		SortableDataProvider<AccessGrant> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private EntityManager em;
-	
-	
 
-	@SuppressWarnings("unchecked")
+	private KeyCard kc;
+
+	public void setKeyCard(KeyCard k) {
+		this.kc = k;
+	}
+
 	public Iterator<AccessGrant> iterator(int first, int count) {
-		return em.createQuery("FROM AccessGrant").setFirstResult(first)
-				.setMaxResults(count).getResultList().iterator();
+		
+		return this.kc.getAccessgrants().iterator();
+		
+//		return em
+//				.createQuery(
+//						"FROM KeyCard_AccessGrant WHERE KeyCard_ID="
+//								+ kc.getId()).setFirstResult(first)
+//				.setMaxResults(count).getResultList().iterator();
 	}
 
 	public IModel<AccessGrant> model(final AccessGrant object) {
@@ -43,11 +49,7 @@ public class AccessGrantProvider extends SortableDataProvider<AccessGrant> imple
 	}
 
 	public int size() {
-		Long count = (Long) em.createQuery("select count(*) from AccessGrant")
-				.getSingleResult();
-
-		return count.intValue();
+		return kc.getAccessgrants().size();
 	}
 
-	
 }

@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -21,27 +22,32 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.beans.PackageManagement;
+import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.Gender;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
+import at.happylab.fablabtool.model.TimePeriod;
 
 public class PackageAddPage extends BasePage {
 
 	@Inject
-	private EntityManager em;
+	private PackageManagement packageMgmt;
 	private Package pkg;
 
 	public PackageAddPage(Package p) {
 		navigation.selectStammdaten();
 		pkg = p;
 
-		add(new PackageForm("form", p, getDefaultModel()));
+		add(new PackageForm("form", p));
 	}
 
 	class PackageForm extends Form {
-		public PackageForm(String s, Package p, IModel m) {
-			super(s, new CompoundPropertyModel(p));
+		private static final long serialVersionUID = 9185780707344670737L;
+
+		public PackageForm(String s, Package p) {
+			super(s, new CompoundPropertyModel<Package>(p));
 
 			final TextField<String> name = new TextField<String>("name");
 			name.setRequired(true);
@@ -52,40 +58,29 @@ public class PackageAddPage extends BasePage {
 			description.setRequired(false);
 			add(description);
 
-			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>(
-					"price");
+			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
 			add(price);
 
-			List<PackageType> l = new ArrayList<PackageType>();
-			l.add(PackageType.MEMBERSHIP);
-			l.add(PackageType.ACCESS);
-			l.add(PackageType.STORAGE);
-			DropDownChoice<PackageType> packageType = new DropDownChoice<PackageType>("PackageType", new PropertyModel<PackageType>(p, "PackageType"), l);
+			DropDownChoice<PackageType> packageType = new DropDownChoice<PackageType>("PackageType", Arrays.asList(PackageType.values()), new EnumChoiceRenderer<PackageType>());
+			packageType.setRequired(true);
 			add(packageType);
 
-			DropDownChoice<Integer> paymentCycle = new DropDownChoice<Integer>(
-					"billingCycle",
-					Arrays.asList(1, 3, 12));
+			DropDownChoice<TimePeriod> paymentCycle = new DropDownChoice<TimePeriod>("billingCycle", Arrays.asList(TimePeriod.values()), new EnumChoiceRenderer<TimePeriod>());
 			paymentCycle.setRequired(true);
 			add(paymentCycle);
-			
-			DropDownChoice<Integer> cancellationPeriod = new DropDownChoice<Integer>(
-					"cancelationPeriod",
-					Arrays.asList(1, 3, 12));
+
+			DropDownChoice<TimePeriod> cancelationPeriodAdvance = new DropDownChoice<TimePeriod>("cancelationPeriodAdvance", Arrays.asList(TimePeriod.values()), new EnumChoiceRenderer<TimePeriod>());
+			cancelationPeriodAdvance.setRequired(true);
+			add(cancelationPeriodAdvance);
+
+			final RequiredTextField<Integer> cancellationPeriod = new RequiredTextField<Integer>("cancelationPeriod");
 			cancellationPeriod.setRequired(true);
 			add(cancellationPeriod);
-			
-			final RequiredTextField<Integer> cancellationPeriodAdvance = new RequiredTextField<Integer>("cancelationPeriodAdvance");
-			cancellationPeriodAdvance.setRequired(true);
-			add(cancellationPeriodAdvance);
 
 		}
 
 		public void onSubmit() {
-			em.getTransaction().begin();
-			em.persist(pkg);
-			em.getTransaction().commit();
-
+			packageMgmt.storePackage(pkg);
 			setResponsePage(new PackageList());
 		}
 	}

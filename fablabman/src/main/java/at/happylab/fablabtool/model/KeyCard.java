@@ -1,10 +1,14 @@
 package at.happylab.fablabtool.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class KeyCard implements Serializable{
@@ -18,6 +22,8 @@ public class KeyCard implements Serializable{
 	private boolean active;
 	private String description;
 	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<AccessGrant> accessgrants = new ArrayList<AccessGrant>();
 	
 	public long getId() {
 		return id;
@@ -43,7 +49,12 @@ public class KeyCard implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+	public List<AccessGrant> getAccessgrants() {
+		return accessgrants;
+	}
+	public void setAccessgrants(List<AccessGrant> accessgrants) {
+		this.accessgrants = accessgrants;
+	}
+
 
 }

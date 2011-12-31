@@ -29,21 +29,13 @@ public class Package implements Serializable{
 	private String description;
 	private BigDecimal price;
 	
-	/**
-	 * TODO explain how this should work
-	 */
-	private int billingCycle;
+	@Enumerated(EnumType.STRING)
+	private TimePeriod billingCycle;
 	
-	/**
-	 * TODO explain how this should work
-	 */
 	private int cancelationPeriod;
 	
-	/**
-	 * FIXME what is this, of which type?
-	 * TODO explain how this should be used
-	 */
-	private int cancelationPeriodAdvance;
+	@Enumerated(EnumType.STRING)
+	private TimePeriod cancelationPeriodAdvance;
 	
 	@Enumerated(EnumType.STRING)
 	private PackageType type;
@@ -80,11 +72,11 @@ public class Package implements Serializable{
 		this.price = price;
 	}
 
-	public int getBillingCycle() {
+	public TimePeriod getBillingCycle() {
 		return billingCycle;
 	}
 
-	public void setBillingCycle(int billingCycle) {
+	public void setBillingCycle(TimePeriod billingCycle) {
 		this.billingCycle = billingCycle;
 	}
 
@@ -108,11 +100,11 @@ public class Package implements Serializable{
 		return this.name;
 	}
 
-	public int getCancelationPeriodAdvance() {
+	public TimePeriod getCancelationPeriodAdvance() {
 		return cancelationPeriodAdvance;
 	}
 
-	public void setCancelationPeriodAdvance(int cancelationPeriodAdvance) {
+	public void setCancelationPeriodAdvance(TimePeriod cancelationPeriodAdvance) {
 		this.cancelationPeriodAdvance = cancelationPeriodAdvance;
 	}
 

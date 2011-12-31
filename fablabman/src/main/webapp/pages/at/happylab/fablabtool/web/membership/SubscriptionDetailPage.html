@@ -2,8 +2,7 @@
 <wicket:extend>
 	<div style="padding: 10px;">
 		<span id="feedback"></span>
-		<form wicket:id="form" action="" method="POST" class="yform"
-			style="width: 500px">
+		<form wicket:id="form" action="" method="POST" class="yform" style="width: 500px">
 
 			<fieldset class="columnar">
 				<legend>Pakete</legend>
@@ -13,32 +12,33 @@
 				</div>
 
 				<div class="type-text">
-					<label for="">Anmeldung seit</label> <input wicket:id="ValidFrom"
-						type="text">
+					<label for="">Anmeldung seit</label> <input wicket:id="ValidFrom" type="text">
 				</div>
 
 				<wicket:container wicket:id="cancelSubscription">
 					<div class="type-text">
-						<label for="">G&uuml;ltig bis</label> <input wicket:id="ValidTo"
-							type="text">
+						<label for="">G&uuml;ltig bis</label> <input wicket:id="ValidTo" type="text">
 					</div>
 				</wicket:container>
 
 				<div class="type-text">
-					<label for="">Preis</label> <input wicket:id="priceOverruled"
-						type="text">
+					<label for="">Preis</label> <input wicket:id="priceOverruled" type="text">
 				</div>
 
 				<div class="type-select">
-					<label for="">Zahlungsart</label> <select wicket:id="paymentMethod"
-						id="txtPaymentMethod">
+					<label for="">Zahlungsart</label> <select wicket:id="paymentMethod" id="txtPaymentMethod">
 					</select>
+				</div>
+
+				<div class="type-text">
+					<label for="">Details</label> <textarea wicket:id="description" type="text" cols="50" rows="4"> </textarea>
 				</div>
 
 			</fieldset>
 
 			<input wicket:id="submit" type="submit" value="Speichern" class="minimal">
-			<button wicket:id="cancelCancelation" class="minimal">K&uuml;ndigung abbrechen</button>
+			<input wicket:id="cancelCancelation" type="submit" class="minimal">
+			<input wicket:id="deleteSubscription" type="submit" class="minimal">
 		</form>
 	</div>
 
