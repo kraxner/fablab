@@ -30,6 +30,12 @@ public class StammdatenPage extends BasePage {
 		        setResponsePage(new AccessGrantListPage());
 		    }
 		});
+		
+		add(new Link("ConsumableLink") {
+		    public void onClick() {
+		        setResponsePage(new ConsumableListPage());
+		    }
+		});
 	}
 
 }

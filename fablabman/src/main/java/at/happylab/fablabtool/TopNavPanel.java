@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import at.happylab.fablabtool.model.WebUser;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.LoggedIn;
+import at.happylab.fablabtool.web.invoice.InvoiceListPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
 public class TopNavPanel extends Panel {
@@ -29,7 +30,7 @@ public class TopNavPanel extends Panel {
         mitglieder = new BookmarkablePageLink("mitgliederLink", MembershipListPage.class); 
         add(mitglieder);
         
-        rechnungen = new BookmarkablePageLink("rechnungenLink", RechnungenPage.class); 
+        rechnungen = new BookmarkablePageLink("rechnungenLink", InvoiceListPage.class); 
         add(rechnungen);
         
         stammdaten = new BookmarkablePageLink("stammdatenLink", StammdatenPage.class);
