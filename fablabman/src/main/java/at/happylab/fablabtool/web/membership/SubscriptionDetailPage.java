@@ -78,7 +78,7 @@ public class SubscriptionDetailPage extends AdminBasePage {
 			};
 			add(availablePackages);
 
-			final DateTextField validFrom = new DateTextField("ValidFrom");
+			final DateTextField validFrom = new DateTextField("ValidFrom", "dd.MM.yyyy");
 			validFrom.setRequired(true);
 			add(validFrom);
 
@@ -90,11 +90,11 @@ public class SubscriptionDetailPage extends AdminBasePage {
 				}
 			};
 
-			final DateTextField ValidTo = new DateTextField("ValidTo");
+			final DateTextField ValidTo = new DateTextField("ValidTo", "dd.MM.yyyy");
 			enclosure.add(ValidTo);
 			add(enclosure);
 			
-			final DateTextField payedUntil = new DateTextField("payedUntil");
+			final DateTextField payedUntil = new DateTextField("payedUntil", "dd.MM.yyyy");
 			add(payedUntil);
 
 			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod", Arrays.asList(PaymentMethod.values()), new EnumChoiceRenderer<PaymentMethod>());
