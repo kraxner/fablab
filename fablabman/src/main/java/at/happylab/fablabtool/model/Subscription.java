@@ -29,6 +29,8 @@ public class Subscription implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	private Date payedUntil;
+	
+	private String description;
 
 	@Embedded
 	private PaymentMethod paymentMethod;
@@ -116,6 +118,14 @@ public class Subscription implements Serializable{
 		// booksPackage.billingCycle
 		// priceOverruled
 		
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

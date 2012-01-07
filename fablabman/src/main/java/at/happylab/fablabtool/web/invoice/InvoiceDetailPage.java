@@ -1,5 +1,6 @@
 package at.happylab.fablabtool.web.invoice;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +9,21 @@ import javax.inject.Inject;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.InvoiceManagement;
@@ -29,12 +34,14 @@ import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.membership.MembershipDetailPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 
-public class InvoiceDetailPage extends BasePage{
+public class InvoiceDetailPage extends WebPage{
 	
 	@Inject
 	private ConsumationEntryProvider consEntrOfInvoice;
@@ -45,16 +52,91 @@ public class InvoiceDetailPage extends BasePage{
 	private MembershipManagement membershipMgmt;
 	private Membership member;
 	private Invoice inv;
+	private CustomBigDecimalConverter cv;
+	
+	private String totalSum;
+	private String contactPerson;
+	private String payMethod;
+	private String iban;
+	private String bic;
 	
 	public InvoiceDetailPage(Membership member, MembershipManagement membershipMgmt, Invoice inv) {
+		add(new StyleSheetReference("stylesheetInv", BasePage.class, "/css/invoice.css"));
+		
 		this.member = member;
 		this.membershipMgmt = membershipMgmt;
 		this.inv = inv;
+		this.cv = new CustomBigDecimalConverter();
+		
+		contactPerson = "";
+		totalSum = "";
+		payMethod = "";
+		iban = "";
+		bic = "";
 		
 		consEntrOfInvoice.setInvoice(inv);
-		init();
+		init2();
 	}
 
+	private void init2(){
+		//add(new Image("logo", new Model<String>("img/innoc2.JPG")));
+		
+		add(new Label("recipient", new PropertyModel<Invoice>(inv,"recipient")));
+		if(inv.getRelatedTo().getMembershipType().equals(MembershipType.BUSINESS)){
+			contactPerson = "z.Hd. " + inv.getRelatedTo().getContactPerson();
+		}
+		add(new Label("contact", new PropertyModel(this,"contactPerson")));
+		
+		add(new Label("street", new PropertyModel<Invoice>(inv,"Address.street")));
+		add(new Label("zip", new PropertyModel<Invoice>(inv,"Address.zipCode")));
+		add(new Label("city", new PropertyModel<Invoice>(inv,"Address.city")));
+		
+		add(new Label("date", new PropertyModel<Invoice>(inv,"date")));
+		add(new Label("invoiceNumber", new PropertyModel<Invoice>(inv,"invoiceNumber")));
+		add(new Label("dueDate", new PropertyModel<Invoice>(inv,"dueDate")));
+		
+		IColumn[] columns = new IColumn[4];
+		columns[0] = new PropertyColumn<ConsumationEntry>(new Model<String>("Bezeichnung"), "text");
+		columns[1] = new PropertyColumn<ConsumationEntry>(new Model<String>("Preis"), "price");
+		columns[2] = new PropertyColumn<ConsumationEntry>(new Model<String>("Anzahl"), "quantity");
+		columns[3] = new PropertyColumn<ConsumationEntry>(new Model<String>("Gesamt"), ""){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void populateItem(Item item, String componentId, IModel rowModel) {
+				ConsumationEntry cons = (ConsumationEntry) rowModel.getObject();
+				item.add(new Label(componentId, cv.convertToString(cons.getSum(), null)));
+			}
+		};
+
+		add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
+		
+		BigDecimal sum = new BigDecimal(0);
+		for(ConsumationEntry cons : inv.getIncludesConsumationEntries()){
+			sum = sum.add(cons.getSum());
+		}
+		totalSum = cv.convertToString(sum, null);
+		add(new Label("totalSum", new PropertyModel(this,"totalSum")));
+		
+		switch(inv.getPaymentMethod()){
+		case DEBIT:
+			payMethod = "Der Rechnungsbetrag wird von folgendem Konto abgebucht:";
+			iban = "Kontonummer: " + inv.getRelatedTo().getBankDetails().getIban();
+			bic = "BLZ: " + inv.getRelatedTo().getBankDetails().getBic();
+			break;
+		case ON_ACCOUNT:
+			payMethod = "Wir ersuchen um Überweisung des oben angeführten Rechnungsbetrags.";
+			break;
+		case CASH_IN_ADVANCE:
+			payMethod = "Betrag bar bezahlt.";
+			break;
+		default:
+			break;
+		}
+		add(new Label("paymeth", new PropertyModel(this,"payMethod")));
+		add(new Label("iban", new PropertyModel(this,"iban")));
+		add(new Label("bic", new PropertyModel(this,"bic")));
+	}
+	
 	private void init() {	
 		Form<String> form = new Form<String>("main");
 
@@ -69,7 +151,7 @@ public class InvoiceDetailPage extends BasePage{
 
 		form.add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
 		
-		form.add(new Label("consEntrCount", consEntrOfInvoice.size() + " Datens�tze"));
+		form.add(new Label("consEntrCount", consEntrOfInvoice.size() + " Datens�tze"));
 
 		add(form);
 		add(new InvForm("form", inv));

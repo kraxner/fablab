@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,7 +20,7 @@ public class AccessGrant implements Serializable {
 	
 	private String name;
 	
-	private int dayOfWeek;
+	private DayOfWeek dayOfWeek;
 	
 	@Temporal(TemporalType.TIME)
 	private Date timeFrom;
@@ -43,10 +44,10 @@ public class AccessGrant implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getDayOfWeek() {
+	public DayOfWeek getDayOfWeek() {
 		return dayOfWeek;
 	}
-	public void setDayOfWeek(int dayOfWeek) {
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
 		this.dayOfWeek = dayOfWeek;
 	}
 	public Date getTimeFrom() {

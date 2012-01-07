@@ -32,6 +32,12 @@ public abstract class LinkPropertyColumn<T> extends PropertyColumn<T> {
 		super(displayModel, null);
 		this.labelModel = labelModel;
 	}
+	
+	public LinkPropertyColumn(IModel displayModel, IModel labelModel, PopupSettings popupSettings) {
+		super(displayModel, null);
+		this.labelModel = labelModel;
+		this.popupSettings = popupSettings;
+	}
 
 	public LinkPropertyColumn(IModel displayModel, String sortProperty,
 			String propertyExpression) {

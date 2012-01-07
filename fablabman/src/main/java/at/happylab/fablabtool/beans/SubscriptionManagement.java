@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import at.happylab.fablabtool.model.Package;
+import at.happylab.fablabtool.model.PackageType;
 
 import at.happylab.fablabtool.model.Subscription;
 
@@ -57,16 +58,7 @@ public class SubscriptionManagement implements Serializable {
 	public Subscription loadSubscription(long id) {
 		return em.find(Subscription.class, id);
 	}
+	
 
-	public Date getEarliestCancelationDate(Subscription subscription) {
-
-		Package p = subscription.getBooksPackage();
-		Calendar calendar = Calendar.getInstance();
-
-		if (p.getCancelationPeriod() > 0)
-			calendar.add(Calendar.MONTH, p.getCancelationPeriod());
-
-		return calendar.getTime();
-	}
 
 }

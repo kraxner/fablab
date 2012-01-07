@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
-<wicket:panel>
+<wicket:extend>
 	<div style="padding: 10px;">
+		<h1 wicket:id="invoiceLabel">overwrite this</h1>
 		<form wicket:id="filterForm">
 			<span>Filter: von </span>
 			<input wicket:id="fromFilter" type="text" size="8"/>
@@ -14,8 +15,9 @@
 		<form wicket:id="form">
 			<table wicket:id="invTable"></table>
 			<input wicket:id="submit" type="submit" value="Speichern" class="minimal"/>
+			<input wicket:id="export" type="submit" value="CSV exportiern" class="minimal"/>
 		</form>
 		<span wicket:id="invCount"></span>
 	</div>
-</wicket:panel>
+</wicket:extend>
 </html>

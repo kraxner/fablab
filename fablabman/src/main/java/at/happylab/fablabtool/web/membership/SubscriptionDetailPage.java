@@ -4,20 +4,21 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Arrays;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
@@ -30,8 +31,6 @@ import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 class SubscriptionDetailPage extends AdminBasePage {
 
-	@Inject
-	private EntityManager em;
 	private Subscription subs;
 	private Membership member;
 
@@ -43,39 +42,30 @@ class SubscriptionDetailPage extends AdminBasePage {
 	@Inject
 	private SubscriptionManagement subscriptionMgmt;
 
-	public SubscriptionDetailPage(Membership member,
-			MembershipManagement membershipMgmt, Subscription sub,
-			boolean cancelSubscription) {
+	public SubscriptionDetailPage(Membership member, Subscription sub) {
 
 		this.subs = sub;
 		this.member = member;
 
 		subs.setBookedBy(member);
 
-		if (cancelSubscription)
-			sub.setValidTo(subscriptionMgmt.getEarliestCancelationDate(subs));
-
 		if (this.subs.getPaymentMethod() == null)
 			this.subs.setPaymentMethod(this.member.getPaymentMethod());
 
-		add(new SubscriptionForm("form", this.subs, cancelSubscription));
+		add(new SubscriptionForm("form"));
 
 	}
 
 	class SubscriptionForm extends Form<Object> {
 		private static final long serialVersionUID = -416444319008642513L;
 
-		public SubscriptionForm(String s, final Subscription sub,
-				final boolean cancelSubscription) {
-			super(s, new CompoundPropertyModel<Object>(sub));
+		public SubscriptionForm(String s) {
+			super(s, new CompoundPropertyModel<Object>(subs));
 
-			final RequiredTextField<BigDecimal> PriceOverruled = new RequiredTextField<BigDecimal>(
-					"priceOverruled", BigDecimal.class);
+			final RequiredTextField<BigDecimal> PriceOverruled = new RequiredTextField<BigDecimal>("priceOverruled", BigDecimal.class);
 			add(PriceOverruled);
 
-			final DropDownChoice<Package> availablePackages = new DropDownChoice<Package>(
-					"booksPackage", packageMgmt.getAllPackages()) {
-
+			final DropDownChoice<Package> availablePackages = new DropDownChoice<Package>("booksPackage", packageMgmt.getAllPackages()) {
 				private static final long serialVersionUID = -385671748734684239L;
 
 				protected boolean wantOnSelectionChangedNotifications() {
@@ -83,24 +73,22 @@ class SubscriptionDetailPage extends AdminBasePage {
 				}
 
 				protected void onSelectionChanged(final Package p) {
-					sub.setPriceOverruled(p.getPrice());
+					subs.setPriceOverruled(p.getPrice());
 
-					PriceOverruled.setModelValue(new String[] { p.getPrice()
-							.toPlainString().replace(",", "") });
+					PriceOverruled.setModelValue(new String[] { p.getPrice().toPlainString().replace(",", "") });
 				}
 			};
-
 			add(availablePackages);
 
 			final RequiredTextField<Date> validFrom = new RequiredTextField<Date>("ValidFrom");
 			validFrom.setRequired(true);
 			add(validFrom);
 
-			@SuppressWarnings("serial")
-			MarkupContainer enclosure = new WebMarkupContainer(
-					"cancelSubscription") {
+			MarkupContainer enclosure = new WebMarkupContainer("cancelSubscription") {
+				private static final long serialVersionUID = 8577316899811450774L;
+
 				public boolean isVisible() {
-					return cancelSubscription || (sub.getValidTo() != null);
+					return (subs.getValidTo() != null);
 				}
 			};
 
@@ -108,40 +96,64 @@ class SubscriptionDetailPage extends AdminBasePage {
 			enclosure.add(ValidTo);
 			add(enclosure);
 
-			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>(
-					"paymentMethod");
-			payMeth.setChoices(new LoadableDetachableModel<List<PaymentMethod>>() {
-				private static final long serialVersionUID = 4420436576098934666L;
-
-				public List<PaymentMethod> load() {
-					List<PaymentMethod> list = new ArrayList<PaymentMethod>(3);
-					list.add(PaymentMethod.DEBIT);
-					list.add(PaymentMethod.CASH_IN_ADVANCE);
-					list.add(PaymentMethod.ON_ACCOUNT);
-					return list;
-				}
-			});
+			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod", Arrays.asList(PaymentMethod.values()), new EnumChoiceRenderer<PaymentMethod>());
 			add(payMeth);
 
-			add(new Button("submit"));
-			
-			final Link btnCancelCancelation = new Link("cancelCancelation") {
-	            public void onClick() {
-	            	sub.setValidTo(null);
-	            	onSubmit();
-	            }
-	        };
-	        btnCancelCancelation.setVisible(sub.getValidTo() != null);
-	        
-			add(btnCancelCancelation);
-		}
+			final TextArea<String> details = new TextArea<String>("description");
+			add(details);
 
-		public void onSubmit() {
-			em.getTransaction().begin();
-			em.persist(subs);
-			em.getTransaction().commit();
+			final Button btnSave = new Button("submit", Model.of("Speichern")) {
+				private static final long serialVersionUID = -9206366064931940268L;
 
-			setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+				public void onSubmit() {
+					subscriptionMgmt.storeSubscription(subs);
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+				}
+			};
+			add(btnSave);
+
+			/**
+			 * Cancelation of Subscription
+			 */
+			if (subs.getValidTo() == null) {
+				final Button btnCancelCancelation = new Button("cancelCancelation", Model.of("Paket kündigen")) {
+					private static final long serialVersionUID = -9206366064931940268L;
+
+					public void onSubmit() {
+						subs.setValidTo(packageMgmt.getNextCancelationDate(subs.getBooksPackage()));
+						setResponsePage(new SubscriptionDetailPage(member, subs));
+					}
+				};
+
+				btnCancelCancelation.setVisible(subs.getId() > 0);
+
+				add(btnCancelCancelation);
+			} else {
+				final Button btnCancelCancelation = new Button("cancelCancelation", Model.of("Kündigung abbrechen")) {
+					private static final long serialVersionUID = -9206366064931940268L;
+
+					public void onSubmit() {
+						subs.setValidTo(null);
+						setResponsePage(new SubscriptionDetailPage(member, subs));
+					}
+				};
+
+				btnCancelCancelation.setVisible(subs.getId() > 0);
+
+				add(btnCancelCancelation);
+			}
+
+			final Button btnDeleteSubscription = new Button("deleteSubscription", Model.of("Löschen")) {
+				private static final long serialVersionUID = -9206366064931940268L;
+
+				public void onSubmit() {
+					subscriptionMgmt.removeMembership(subs);
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+				}
+			};
+
+			btnDeleteSubscription.setVisible(subs.getId() > 0);
+			add(btnDeleteSubscription);
 		}
 	}
 }

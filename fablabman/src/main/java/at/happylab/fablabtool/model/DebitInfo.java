@@ -13,14 +13,22 @@ public class DebitInfo implements Serializable{
 	private String name;
 	private String iban;
 	private String bic;
+	private String accountNumber;
+	private String bankCode;
 	
 	public DebitInfo() {
-		
+		name = "";
+		iban = "";
+		bic = "";
+		accountNumber = "";
+		bankCode = "";
 	}
 	public void assign(DebitInfo d) {
 		name = d.name;
 		iban = d.iban;
 		bic = d.bic;
+		accountNumber = d.accountNumber;
+		bankCode = d.bankCode;
 	}
 	public String getName() {
 		return name;
@@ -39,6 +47,18 @@ public class DebitInfo implements Serializable{
 	}
 	public void setBic(String bic) {
 		this.bic = bic;
+	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
 	}
 
 }

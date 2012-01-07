@@ -80,6 +80,7 @@ public class MembershipDetailPage extends AdminBasePage {
 		
 		AjaxTabbedPanel panel = new AjaxTabbedPanel("tabs", tabs);		
 		add(panel);
+		panel.setSelectedTab(tab);
 	}
 	
 	

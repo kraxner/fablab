@@ -25,31 +25,22 @@
 				
 				<div class="type-select">
 					<label for="">Typ</label>
-					<select wicket:id="PackageType" id="txtPackageType">
-					</select>
+					<select wicket:id="PackageType"></select>
 				</div>
 				
 				<div class="type-select">
 					<label for="">Abrechnungsperiode</label>
-					<select wicket:id="billingCycle" name="txtBillingCycle" id="txtBillingCycle">
-						<option value="1">Monat</option>
-						<option value="3">Quartal</option>
-						<option value="12">Jahr</option>
-					</select>
+					<select wicket:id="billingCycle"></select>
 				</div>
 				
 				<div class="type-select">
 					<label for="">K&uuml;ndigung m&ouml;glich</label>
-					<select wicket:id="cancelationPeriod" name="txtCancelationPeriod" id="txtCancelationPeriod">
-						<option value="1">Ende des Monat</option>
-						<option value="3">Ende des Quartals</option>
-						<option value="12">Ende des Jahres</option>
-					</select>
+					<select wicket:id="cancelationPeriodAdvance"></select>
 				</div>
 				
 				<div class="type-text">
 					<label for="">K&uuml;ndigungsfrist (Monate)</label>
-					<input wicket:id="cancelationPeriodAdvance" type="text">
+					<input wicket:id="cancelationPeriod" type="text">
 				</div>
 
 			</fieldset>

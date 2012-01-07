@@ -68,6 +68,9 @@ public class Invoice implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private InvoiceState state;
 	
+	@GeneratedValue
+	private Long invoiceNumber = 0L;
+	
 	public Invoice(){
 		includesConsumationEntries = new ArrayList<ConsumationEntry>();
 		state = InvoiceState.OPEN;
@@ -83,13 +86,21 @@ public class Invoice implements Serializable{
 		this();
 		
 		setRelatedTo(member);
-		
+	
+/*		
+<<<<<<< HEAD
 		// Copy default values from member
 		setRecipient(member.getName());
 		setPaymentMethod(member.getPaymentMethod());
 		//setAddress(new Address(member.getAddress()));
+=======
+*/
+		// copy default values from member
+		recipient = member.getName();
+		address = member.getAddress();
+		date = new Date();
+		state = InvoiceState.OPEN;
 
-	
 	}
 
 	public long getId() {
@@ -222,5 +233,13 @@ public class Invoice implements Serializable{
 	
 	public void setState(InvoiceState state) {
 		this.state = state;
+	}
+
+	public Long getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(long invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
 	}
 }

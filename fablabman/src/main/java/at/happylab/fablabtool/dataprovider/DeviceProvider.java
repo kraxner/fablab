@@ -5,6 +5,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 import at.happylab.fablabtool.model.AccessGrant;
+import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Package;
 
@@ -16,34 +17,32 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-public class AccessGrantProvider extends SortableDataProvider<AccessGrant> implements
+public class DeviceProvider extends SortableDataProvider<Device> implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private EntityManager em;
-	
-	
 
 	@SuppressWarnings("unchecked")
-	public Iterator<AccessGrant> iterator(int first, int count) {
-		return em.createQuery("FROM AccessGrant").setFirstResult(first)
+	public Iterator<Device> iterator(int first, int count) {
+		return em.createQuery("FROM Device").setFirstResult(first)
 				.setMaxResults(count).getResultList().iterator();
 	}
 
-	public IModel<AccessGrant> model(final AccessGrant object) {
-		return new LoadableDetachableModel<AccessGrant>() {
+	public IModel<Device> model(final Device object) {
+		return new LoadableDetachableModel<Device>() {
 			private static final long serialVersionUID = 2245677208590656096L;
 
-			protected AccessGrant load() {
+			protected Device load() {
 				return object;
 			}
 		};
 	}
 
 	public int size() {
-		Long count = (Long) em.createQuery("select count(*) from AccessGrant")
+		Long count = (Long) em.createQuery("select count(*) from Device")
 				.getSingleResult();
 
 		return count.intValue();
