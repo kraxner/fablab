@@ -61,8 +61,11 @@ public class SubscriptionPanel extends Panel {
 		columns.add(new PropertyColumn<String>(new Model<String>("Paket"), "booksPackage.name", "booksPackage.name"));
 		columns.add(new PropertyColumn<String>(new Model<String>("angemeldet seit"), "validFrom", "validFrom"));
 		columns.add(new PropertyColumn<String>(new Model<String>("angemeldet bis"), "validTo", "validTo"));
+		columns.add(new PropertyColumn<String>(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil"));
 		columns.add(new PropertyColumn<String>(new Model<String>("Preis"), "priceOverruled", "priceOverruled"));
 		columns.add(new LinkPropertyColumn<String>(new Model<String>("Bearbeiten"), new Model("edit")) {
+			private static final long serialVersionUID = 1594610370135323737L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();

@@ -45,6 +45,14 @@ public class StammdatenPage extends BasePage {
 		    }
 		});
 		
+		add(new Link<String>("SubscriptionLink") {
+			private static final long serialVersionUID = -5635826134514651087L;
+
+			public void onClick() {
+		        setResponsePage(new SubscriptionListPage());
+		    }
+		});
+		
 		add(new Link<String>("DevicesLink") {
 			private static final long serialVersionUID = -1585556011311826709L;
 

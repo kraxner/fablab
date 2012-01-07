@@ -11,6 +11,8 @@ import at.happylab.fablabtool.model.Package;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,11 +26,33 @@ public class DeviceProvider extends SortableDataProvider<Device> implements
 
 	@Inject
 	private EntityManager em;
+	
+	public DeviceProvider() {
+		setSort("name", true);
+	}
 
 	@SuppressWarnings("unchecked")
 	public Iterator<Device> iterator(int first, int count) {
-		return em.createQuery("FROM Device").setFirstResult(first)
-				.setMaxResults(count).getResultList().iterator();
+		List<Device> results = em.createQuery("FROM Device").getResultList();
+
+		Collections.sort(results, new Comparator<Device>() {
+			public int compare(Device d1, Device d2) {
+				int dir = getSort().isAscending() ? 1 : -1;
+
+				if ("deviceId".equals(getSort().getProperty())) {
+					return dir * (d1.getDeviceId().compareTo(d2.getDeviceId()));
+				} else if ("name".equals(getSort().getProperty())) {
+					return dir * (d1.getName()).compareTo(d2.getName());
+				} else {
+					if (d1.getId() > d2.getId())
+						return dir;
+					else
+						return -dir;
+				}
+			}
+		});
+
+		return results.subList(first, Math.min(first+count, results.size())).iterator();
 	}
 
 	public IModel<Device> model(final Device object) {

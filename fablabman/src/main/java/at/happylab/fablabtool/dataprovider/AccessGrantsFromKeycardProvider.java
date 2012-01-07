@@ -8,34 +8,52 @@ import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import java.util.List;
 
 public class AccessGrantsFromKeycardProvider extends
 		SortableDataProvider<AccessGrant> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-	@Inject
-	private EntityManager em;
-
+	private static final long serialVersionUID = -6925530418397992775L;
 	private KeyCard kc;
 
+	public AccessGrantsFromKeycardProvider() {
+		setSort("DayOfWeek", true);
+	}
+	
 	public void setKeyCard(KeyCard k) {
 		this.kc = k;
 	}
 
 	public Iterator<AccessGrant> iterator(int first, int count) {
 		
-		return this.kc.getAccessgrants().iterator();
-		
-//		return em
-//				.createQuery(
-//						"FROM KeyCard_AccessGrant WHERE KeyCard_ID="
-//								+ kc.getId()).setFirstResult(first)
-//				.setMaxResults(count).getResultList().iterator();
+		List<AccessGrant> results = this.kc.getAccessgrants();
+
+		Collections.sort(results, new Comparator<AccessGrant>() {
+			public int compare(AccessGrant ag1, AccessGrant ag2) {
+				int dir = getSort().isAscending() ? 1 : -1;
+
+				if ("TimeFrom".equals(getSort().getProperty())) {
+					return dir * (ag1.getTimeFrom().compareTo(ag2.getTimeFrom()));
+				} else if ("TimeUntil".equals(getSort().getProperty())) {
+					return dir * (ag1.getTimeUntil().compareTo(ag2.getTimeUntil()));
+				} else if ("DayOfWeek".equals(getSort().getProperty())) {
+					return dir * (ag1.getDayOfWeek().compareTo(ag2.getDayOfWeek()));
+				} else if ("name".equals(getSort().getProperty())) {
+					return dir * (ag1.getName().compareTo(ag2.getName()));
+				} else {
+					if (ag1.getId() > ag2.getId())
+						return dir;
+					else
+						return -dir;
+				}
+			}
+		});
+
+		return results.subList(first, Math.min(first+count, results.size())).iterator();
+
 	}
 
 	public IModel<AccessGrant> model(final AccessGrant object) {

@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -16,12 +15,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.BasePage;
-import at.happylab.fablabtool.PackageAddPage;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.KeycardProvider;
-import at.happylab.fablabtool.dataprovider.PackageProvider;
 import at.happylab.fablabtool.model.KeyCard;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class KeycardListPage extends BasePage {
@@ -37,6 +33,8 @@ public class KeycardListPage extends BasePage {
 		columns.add(new PropertyColumn<KeyCard>(new Model<String>("Aktiv"), "active", "active"));
 		columns.add(new PropertyColumn<KeyCard>(new Model<String>("RFID"), "rfid", "rfid"));
 		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
+			private static final long serialVersionUID = 5612256017598665667L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				KeyCard k = (KeyCard) model.getObject();
@@ -45,6 +43,8 @@ public class KeycardListPage extends BasePage {
 			}
 		});
 		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Entfernen"), new Model<String>("delete")) {
+			private static final long serialVersionUID = 4741807491393228633L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				KeyCard k = (KeyCard) model.getObject();
@@ -56,7 +56,9 @@ public class KeycardListPage extends BasePage {
 
 		add(new Label("keycardCount", keycardProvider.size() + " Datensätze"));
 
-		add(new Link("addKeycard") {
+		add(new Link<String>("addKeycard") {
+			private static final long serialVersionUID = 6855451272464273371L;
+
 			public void onClick() {
 				setResponsePage(new KeycardDetailPage(new KeyCard()));
 			}
