@@ -7,15 +7,21 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.beans.ConsumableManagement;
+import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
+import at.happylab.fablabtool.model.Consumable;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class ConsumationEntryDetailPage extends AdminBasePage {
@@ -27,12 +33,13 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 	private Membership member;
 
 	@Inject
-	private PackageManagement packageMgmt;
+	private ConsumableManagement consumableMgmt;
+	
 	@Inject
 	private MembershipManagement membershipMgmt;
 
 	@Inject
-	private SubscriptionManagement subscriptionMgmt;
+	private ConsumationEntryManagement consumationEntryMgmt;
 
 	public ConsumationEntryDetailPage(Membership member,
 			MembershipManagement membershipMgmt, ConsumationEntry entry) {
@@ -42,13 +49,13 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 
 		entry.setConsumedBy(member);
 
-		add(new ConsumationEntryForm("form", entry));
+		add(new ConsumationEntryForm("form"));
 	}
 	
 	class ConsumationEntryForm extends Form {
 		private static final long serialVersionUID = -7480286477673641461L;
 
-		public ConsumationEntryForm(String s, final ConsumationEntry entry) {
+		public ConsumationEntryForm(String s) {
 			super(s, new CompoundPropertyModel<Object>(entry));
 			
 			final RequiredTextField<Date> date = new RequiredTextField<Date>("date");
@@ -57,21 +64,68 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 			final RequiredTextField<String> text = new RequiredTextField<String>("text");
 			add(text);
 			
+			final DropDownChoice<Consumable> availableConsumables = new DropDownChoice<Consumable>("consumedItem", consumableMgmt.getAllConsumables()) {
+				private static final long serialVersionUID = -385671748734684239L;
+
+				protected boolean wantOnSelectionChangedNotifications() {
+					return true;
+				}
+
+				protected void onSelectionChanged(final Consumable c) {
+					
+					System.out.println("-----SELECTED: " + c.getName() + "  " + c);
+					
+					entry.setText(c.getName());
+					text.setModelValue(new String[] { c.getName() } );
+					
+					entry.setPrice(c.getPricePerUnit());
+				}
+			};
+			add(availableConsumables);
+			
+			
+			
+			
+			
 			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
 			add(price);
 			
 			final RequiredTextField<Integer> quantity = new RequiredTextField<Integer>("quantity");
 			add(quantity);
 			
-			add(new Button("submit"));
-		}
+			final Button btnSaveEntry = new Button("submit", Model.of("Save")) {
+				private static final long serialVersionUID = 1L;
+				
+				public void onSubmit() {
+					em.getTransaction().begin();
+					em.persist(entry);
+					em.getTransaction().commit();
 
-		public void onSubmit() {
-			em.getTransaction().begin();
-			em.persist(entry);
-			em.getTransaction().commit();
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 2));
+				}
+				
+			};
+			add(btnSaveEntry);
+			
+			
+			final Button btnDeleteEntry = new Button("deleteEntry", Model.of("Löschen")) {
+				private static final long serialVersionUID = -9206366064931940268L;
 
-			setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+				public void onSubmit() {
+					consumationEntryMgmt.removeEntry(entry);
+					
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 2)); // Panel Buchungen laden
+				}
+			};
+			
+			if (entry.getId() > 0) {
+				btnDeleteEntry.setVisible(true);
+			}
+			else {
+				btnDeleteEntry.setVisible(false);
+			}
+			add(btnDeleteEntry);
+			
 		}
 	}
 	

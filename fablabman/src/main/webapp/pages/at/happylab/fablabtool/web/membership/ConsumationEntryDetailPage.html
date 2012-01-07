@@ -8,6 +8,10 @@
 			<fieldset class="columnar">
 				<legend>Neue Buchung</legend>
 
+				<div class="type-select">
+					<label for="">Vorlage</label> <select wicket:id="consumedItem"></select>
+				</div>
+
 				<div class="type-text">
 					<label for="">Datum</label> <input wicket:id="date" type="text">
 				</div>
@@ -26,8 +30,8 @@
 
 			</fieldset>
 
-			<input wicket:id="submit" type="submit" value="Speichern"
-				class="minimal">
+			<input wicket:id="submit" type="submit" value="Speichern" class="minimal">
+			<input wicket:id="deleteEntry" type="submit" value="Lšschen" class="minimal">
 		</form>
 	</div>
 
