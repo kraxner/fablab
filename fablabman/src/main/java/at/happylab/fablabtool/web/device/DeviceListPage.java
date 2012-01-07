@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
@@ -15,13 +14,9 @@ import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.DeviceManagement;
-import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.DeviceProvider;
-import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.model.Device;
-import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.web.access.KeycardDetailPage;
 
 public class DeviceListPage extends BasePage {
 
@@ -33,7 +28,9 @@ public class DeviceListPage extends BasePage {
 	public DeviceListPage() {
 		
 		List<IColumn<Device>> columns = new ArrayList<IColumn<Device>>();
-		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Geräte ID"), "deviceId"){
+		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Geräte ID"), "deviceId", "deviceId"){
+			private static final long serialVersionUID = 6856979945257260759L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Device k = (Device) model.getObject();
@@ -41,7 +38,9 @@ public class DeviceListPage extends BasePage {
 
 			}
 		});
-		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Name"), "name") {
+		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Name"), "name", "name") {
+			private static final long serialVersionUID = 1055679629834100798L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Device k = (Device) model.getObject();
@@ -50,6 +49,8 @@ public class DeviceListPage extends BasePage {
 			}
 		});
 		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Entfernen"), new Model<String>("delete")) {
+			private static final long serialVersionUID = -2707789802150151990L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Device k = (Device) model.getObject();
@@ -61,7 +62,9 @@ public class DeviceListPage extends BasePage {
 
 		add(new Label("deviceCount", deviceProvider.size() + " Datensätze"));
 
-		add(new Link("addDevice") {
+		add(new Link<String>("addDevice") {
+			private static final long serialVersionUID = -2569094782862144227L;
+
 			public void onClick() {
 				setResponsePage(new DeviceDetailPage(new Device()));
 			}

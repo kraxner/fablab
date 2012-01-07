@@ -1,7 +1,10 @@
 package at.happylab.fablabtool.dataprovider;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -21,8 +24,30 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 	
 	@SuppressWarnings("unchecked")
 	public Iterator<Consumable> iterator(int first, int count) {
-	return em.createQuery("FROM Consumable").setFirstResult(first)
-			.setMaxResults(count).getResultList().iterator();
+		List<Consumable> results = em.createQuery("FROM Consumable").getResultList();
+
+		Collections.sort(results, new Comparator<Consumable>() {
+			public int compare(Consumable c1, Consumable c2) {
+				int dir = getSort().isAscending() ? 1 : -1;
+
+//				if ("TimeFrom".equals(getSort().getProperty())) {
+//					return dir * (c1.get.compareTo(c2.getTimeFrom()));
+//				} else if ("TimeUntil".equals(getSort().getProperty())) {
+//					return dir * (c1.getTimeUntil().compareTo(c2.getTimeUntil()));
+//				} else if ("DayOfWeek".equals(getSort().getProperty())) {
+//					return dir * (c1.getDayOfWeek().compareTo(c2.getDayOfWeek()));
+//				} else if ("name".equals(getSort().getProperty())) {
+//					return dir * (c1.getName().compareTo(c2.getName()));
+//				} else {
+					if (c1.getId() > c2.getId())
+						return dir;
+					else
+						return -dir;
+//				}
+			}
+		});
+
+		return results.subList(first, Math.min(first+count, results.size())).iterator();
 	}
 	
 	public IModel<Consumable> model(final Consumable object) {

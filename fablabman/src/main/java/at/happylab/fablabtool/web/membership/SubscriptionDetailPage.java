@@ -17,6 +17,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
@@ -26,7 +27,7 @@ import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
-class SubscriptionDetailPage extends AdminBasePage {
+public class SubscriptionDetailPage extends AdminBasePage {
 
 	private Subscription subs;
 	private Membership member;
@@ -92,6 +93,9 @@ class SubscriptionDetailPage extends AdminBasePage {
 			final DateTextField ValidTo = new DateTextField("ValidTo");
 			enclosure.add(ValidTo);
 			add(enclosure);
+			
+			final DateTextField payedUntil = new DateTextField("payedUntil");
+			add(payedUntil);
 
 			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod", Arrays.asList(PaymentMethod.values()), new EnumChoiceRenderer<PaymentMethod>());
 			add(payMeth);
@@ -104,7 +108,7 @@ class SubscriptionDetailPage extends AdminBasePage {
 
 				public void onSubmit() {
 					subscriptionMgmt.storeSubscription(subs);
-					setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 1)); // Panel Pakete laden
 				}
 			};
 			add(btnSave);
@@ -122,6 +126,7 @@ class SubscriptionDetailPage extends AdminBasePage {
 					}
 				};
 
+				// Button nur bei einer bestehenden Subscription anzeigen
 				btnCancelCancelation.setVisible(subs.getId() > 0);
 
 				add(btnCancelCancelation);
@@ -135,6 +140,7 @@ class SubscriptionDetailPage extends AdminBasePage {
 					}
 				};
 
+				// Button nur bei einer bestehenden Subscription anzeigen
 				btnCancelCancelation.setVisible(subs.getId() > 0);
 
 				add(btnCancelCancelation);
@@ -145,7 +151,7 @@ class SubscriptionDetailPage extends AdminBasePage {
 
 				public void onSubmit() {
 					subscriptionMgmt.removeMembership(subs);
-					setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 1)); // Panel  Pakete laden
 				}
 			};
 
