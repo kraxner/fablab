@@ -15,15 +15,21 @@ public class Address implements Serializable{
 	public Address() {
 		
 	}
-	public void assign(Address a) {
-		street = a.street;
-		city = a.city;
-		zipCode = a.zipCode;
-	}
+	
 	public Address(String street, String city, String zipCode) {
 		this.street = street;
 		this.city = city;
 		this.zipCode = zipCode;
+	}
+	
+	public Address(Address a) {
+		this(a.getStreet(), a.getCity(), a.getZipCode());
+	}
+	
+	public void assign(Address a) {
+		street = a.street;
+		city = a.city;
+		zipCode = a.zipCode;
 	}
 	
 	public String getStreet() {

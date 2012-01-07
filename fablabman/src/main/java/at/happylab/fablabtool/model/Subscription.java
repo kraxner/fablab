@@ -106,5 +106,16 @@ public class Subscription implements Serializable{
 	public void setBookedBy(Membership bookedBy) {
 		this.bookedBy = bookedBy;
 	}
+	
+	public void createEntries(Date end) {
+		
+		// validFrom
+		// validTo
+		// payedUntil
+		
+		// booksPackage.billingCycle
+		// priceOverruled
+		
+	}
 
 }

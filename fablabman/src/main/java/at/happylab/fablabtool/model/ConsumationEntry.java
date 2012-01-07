@@ -35,6 +35,9 @@ public class ConsumationEntry implements Serializable{
 	
 	@ManyToOne
 	private Membership consumedBy;
+	
+	@ManyToOne(optional=true)
+	private Invoice invoice;
 
 	// initialize with default values
 	public ConsumationEntry() {
@@ -102,5 +105,11 @@ public class ConsumationEntry implements Serializable{
 		this.consumedBy = consumedBy;
 	}
 	
-
+	public Invoice getInvoice() {
+		return invoice;
+	}
+	
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
 }

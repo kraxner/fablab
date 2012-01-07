@@ -2,6 +2,7 @@ package at.happylab.fablabtool.web.membership;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,8 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.extensions.model.AbstractCheckBoxModel;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -30,6 +33,7 @@ import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.CheckBoxColumn;
 
@@ -126,12 +130,17 @@ public class EntryPanel extends Panel {
 			super(s, new CompoundPropertyModel<Object>(invoice));
 			
 			add(new RequiredTextField<String>("recipient"));
-			add(new RequiredTextField<String>("Address.street"));
-			add(new RequiredTextField<String>("Address.city"));
-			add(new RequiredTextField<String>("Address.zipCode"));
+			add(new RequiredTextField<String>("address.street"));
+			add(new RequiredTextField<String>("address.city"));
+			add(new RequiredTextField<String>("address.zipCode"));
 			add(new RequiredTextField<String>("date"));
 			add(new RequiredTextField<String>("dueDate"));
-						
+			
+			DropDownChoice<PaymentMethod> payMeth = new DropDownChoice<PaymentMethod>("paymentMethod",
+            		Arrays.asList(PaymentMethod.values()),
+            		new EnumChoiceRenderer<PaymentMethod>(this));
+            add(payMeth);
+            
 			add(new Button("submit"));
 		}
 		

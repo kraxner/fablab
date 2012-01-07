@@ -15,6 +15,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.form.TextField;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
@@ -98,7 +100,36 @@ public class SubscriptionPanel extends Panel {
         });
 
 		add(form);
+		
+		add(new CreateEntriesForm("createEntries"));
+	}
+	
+	private class CreateEntriesForm extends Form<Object> {
+		private static final long serialVersionUID = 1L;
+		
+		private Date accountUntil;
+		
+		public CreateEntriesForm(String id) {
+			super(id);
+			
+			add(new TextField<Date>("accountUntil", new PropertyModel(this, "accountUntil")));
+		}
+		
+		public void onSubmit() {
+			// foreach Subscription of member
+			//   (?) ConsumationEntry e = subscription.createEntry();
+			
+			
+		}
+		
+		public Date getAccountUntil() {
+			return accountUntil;
+		}
 
+		public void setAccountUntil(Date accountUntil) {
+			this.accountUntil = accountUntil;
+		}
+		
 	}
 
 }

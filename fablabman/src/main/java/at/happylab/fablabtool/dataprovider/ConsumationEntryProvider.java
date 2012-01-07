@@ -52,7 +52,7 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 				return inv.getIncludesConsumationEntries().iterator();
 			}
 			else {
-				return em.createQuery("FROM ConsumationEntry WHERE consumedBy_id = " + member.getId()).setFirstResult(first)
+				return em.createQuery("FROM ConsumationEntry WHERE invoice_id is NULL AND consumedBy_id = " + member.getId()).setFirstResult(first)
 						.setMaxResults(count).getResultList().iterator();
 			}
 		}

@@ -1,6 +1,8 @@
 package at.happylab.fablabtool.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,24 +62,34 @@ public class Invoice implements Serializable{
 	@ManyToOne
 	private Membership relatedTo;
 	
-	@OneToMany
+	@OneToMany(mappedBy="invoice")
 	private List<ConsumationEntry> includesConsumationEntries;
 	
 	@Enumerated(EnumType.STRING)
 	private InvoiceState state;
 	
 	public Invoice(){
+		includesConsumationEntries = new ArrayList<ConsumationEntry>();
+		state = InvoiceState.OPEN;
 		
+		date = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 14); // TODO: Anzahl der Tage einstellbar machen
+		dueDate = cal.getTime();
 	}
 	
 	public Invoice (Membership member) {
+		this();
 		
-		this.setRelatedTo(member);
+		setRelatedTo(member);
 		
-		// copy default values from member
-		recipient = member.getName();
-		address = member.getAddress();
-		date = new Date();
+		// Copy default values from member
+		setRecipient(member.getName());
+		setPaymentMethod(member.getPaymentMethod());
+		//setAddress(new Address(member.getAddress()));
+
+	
 	}
 
 	public long getId() {
@@ -180,9 +192,28 @@ public class Invoice implements Serializable{
 		return includesConsumationEntries;
 	}
 
-	public void setIncludesConsumationEntries(
-			List<ConsumationEntry> includesConsumationEntries) {
-		this.includesConsumationEntries = includesConsumationEntries;
+	public void setIncludesConsumationEntries(List<ConsumationEntry> includesConsumationEntries) {
+		
+		// remove old Entries
+		final List<ConsumationEntry> clone = new ArrayList<ConsumationEntry>(includesConsumationEntries);
+		for (ConsumationEntry e : clone) {
+			removeConsumationEntry(e);
+		}
+		
+		// add new Entries
+		for (ConsumationEntry e : includesConsumationEntries) {
+			addConsumationEntry(e);
+		}
+	}
+	
+	public void addConsumationEntry(ConsumationEntry e) {
+		getIncludesConsumationEntries().add(e);
+		e.setInvoice(this);
+	}
+	
+	public void removeConsumationEntry(ConsumationEntry e) {
+		getIncludesConsumationEntries().remove(e);
+		e.setInvoice(null);
 	}
 	
 	public InvoiceState getState() {

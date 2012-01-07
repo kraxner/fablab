@@ -14,21 +14,21 @@
 <fieldset class="columnar">
 	<legend>Rechnungsdaten</legend>
 	<div class="type-text">
-		<label for="">Empf&auml;nger</label>
+		<label for="recipient">Empf&auml;nger</label>
 		<input wicket:id="recipient" type="text" size="50" name="recipient">
 	</div>
 	
 	<div class="type-text">
 		<label for="">Stra&szlig;e/Hausnummer</label>
-		<input wicket:id="Address.street" type="text" size="50" name="street">
-	</div>
-	<div class="type-text">
-		<label for="">Ort</label>
-		<input wicket:id="Address.city" type="text" size="50" name="city">
+		<input wicket:id="address.street" type="text" size="50" name="street">
 	</div>
 	<div class="type-text">
 		<label for="">Postleitzahl</label>
-		<input wicket:id="Address.zipCode" type="text" size="50" name="zipCode">
+		<input wicket:id="address.zipCode" type="text" size="50" name="zipCode">
+	</div>
+	<div class="type-text">
+		<label for="">Ort</label>
+		<input wicket:id="address.city" type="text" size="50" name="city">
 	</div>
 	
 	<div class="type-text">
@@ -40,32 +40,9 @@
 		<input wicket:id="dueDate" type="text" size="50" name="dueDate">
 	</div>
 	<div class="type-select">
-		<label for="txtPayment">Zahlungsart</label>
-		<select name="txtPayment" id="txtPayment">
-			<option value="Lastschrift">Lastschrift</option>
-			<option value="bar">Bar</option>
-			<option value="Rechnung">Rechnung</option>
-		</select>
+		<label for="paymentMethod">Zahlungsart</label>
+		<select wicket:id="paymentMethod" name="txtPayment" id="paymentMethod"></select>
 	</div>
-	<div id="fldKontodaten">
-		<div class="type-text">
-			<label for="">Kontoinhaber</label>
-			<input type="text" size="50" name="txtAccountOwner">
-		</div>
-		<div class="type-text">
-			<label for="">Kontonummer</label>
-			<input type="text" size="50" name="txtBankAccountNo">
-		</div>
-		<div class="type-text">
-			<label for="">BLZ</label>
-			<input type="text" size="50" name="txtBankName">
-		</div>
-		<div class="type-text">
-			<label for="">Bank</label>
-			<input type="text" size="50" name="txtBankID">
-		</div>
-	</div>
-	
 	<div class="type-text">
 		<label for="">Anmerkung<br><small>(wird auf Rechnung gedruckt)</small></label>
 		<textarea name="txtCompanyAddress" cols="50" rows="4"></textarea>
