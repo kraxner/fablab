@@ -33,18 +33,6 @@ public class ConsumableManagement implements Serializable {
 		return em.createQuery("from Consumable", Consumable.class).getResultList();
 
 	}
-	
-	public List<SelectOption> getAllPackagesForDropDown() {
-		List<Package> results = em.createQuery("from Consumable", Package.class).getResultList();
-
-		List<SelectOption> selectOptions = new ArrayList<SelectOption>();
-
-		for (Package p : results) {
-			selectOptions.add(new SelectOption<Package>(p, p.getName()));
-		}
-
-		return selectOptions;
-	}
 
 
 }

@@ -22,6 +22,10 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 	@Inject
 	private EntityManager em;
 	
+	public ConsumableProvider() {
+		setSort("name", true);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Iterator<Consumable> iterator(int first, int count) {
 		List<Consumable> results = em.createQuery("FROM Consumable").getResultList();
@@ -30,20 +34,18 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 			public int compare(Consumable c1, Consumable c2) {
 				int dir = getSort().isAscending() ? 1 : -1;
 
-//				if ("TimeFrom".equals(getSort().getProperty())) {
-//					return dir * (c1.get.compareTo(c2.getTimeFrom()));
-//				} else if ("TimeUntil".equals(getSort().getProperty())) {
-//					return dir * (c1.getTimeUntil().compareTo(c2.getTimeUntil()));
-//				} else if ("DayOfWeek".equals(getSort().getProperty())) {
-//					return dir * (c1.getDayOfWeek().compareTo(c2.getDayOfWeek()));
-//				} else if ("name".equals(getSort().getProperty())) {
-//					return dir * (c1.getName().compareTo(c2.getName()));
-//				} else {
+				if ("name".equals(getSort().getProperty())) {
+					return dir * (c1.getName().compareTo(c2.getName()));
+				} else if ("pricePerUnit".equals(getSort().getProperty())) {
+					return dir * (c1.getPricePerUnit().compareTo(c2.getPricePerUnit()));
+				} else if ("unit".equals(getSort().getProperty())) {
+					return dir * (c1.getUnit().compareTo(c2.getUnit()));
+				} else {
 					if (c1.getId() > c2.getId())
 						return dir;
 					else
 						return -dir;
-//				}
+				}
 			}
 		});
 

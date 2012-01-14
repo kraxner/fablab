@@ -15,9 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.dataprovider.ConsumableProvider;
-import at.happylab.fablabtool.dataprovider.PackageProvider;
 import at.happylab.fablabtool.model.Consumable;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class ConsumableListPage extends BasePage {
@@ -28,18 +26,14 @@ public class ConsumableListPage extends BasePage {
 	public ConsumableListPage() {
 		navigation.selectStammdaten();
 
-		List<IColumn<Consumable>> columns = new
-				ArrayList<IColumn<Consumable>>();
-		columns.add(new PropertyColumn<Consumable>(new Model<String>("ID"), "id",
-				"id"));
-		columns.add(new PropertyColumn<Consumable>(new Model<String>("Name"),
-				"name", "name"));
-		columns.add( new PropertyColumn<Consumable>(new Model<String>("Preis pro Einheit"),
-				"pricePerUnit", "pricePerUnit"));
-		columns.add(new PropertyColumn<Consumable>(new Model<String>("Einheit"),
-				"unit", "unit"));
-		columns.add(new LinkPropertyColumn<Consumable>(new Model<String>(
-				"Bearbeiten"), new Model<String>("edit")) {
+		List<IColumn<Consumable>> columns = new ArrayList<IColumn<Consumable>>();
+		columns.add(new PropertyColumn<Consumable>(new Model<String>("ID"), "id", "id"));
+		columns.add(new PropertyColumn<Consumable>(new Model<String>("Name"), "name", "name"));
+		columns.add(new PropertyColumn<Consumable>(new Model<String>("Preis pro Einheit"), "pricePerUnit", "pricePerUnit"));
+		columns.add(new PropertyColumn<Consumable>(new Model<String>("Einheit"), "unit", "unit"));
+		columns.add(new LinkPropertyColumn<Consumable>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
+			private static final long serialVersionUID = -523422943144381848L;
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Consumable cons = (Consumable) model.getObject();
@@ -50,14 +44,16 @@ public class ConsumableListPage extends BasePage {
 
 		DefaultDataTable<Consumable> table = new DefaultDataTable<Consumable>("consumableTable", columns, consumableProvider, 5);
 		add(table);
-		
+
 		add(new Label("consumableCount", consumableProvider.size() + " Datensätze"));
 
-		add(new Link("addConsumable") {
-            public void onClick() {
-                setResponsePage(new ConsumableAddPage(new Consumable()));
-            }
-        });
+		add(new Link<String>("addConsumable") {
+			private static final long serialVersionUID = 877465087033681295L;
+
+			public void onClick() {
+				setResponsePage(new ConsumableAddPage(new Consumable()));
+			}
+		});
 
 	}
 

@@ -47,5 +47,8 @@ public class Consumable implements Serializable{
 		this.unit = unit;
 	}
 	
+	public String toString() {
+		return this.name;
+	}
 
 }

@@ -1,9 +1,7 @@
 package at.happylab.fablabtool.web.access;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -14,9 +12,7 @@ import org.apache.wicket.extensions.model.AbstractCheckBoxModel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -25,7 +21,9 @@ import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.AccessGrantProvider;
 import at.happylab.fablabtool.model.AccessGrant;
+import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.KeyCard;
+import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.CheckBoxColumn;
 import at.happylab.fablabtool.web.util.DateTimeColumn;
@@ -44,7 +42,8 @@ public class AccessGrantListPage extends BasePage {
 
 	/**
 	 * I kc is null the ordinary list for the accesstime administration is
-	 * presented. If not null, a table with a checkbox column is presented to the user to select access times for the Keycard.
+	 * presented. If not null, a table with a checkbox column is presented to
+	 * the user to select access times for the Keycard.
 	 * 
 	 * @param kc
 	 *            Keycard or null
@@ -66,7 +65,7 @@ public class AccessGrantListPage extends BasePage {
 		public AccessGrantTableForm(String id) {
 			super(id);
 
-			ArrayList<IColumn<AccessGrant>> columns = new ArrayList<IColumn<AccessGrant>>();
+			ArrayList<IColumn> columns = new ArrayList<IColumn>();
 
 			if (keycard != null)
 				columns.add(new CheckBoxColumn<AccessGrant>(Model.of("")) {
@@ -108,7 +107,7 @@ public class AccessGrantListPage extends BasePage {
 				columns.add(new PropertyColumn<AccessGrant>(new Model<String>("ID"), "id", "id"));
 
 			columns.add(new PropertyColumn<AccessGrant>(new Model<String>("Name"), "name", "name"));
-			columns.add(new PropertyColumn<AccessGrant>(new Model<String>("Wochentag"), "DayOfWeek", "DayOfWeek"));
+			columns.add(new EnumPropertyColumn<DayOfWeek>(new Model<String>("Wochentag"), "DayOfWeek", "DayOfWeek", DayOfWeek.class, this));
 			columns.add(new DateTimeColumn<AccessGrant>(new Model<String>("Von"), "TimeFrom", "HH:mm"));
 			columns.add(new DateTimeColumn<AccessGrant>(new Model<String>("Bis"), "TimeUntil", "HH:mm"));
 
@@ -133,11 +132,11 @@ public class AccessGrantListPage extends BasePage {
 				});
 			}
 
-			DefaultDataTable<AccessGrant> table = new DefaultDataTable<AccessGrant>("AccessGrantTable", columns, accessGrantProvider, 5);
+			DefaultDataTable<AccessGrant> table = new DefaultDataTable("AccessGrantTable", columns, accessGrantProvider, 5);
 			add(table);
 
 			if (keycard == null)
-				add(new Button("submit",Model.of("Neue Zugangszeit")));
+				add(new Button("submit", Model.of("Neue Zugangszeit")));
 			else
 				add(new Button("submit", Model.of("Hinzufügen")));
 		}
