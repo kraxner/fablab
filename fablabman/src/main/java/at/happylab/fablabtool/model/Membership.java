@@ -24,7 +24,7 @@ public class Membership implements Serializable{
 	@Id @GeneratedValue
 	private long id;
 
-	@GeneratedValue
+	@GeneratedValue()
 	private long memberId;
 	
 	@Enumerated(EnumType.STRING)
@@ -42,7 +42,7 @@ public class Membership implements Serializable{
 	private DebitInfo bankDetails;
 	
 	@Embedded
-	private Address address;
+	private Address companyAddress;
 	
 	private String comment;
 	
@@ -81,7 +81,12 @@ public class Membership implements Serializable{
 	private List<User> users = new ArrayList<User>();
 	
 	public Membership() {
-		
+		companyAddress = new Address();
+		type = MembershipStatus.REGULAR;
+		paymentMethod = PaymentMethod.CASH_IN_ADVANCE;
+		bankDetails = new DebitInfo();
+		membershipType = MembershipType.PRIVATE;
+		entryDate = new Date();
 	}
 	
 	/**
@@ -141,13 +146,21 @@ public class Membership implements Serializable{
 	
 	/**
 	 * Returns the address associated to this membership
-	 * - for business memberships this is the 
-	 * - for non-profit memberships this is the User#get 
+	 * - for business memberships this is {@link #companyAddress} 
+	 * - for non-profit memberships this is the {@link User#getAddress()}
 	 * @return
 	 */
-//	public Address getAddress(){
-//		
-//	}
+	public Address getAddress(){
+		if (membershipType == MembershipType.BUSINESS) {
+			return companyAddress;
+		} else {
+			if (users.size()>0) {
+				return users.get(0).getAddress();
+			} else {
+				return null;
+			}
+		}
+	}
 
 	/**
 	 * Adjusts the number of {@link #maxUser} according to the type of the membership.
@@ -173,7 +186,7 @@ public class Membership implements Serializable{
 		entryDate = new Date(m.entryDate.getTime());
 		leavingDate = new Date(m.leavingDate.getTime());
 		bankDetails.assign(m.bankDetails);
-		address.assign(m.address);
+		companyAddress.assign(m.companyAddress);
 		comment = m.comment;
 		internalComment = m.internalComment;
 		maxUser = m.maxUser;
@@ -274,13 +287,13 @@ public class Membership implements Serializable{
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-	public Address getAddress() {
-		return address;
+
+	public void setCompanyAddress(Address address) {
+		this.companyAddress = address;
 	}
-	public void setAddress(Address address) {
-		this.address = address;
+	public Address getCompanyAddress() {
+		return companyAddress;
 	}
-	
 	/**
 	 * adds the user to this membership
 	 * 
