@@ -4,13 +4,9 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.Device;
-import at.happylab.fablabtool.model.KeyCard;
-import at.happylab.fablabtool.model.Package;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;

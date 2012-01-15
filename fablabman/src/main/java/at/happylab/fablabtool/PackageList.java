@@ -14,21 +14,29 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.dataprovider.PackageProvider;
+import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.access.KeycardListPage;
+import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class PackageList extends BasePage {
 
 	@Inject
 	PackageProvider packageProvider;
+	@Inject
+	PackageManagement packageMgmt;
+	
 
 	public PackageList() {
 		navigation.selectStammdaten();
 
+		@SuppressWarnings("rawtypes")
 		List<IColumn> columns = new ArrayList<IColumn>();
 		columns.add(new PropertyColumn<Package>(new Model<String>("ID"), "id", "id"));
 		columns.add(new PropertyColumn<Package>(new Model<String>("Name"), "name", "name"));
@@ -40,6 +48,7 @@ public class PackageList extends BasePage {
 		columns.add(new LinkPropertyColumn<Package>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = -302452659162757001L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Package p = (Package) model.getObject();
@@ -47,7 +56,34 @@ public class PackageList extends BasePage {
 
 			}
 		});
+		columns.add(new LinkPropertyColumn<Package>(new Model<String>("Entfernen"), new Model<String>("delete")) {
+			private static final long serialVersionUID = -302452659162757001L;
 
+			@SuppressWarnings("rawtypes")
+			@Override
+			public void onClick(Item item, String componentId, final IModel model) {
+				setResponsePage(new ConfirmDeletePage("Wollen sie dieses Paket wirklich löschen?") {
+					private static final long serialVersionUID = 215242593335920710L;
+
+					@Override
+					protected void onConfirm() {
+						Package p = (Package) model.getObject();
+						packageMgmt.removePackage(p);
+						
+						setResponsePage(PackageList.this);
+					}
+
+					@Override
+					protected void onCancel() {
+						setResponsePage(PackageList.this);
+					}
+
+				});
+				
+			}
+		});
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		DefaultDataTable<Package> table = new DefaultDataTable("packageTable", columns, packageProvider, 5);
 		add(table);
 

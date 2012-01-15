@@ -26,6 +26,7 @@ import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.CheckBoxColumn;
+import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 import at.happylab.fablabtool.web.util.DateTimeColumn;
 
 public class AccessGrantListPage extends BasePage {
@@ -34,7 +35,6 @@ public class AccessGrantListPage extends BasePage {
 	AccessGrantProvider accessGrantProvider;
 	@Inject
 	AccessGrantManagement accessGrantMgmt;
-
 	@Inject
 	KeycardManagement keycardMgmt;
 
@@ -52,11 +52,8 @@ public class AccessGrantListPage extends BasePage {
 
 		this.keycard = kc;
 
-		Form<AccessGrant> form = new AccessGrantTableForm("form");
-
-		form.add(new Label("AccessGrantCount", accessGrantProvider.size() + " Datensätze"));
-
-		add(form);
+		add(new AccessGrantTableForm("form"));
+		
 	}
 
 	class AccessGrantTableForm extends Form<AccessGrant> {
@@ -65,6 +62,7 @@ public class AccessGrantListPage extends BasePage {
 		public AccessGrantTableForm(String id) {
 			super(id);
 
+			@SuppressWarnings("rawtypes")
 			ArrayList<IColumn> columns = new ArrayList<IColumn>();
 
 			if (keycard != null)
@@ -115,6 +113,7 @@ public class AccessGrantListPage extends BasePage {
 				columns.add(new LinkPropertyColumn<AccessGrant>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 					private static final long serialVersionUID = 7317382835422354117L;
 
+					@SuppressWarnings("rawtypes")
 					@Override
 					public void onClick(Item item, String componentId, IModel model) {
 						AccessGrant ag = (AccessGrant) model.getObject();
@@ -124,16 +123,34 @@ public class AccessGrantListPage extends BasePage {
 				columns.add(new LinkPropertyColumn<AccessGrant>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 					private static final long serialVersionUID = -3524734341372805625L;
 
+					@SuppressWarnings("rawtypes")
 					@Override
-					public void onClick(Item item, String componentId, IModel model) {
-						AccessGrant ag = (AccessGrant) model.getObject();
-						accessGrantMgmt.removeAccessGrant(ag);
+					public void onClick(Item item, String componentId, final IModel model) {
+						setResponsePage(new ConfirmDeletePage("Wollen sie diese Zugangszeit wirklich löschen?") {
+							private static final long serialVersionUID = 215242593335920710L;
+
+							@Override
+							protected void onConfirm() {
+								AccessGrant ag = (AccessGrant) model.getObject();
+								accessGrantMgmt.removeAccessGrant(ag);
+								
+								setResponsePage(AccessGrantListPage.this);
+							}
+
+							@Override
+							protected void onCancel() {
+								setResponsePage(AccessGrantListPage.this);
+							}
+						});
 					}
 				});
 			}
 
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			DefaultDataTable<AccessGrant> table = new DefaultDataTable("AccessGrantTable", columns, accessGrantProvider, 5);
 			add(table);
+			
+			add(new Label("AccessGrantCount", accessGrantProvider.size() + " Datensätze"));
 
 			if (keycard == null)
 				add(new Button("submit", Model.of("Neue Zugangszeit")));

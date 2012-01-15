@@ -6,22 +6,19 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.model.Consumable;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class ConsumationEntryDetailPage extends AdminBasePage {
@@ -49,14 +46,19 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 
 		entry.setConsumedBy(member);
 
+		if (entry.getId() == 0)
+			add(new Label("pageHeader", "Neue Buchung"));
+		else
+			add(new Label("pageHeader", "Buchung bearbeiten"));
+		
 		add(new ConsumationEntryForm("form"));
 	}
 	
-	class ConsumationEntryForm extends Form {
+	class ConsumationEntryForm extends Form<ConsumationEntry> {
 		private static final long serialVersionUID = -7480286477673641461L;
 
 		public ConsumationEntryForm(String s) {
-			super(s, new CompoundPropertyModel<Object>(entry));
+			super(s);
 			
 			final RequiredTextField<Date> date = new RequiredTextField<Date>("date");
 			add(date);
