@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
@@ -28,6 +29,8 @@ public class ConsumableAddPage extends BasePage {
 			add(new Label("pageHeader", "Neues Consumable"));
 		else
 			add(new Label("pageHeader", "Consumable bearbeiten"));
+		
+		add(new FeedbackPanel("feedback"));
 
 		add(new ConsumableForm("form", cons));
 	}
