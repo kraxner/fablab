@@ -31,9 +31,9 @@
 		<cdi.api.version>1.0-SP4</cdi.api.version>
 		<resteasy.version>2.2.1.GA</resteasy.version>
 		<hibernate.version>3.6.8.Final</hibernate.version>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	
 	<repositories>
 	    <repository>
 	      <id>org.jboss</id>
@@ -235,6 +235,7 @@
 				</excludes>
 			</testResource>
 		</testResources>
+
 		<plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -287,6 +288,22 @@
                <skip>true</skip>
             </configuration>
          </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-eclipse-plugin</artifactId>
+	        <version>2.6</version>
+	        <configuration>
+	          <additionalConfig>
+	            <file>
+	              <name>.settings/org.eclipse.core.resources.prefs</name>
+	              <content>
+	                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+	              </content>
+	            </file>
+	          </additionalConfig>
+	        </configuration>
+	      </plugin>
+         
       </plugins>
 		<pluginManagement>
 			<plugins>
