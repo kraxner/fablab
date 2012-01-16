@@ -1,10 +1,9 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
+import org.apache.log4j.Logger;
 import at.happylab.fablabtool.model.ConsumationEntry;
 
 public class ConsumationEntryManagement implements Serializable {
@@ -22,20 +21,14 @@ public class ConsumationEntryManagement implements Serializable {
 
 	}
 
-/*
-	public void storeSubscription(Subscription subscription) {
+	public void storeConsumationEntry(ConsumationEntry entry) {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
-		em.persist(subscription);
+		em.persist(entry);
 		em.getTransaction().commit();
-		Logger.getLogger("SubscriptionManagement").info(
-				"number of Subscriptions: "
-						+ String.valueOf(em.createQuery(
-								"select count(m) from Subscription m ")
-								.getSingleResult()));
+		Logger.getLogger("ConsumationEntryManagement").info("number of ConsumationEntry: " + String.valueOf(em.createQuery("select count(e) from ConsumationEntry e").getSingleResult()));
 	}
-*/
 
 	public void removeEntry(ConsumationEntry entry) {
 		if (!em.getTransaction().isActive()) {
@@ -43,6 +36,10 @@ public class ConsumationEntryManagement implements Serializable {
 		}
 		em.remove(entry);
 		em.getTransaction().commit();
-	}	
+	}
+	
+	public ConsumationEntry loadConsumationEntry(long id) {
+		return em.find(ConsumationEntry.class, id);
+	}
 
 }
