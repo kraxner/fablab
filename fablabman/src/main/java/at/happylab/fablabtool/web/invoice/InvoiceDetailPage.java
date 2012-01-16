@@ -135,7 +135,7 @@ public class InvoiceDetailPage extends WebPage{
 		add(new Label("paymeth", new PropertyModel(this,"payMethod")));
 		add(new Label("iban", new PropertyModel(this,"iban")));
 		add(new Label("bic", new PropertyModel(this,"bic")));
-		add(new Label("comment", new PropertyModel(this,"comment")));
+		add(new Label("comment", new PropertyModel<Invoice>(inv,"comment")));
 	}
 	
 //	private void init() {	
