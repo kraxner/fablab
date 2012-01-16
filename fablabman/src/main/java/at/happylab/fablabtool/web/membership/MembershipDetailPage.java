@@ -6,13 +6,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.markup.html.tabs.AjaxTabbedPanelWithContext;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
@@ -78,7 +78,15 @@ public class MembershipDetailPage extends AdminBasePage {
 			  }
 		   });
 		
-		AjaxTabbedPanel panel = new AjaxTabbedPanel("tabs", tabs);		
+		tabs.add(new AbstractTab(new Model<String>("Interne Kommentare")) {
+			private static final long serialVersionUID = 1L;
+
+			public Panel getPanel(String panelId) {
+				return new InternalCommentsPanel(panelId, member, membershipMgmt);
+			}
+		});
+		AjaxTabbedPanelWithContext panel = new AjaxTabbedPanelWithContext("tabs", tabs, new Model<String>(member.getName()));
+
 		add(panel);
 		panel.setSelectedTab(tab);
 	}

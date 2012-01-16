@@ -12,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +47,7 @@ public class Membership implements Serializable{
 	
 	private String comment;
 	
+	@Lob
 	private String internalComment;
 	
 	/**
@@ -86,6 +88,7 @@ public class Membership implements Serializable{
 		paymentMethod = PaymentMethod.CASH_IN_ADVANCE;
 		bankDetails = new DebitInfo();
 		membershipType = MembershipType.PRIVATE;
+		maxUser = 1;
 		entryDate = new Date();
 	}
 	

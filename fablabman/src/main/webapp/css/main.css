@@ -84,7 +84,13 @@ div.tabpanel div.tab-row ul {
   padding:10px 10px 0;
   list-style:none;
   }
-  
+
+div.tabpanel div.tab-row li.contextinfo {
+  float:right;
+  padding; 0 9px 0 9px;
+  font-weight:bold;  
+  }
+
 div.tabpanel div.tab-row li {
   float:left;
   margin:0;
@@ -99,6 +105,7 @@ div.tabpanel div.tab-row a {
   white-space:nowrap;
   color:#eee;
   }
+  
   
 div.tab-panel {
 	clear: left;

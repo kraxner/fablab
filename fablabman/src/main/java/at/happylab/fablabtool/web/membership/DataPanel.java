@@ -282,7 +282,7 @@ public class DataPanel extends Panel{
 					membershipMgmt.storeMembership(member);
 					//setResponsePage(new MitgliedDatenPage(member, membershipMgmt));
 					//setResponsePage(new MitgliederPage());
-					setResponsePage(MembershipListPage.class);
+//					setResponsePage(MembershipListPage.class);
 				}
 			});
 		}
