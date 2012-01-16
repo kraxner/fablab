@@ -149,7 +149,7 @@ public class InvoicePanel extends Panel {
 					for(ConsumationEntry ce : inv.getIncludesConsumationEntries()){
 						sum = sum.add(ce.getSum());
 					}
-					item.add(new Label(componentId, "€ " + sum.toString()));
+					item.add(new Label(componentId, sum.toString()));
 				}
 			};
 			columns[2] = new DropDownColumn<PaymentMethod>(new Model<String>("Zahlungsart"), "paymentMethod", "paymentMethod", PaymentMethod.class);

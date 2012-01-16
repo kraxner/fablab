@@ -75,10 +75,10 @@ public class InvoiceDetailPage extends WebPage{
 		bic = "";
 		
 		consEntrOfInvoice.setInvoice(inv);
-		init2();
+		init();
 	}
 
-	private void init2(){
+	private void init(){
 		//add(new Image("logo", new Model<String>("img/innoc2.JPG")));
 		
 		add(new Label("recipient", new PropertyModel<Invoice>(inv,"recipient")));
@@ -135,78 +135,79 @@ public class InvoiceDetailPage extends WebPage{
 		add(new Label("paymeth", new PropertyModel(this,"payMethod")));
 		add(new Label("iban", new PropertyModel(this,"iban")));
 		add(new Label("bic", new PropertyModel(this,"bic")));
+		add(new Label("comment", new PropertyModel(this,"comment")));
 	}
 	
-	private void init() {	
-		Form<String> form = new Form<String>("main");
-
-		IColumn[] columns = new IColumn[7];
-		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id");
-		columns[1] = new PropertyColumn(new Model<String>("Datum"), "date", "date");
-		columns[2] = new PropertyColumn(new Model<String>("Preis"), "price", "price");
-		columns[3] = new PropertyColumn(new Model<String>("Anzahl"), "quantity", "quantity");
-		columns[4] = new PropertyColumn(new Model<String>("Bezeichnung"), "text", "text");
-		columns[5] = new PropertyColumn(new Model<String>("consumedby_id"), "consumedBy", "consumedBy");
-		columns[6] = new PropertyColumn(new Model<String>("consumeditem:id"), "consumedItem", "consumedItem");
-
-		form.add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
-		
-		form.add(new Label("consEntrCount", consEntrOfInvoice.size() + " Datens�tze"));
-
-		add(form);
-		add(new InvForm("form", inv));
-	}
-	
-	class InvForm extends Form<Object>{
-
-		private static final long serialVersionUID = 2780639970765950200L;
-
-		public InvForm(String s, final Invoice inv) {
-			super(s, new CompoundPropertyModel<Object>(inv));
-			
-			add(new TextField<Object>("id").setEnabled(false));
-			add(new TextField<Object>("date").setEnabled(false));
-			add(new TextField<Object>("dueDate").setEnabled(false));
-			add(new TextField<Object>("recipient").setEnabled(false));
-			add(new TextField<Object>("Address.street").setEnabled(false));
-			add(new TextField<Object>("Address.city").setEnabled(false));
-			add(new TextField<Object>("Address.zipCode").setEnabled(false));
-			add(new TextField<Object>("generatedAt").setEnabled(false));
-			add(new TextField<Object>("settlementPeriodFrom").setEnabled(false));
-			add(new TextField<Object>("settlementPeriodTo").setEnabled(false));
-			add(new TextField<Object>("paymentMethod").setEnabled(false));
-			add(new TextField<Object>("payedAt").setEnabled(false));
-			add(new TextArea<Object>("comment").setEnabled(false));
-
-			DropDownChoice<InvoiceState> invState = new DropDownChoice<InvoiceState>("state");
-			invState.setChoices(new LoadableDetachableModel<List<InvoiceState>>() {
-
-				private static final long serialVersionUID = 4565611533591204089L;
-
-				public List<InvoiceState> load() {
-                    List<InvoiceState> list = new ArrayList<InvoiceState>(3);
-                    list.add(InvoiceState.OPEN);
-                    list.add(InvoiceState.PAID);
-                    list.add(InvoiceState.CANCELLED);
-                    return list;
-                }
-            });
-            add(invState);
-			
-			add(new Button("submit"));
-			Button cancel = new Button("cancel"){
-				private static final long serialVersionUID = 7607265405984709816L;
-				public void onSubmit() {
-                	setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
-                }
-            };
-            cancel.setDefaultFormProcessing(false);
-            add(cancel);
-		}
-
-		public void onSubmit() {
-			invoiceMgmt.storeInvoice(inv);
-			setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
-		}
-	}
+//	private void init() {	
+//		Form<String> form = new Form<String>("main");
+//
+//		IColumn[] columns = new IColumn[7];
+//		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id");
+//		columns[1] = new PropertyColumn(new Model<String>("Datum"), "date", "date");
+//		columns[2] = new PropertyColumn(new Model<String>("Preis"), "price", "price");
+//		columns[3] = new PropertyColumn(new Model<String>("Anzahl"), "quantity", "quantity");
+//		columns[4] = new PropertyColumn(new Model<String>("Bezeichnung"), "text", "text");
+//		columns[5] = new PropertyColumn(new Model<String>("consumedby_id"), "consumedBy", "consumedBy");
+//		columns[6] = new PropertyColumn(new Model<String>("consumeditem:id"), "consumedItem", "consumedItem");
+//
+//		form.add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
+//		
+//		form.add(new Label("consEntrCount", consEntrOfInvoice.size() + " Datens�tze"));
+//
+//		add(form);
+//		add(new InvForm("form", inv));
+//	}
+//	
+//	class InvForm extends Form<Object>{
+//
+//		private static final long serialVersionUID = 2780639970765950200L;
+//
+//		public InvForm(String s, final Invoice inv) {
+//			super(s, new CompoundPropertyModel<Object>(inv));
+//			
+//			add(new TextField<Object>("id").setEnabled(false));
+//			add(new TextField<Object>("date").setEnabled(false));
+//			add(new TextField<Object>("dueDate").setEnabled(false));
+//			add(new TextField<Object>("recipient").setEnabled(false));
+//			add(new TextField<Object>("Address.street").setEnabled(false));
+//			add(new TextField<Object>("Address.city").setEnabled(false));
+//			add(new TextField<Object>("Address.zipCode").setEnabled(false));
+//			add(new TextField<Object>("generatedAt").setEnabled(false));
+//			add(new TextField<Object>("settlementPeriodFrom").setEnabled(false));
+//			add(new TextField<Object>("settlementPeriodTo").setEnabled(false));
+//			add(new TextField<Object>("paymentMethod").setEnabled(false));
+//			add(new TextField<Object>("payedAt").setEnabled(false));
+//			add(new TextArea<Object>("comment").setEnabled(false));
+//
+//			DropDownChoice<InvoiceState> invState = new DropDownChoice<InvoiceState>("state");
+//			invState.setChoices(new LoadableDetachableModel<List<InvoiceState>>() {
+//
+//				private static final long serialVersionUID = 4565611533591204089L;
+//
+//				public List<InvoiceState> load() {
+//                    List<InvoiceState> list = new ArrayList<InvoiceState>(3);
+//                    list.add(InvoiceState.OPEN);
+//                    list.add(InvoiceState.PAID);
+//                    list.add(InvoiceState.CANCELLED);
+//                    return list;
+//                }
+//            });
+//            add(invState);
+//			
+//			add(new Button("submit"));
+//			Button cancel = new Button("cancel"){
+//				private static final long serialVersionUID = 7607265405984709816L;
+//				public void onSubmit() {
+//                	setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
+//                }
+//            };
+//            cancel.setDefaultFormProcessing(false);
+//            add(cancel);
+//		}
+//
+//		public void onSubmit() {
+//			invoiceMgmt.storeInvoice(inv);
+//			setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
+//		}
+//	}
 }

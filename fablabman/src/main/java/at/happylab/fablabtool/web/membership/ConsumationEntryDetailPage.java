@@ -43,6 +43,7 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 
 		this.entry= entry;
 		this.member = member;
+		
 
 		entry.setConsumedBy(member);
 
