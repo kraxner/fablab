@@ -92,6 +92,10 @@ public class Membership implements Serializable{
 		entryDate = new Date();
 	}
 	
+	public boolean isPrivateMembership(){
+		return membershipType == MembershipType.PRIVATE;
+	}
+	
 	/**
 	 * Returns the name associated with this membership
 	 * - for business memberships this is the {@link #companyName}
