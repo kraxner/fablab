@@ -64,6 +64,11 @@ public class MembershipProvider extends SortableDataProvider<Membership> impleme
 		return memberships.subList(first, Math.min(first+count, memberships.size())).iterator();
 		
 	}
+	
+	public Iterator<Membership> getMembersWithEntries() {
+		List<Membership> memberships = em.createQuery("SELECT distinct m FROM ConsumationEntry as entry join entry.consumedBy as m WHERE invoice_id is NULL").getResultList();
+		return memberships.iterator();
+	}
 
 	public IModel<Membership> model(final Membership object) {
 		return new LoadableDetachableModel<Membership>() {

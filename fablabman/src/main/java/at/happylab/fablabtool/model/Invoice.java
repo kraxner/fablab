@@ -1,11 +1,15 @@
 package at.happylab.fablabtool.model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -62,14 +66,13 @@ public class Invoice implements Serializable{
 	@ManyToOne
 	private Membership relatedTo;
 	
-	@OneToMany(mappedBy="invoice")
+	@OneToMany(mappedBy="invoice", cascade=CascadeType.ALL)
 	private List<ConsumationEntry> includesConsumationEntries;
 	
 	@Enumerated(EnumType.STRING)
 	private InvoiceState state;
 	
-	@GeneratedValue
-	private Long invoiceNumber = 0L;
+	private long invoiceNumberShort = 0;
 	
 	public Invoice(){
 		includesConsumationEntries = new ArrayList<ConsumationEntry>();
@@ -236,12 +239,19 @@ public class Invoice implements Serializable{
 	public void setState(InvoiceState state) {
 		this.state = state;
 	}
-
-	public Long getInvoiceNumber() {
-		return invoiceNumber;
+	
+	public String getInvoiceNumber() {
+		DecimalFormat format = new DecimalFormat("0000");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yy");
+		
+		return dateFormat.format(date) + "B" + format.format(invoiceNumberShort);
 	}
 
-	public void setInvoiceNumber(long invoiceNumber) {
-		this.invoiceNumber = invoiceNumber;
+	public long getInvoiceNumberShort() {
+		return invoiceNumberShort;
+	}
+
+	public void setInvoiceNumberShort(long invoiceNumberShort) {
+		this.invoiceNumberShort = invoiceNumberShort;
 	}
 }

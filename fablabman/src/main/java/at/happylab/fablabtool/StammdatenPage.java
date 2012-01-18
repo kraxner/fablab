@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.link.Link;
 
 import at.happylab.fablabtool.web.access.AccessGrantListPage;
 import at.happylab.fablabtool.web.access.KeycardListPage;
+import at.happylab.fablabtool.web.data.CreateTestDataPage;
 import at.happylab.fablabtool.web.device.DeviceListPage;
 
 public class StammdatenPage extends BasePage {
@@ -66,6 +67,13 @@ public class StammdatenPage extends BasePage {
 
 			public void onClick() {
 		        setResponsePage(new HomePage());
+		    }
+		});
+		add(new Link<String>("CreateTestDataLink") {
+			private static final long serialVersionUID = -1585556011311826709L;
+
+			public void onClick() {
+		        setResponsePage(new CreateTestDataPage());
 		    }
 		});
 	}

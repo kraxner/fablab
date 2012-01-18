@@ -82,7 +82,7 @@ public class MembershipListPage extends AdminBasePage {
 			}
 	};
 		
-		form.add(new DefaultDataTable<User>("mitgliederTabelle", columns, userProvider, 5));
+		form.add(new DefaultDataTable<User>("mitgliederTabelle", columns, userProvider, 50));
 		
 		form.add(new Label("mitgliederAnzahl", userProvider.size() + " Datensätze"));
 

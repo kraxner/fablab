@@ -67,9 +67,6 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price", BigDecimal.class);
 			add(price);
 			
-			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
-			add(price);
-			
 			final RequiredTextField<Double> unit = new RequiredTextField<Double>("unit");
 			add(unit);
 			

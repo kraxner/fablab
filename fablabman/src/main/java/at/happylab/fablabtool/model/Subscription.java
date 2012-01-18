@@ -2,6 +2,9 @@ package at.happylab.fablabtool.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -109,52 +112,130 @@ public class Subscription implements Serializable{
 		this.bookedBy = bookedBy;
 	}
 	
-	public void createEntries(Date end) {
+	public ConsumationEntry createEntry(Date end) {
 		
-		Date now = new Date();
+		Calendar cal = Calendar.getInstance();
+		int months = 0;
+		Date newPayedUntilDate = new Date();
 		
-		// validFrom
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		String text = "";
+		
+		// Sollte des Paket noch nicht aktiv sein, nicht abrechnen
 		if (validFrom.after(end)) {
-			return;
+			return null;
 		}
 		
-		// validTo
-		// payedUntil
-		
-		if (payedUntil.before(end)) {
-			//payedUntil.getMonth()
+		// Sollte des Paket schon vor dem End-Datum gekündigt worden sein, nur bis zu dem Kündigungsdatum abrechnen
+		if (validTo != null && validTo.before(end)) {
+			end = validTo;
 		}
 		
-		// booksPackage.billingCycle
-		int months;
-		switch (booksPackage.getBillingCycle()) {
-			case MONTHLY:
-				months = 1;
-				break;
+		if (payedUntil == null) {
+			// es wird zum ersten mal abgerechnet
+			// daher aliquot (erstes Monat zählt voll) bis Ende der Abrechnungsperiode
 			
-			case QUARTER:
-				months = 3;
-				break;
+			cal.setTime(validFrom);
+			int validFromMonth = cal.get(Calendar.MONTH);
+			int validFromYear  = cal.get(Calendar.YEAR);
 			
-			case ANNUAL:
-				months = 12;
-				break;
+			cal.setTime(end);
+			int calculateUntilMonth = cal.get(Calendar.MONTH);
+			int calculateUntilYear  = cal.get(Calendar.YEAR);
 			
+			int diffInMonths = 0;
+			diffInMonths = (calculateUntilYear - validFromYear)*12;
+			diffInMonths += (calculateUntilMonth - validFromMonth);
+			
+			switch (booksPackage.getBillingCycle()) {
+				case MONTHLY:
+					months = diffInMonths + 1; // erstes Monat wird voll verrechnet
+					break;
+				
+				case QUARTER:
+					// auf nächstes Vielfaches von 3 aufrunden
+					//months = (3-validFromMonth+1) + (diffInMonths/3)*3;
+					break;
+				
+				case ANNUAL:
+					// auf nächstes Vielfaches von 12 aufrunden
+					months = (12-validFromMonth) + (calculateUntilYear-validFromYear)*12;
+					break;
+				
+				default:
+					break;
+			}
+			
+			// Neues payedUntil Datum (letzer des jeweiligen Monats)
+			cal.setTime(validFrom);
+			cal.add(Calendar.MONTH, months);
+			cal.set(Calendar.DAY_OF_MONTH, 0);
+			newPayedUntilDate = cal.getTime();
+			
+			text = dateFormat.format(validFrom) + " - " + dateFormat.format(newPayedUntilDate);
+		}
+		else {
+			// es wurde bereits abgerechnet
+			// daher bis Ende des jeweiligen Monats abrechnen
+			
+			cal.setTime(payedUntil);
+			int payedUntilMonth = cal.get(Calendar.MONTH);
+			int payedUntilYear  = cal.get(Calendar.YEAR);
+
+			cal.setTime(end);
+			int calculateUntilMonth = cal.get(Calendar.MONTH);
+			int calculateUntilYear  = cal.get(Calendar.YEAR);
+			
+			int diffInMonths = 0;
+			diffInMonths = (calculateUntilYear - payedUntilYear)*12;
+			diffInMonths += (calculateUntilMonth - payedUntilMonth);
+
+			switch (booksPackage.getBillingCycle()) {
+				case MONTHLY:
+					months = diffInMonths;
+					break;
+				
+				case QUARTER:
+					// auf nächstes Vielfaches von 3 aufrunden
+					months = ((diffInMonths+2)/3)*3;
+					break;
+				
+				case ANNUAL:
+					// auf nächstes Vielfaches von 12 aufrunden
+					months = ((diffInMonths+11)/12)*12;
+					break;
+				
+				default:
+					break;
+			}
+			
+			// new payed Until Date
+			cal.setTime(payedUntil);
+			cal.add(Calendar.MONTH, months);
+			newPayedUntilDate = cal.getTime();
+			
+			cal.setTime(payedUntil);
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			Date payFromDate = cal.getTime();
+			
+			text = dateFormat.format(payFromDate) + " - " + dateFormat.format(newPayedUntilDate);
 		}
 		
-		// Anzahl der Monate seit letzter abrechnung berechnen ....
+		if (months <= 0) {
+			return null;
+		}
 		
+		ConsumationEntry entry = new ConsumationEntry();
+		entry.setConsumedBy(getBookedBy());
+		entry.setText(booksPackage.getName() + " (" + text + ")");
+		entry.setDate(new Date());
+		entry.setPrice(getPriceOverruled());
+		entry.setUnit("Monat");
+		entry.setQuantity(months);
 		
-		// priceOverruled
+		setPayedUntil(newPayedUntilDate);
 		
-//		ConsumationEntry entry = new ConsumationEntry();
-//		entry.setConsumedBy(getBookedBy());
-//		entry.setText(getDescription());
-//		entry.setDate();
-//		entry.setPrice();
-//		entry.setQuantity();
-		
-		
+		return entry;
 	}
 
 	public String getDescription() {
