@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
@@ -39,7 +40,7 @@ public class KeycardManagement implements Serializable {
 	public KeycardManagement() {
 
 	}
-	
+
 	public KeycardManagement(EntityManager em) {
 		this.em = em;
 	}
@@ -48,7 +49,12 @@ public class KeycardManagement implements Serializable {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
-		em.persist(k);
+		try {
+			em.persist(k);
+		} catch (PersistenceException e) {
+
+		}
+
 		em.getTransaction().commit();
 		Logger.getLogger(" KeycardManagement").info("number of  Keycards: " + String.valueOf(em.createQuery("select count(k) from KeyCard k").getSingleResult()));
 	}
@@ -116,7 +122,7 @@ public class KeycardManagement implements Serializable {
 			return false;
 
 		System.err.println("2. Keycard Active");
-		
+
 		/**
 		 * 3. Check the Access Times
 		 */
@@ -143,19 +149,18 @@ public class KeycardManagement implements Serializable {
 				a.set(Calendar.YEAR, n.get(Calendar.YEAR));
 				b.set(Calendar.YEAR, n.get(Calendar.YEAR));
 
-//				System.err.println("COMPARE: " + a.getTime().toString() + " " + b.getTime().toString() + " " + n.getTime().toString());
+				//				System.err.println("COMPARE: " + a.getTime().toString() + " " + b.getTime().toString() + " " + n.getTime().toString());
 
-				if (n.after(a) && n.before(b)){
+				if (n.after(a) && n.before(b)) {
 					result = true;
 					break;
 				}
 			}
 
 		}
-		
+
 		if (!result)
 			return false;
-
 
 		/**
 		 * 4a. Membership subscribed to a valid Access Package?
@@ -168,17 +173,17 @@ public class KeycardManagement implements Serializable {
 
 		} catch (NoResultException e) {
 			// there is no user, therefore only the access times of this keycards count
-			return result;	
+			return result;
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
 
 		member = user.getMembership();
-		
-		if(member==null)
-			return true;	// Keycards die keinem User zugeteilt sind (z.B. für Putzfrau)
 
-//		System.err.println("3a. Membership found");
+		if (member == null)
+			return true; // Keycards die keinem User zugeteilt sind (z.B. für Putzfrau)
+
+		//		System.err.println("3a. Membership found");
 
 		/**
 		 * 4b. Check the Subscriptions for a valid ACCESS Package

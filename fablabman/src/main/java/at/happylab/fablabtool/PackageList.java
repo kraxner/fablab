@@ -16,13 +16,11 @@ import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.dataprovider.PackageProvider;
-import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.web.access.KeycardListPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class PackageList extends BasePage {
@@ -96,6 +94,17 @@ public class PackageList extends BasePage {
 				setResponsePage(new PackageAddPage(new Package()));
 			}
 		});
+		
+
+		Link<String> goBackButton = new Link<String>("goBack") {
+			private static final long serialVersionUID = -3527050342774869192L;
+
+			public void onClick() {
+				setResponsePage(new StammdatenPage());
+			}
+		};
+		add(goBackButton);
+
 
 	}
 

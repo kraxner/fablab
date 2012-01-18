@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
@@ -61,7 +62,16 @@ public class AccessGrantDetailPage extends BasePage {
 			final DateTextField timeUntil = new DateTextField("TimeUntil", "HH:mm");
 			timeUntil.setRequired(true);
 			add(timeUntil);
+			
+			Link<String> goBackButton = new Link<String>("goBack") {
+				private static final long serialVersionUID = -3527050342774869192L;
 
+				public void onClick() {
+					setResponsePage(new KeycardListPage());
+				}
+			};
+			add(goBackButton);
+			
 		}
 
 		public void onSubmit() {

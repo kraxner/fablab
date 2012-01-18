@@ -7,6 +7,7 @@ import at.happylab.fablabtool.web.access.AccessGrantListPage;
 import at.happylab.fablabtool.web.access.KeycardListPage;
 import at.happylab.fablabtool.web.data.CreateTestDataPage;
 import at.happylab.fablabtool.web.device.DeviceListPage;
+import at.happylab.fablabtool.web.membership.UserListPage;
 
 public class StammdatenPage extends BasePage {
 
@@ -58,7 +59,15 @@ public class StammdatenPage extends BasePage {
 			private static final long serialVersionUID = -1585556011311826709L;
 
 			public void onClick() {
-		        setResponsePage(new DeviceListPage());
+		        setResponsePage(new DeviceListPage(null));
+		    }
+		});
+		
+		add(new Link<String>("UsersLink") {
+			private static final long serialVersionUID = -1585556011311826709L;
+
+			public void onClick() {
+		        setResponsePage(new UserListPage());
 		    }
 		});
 		

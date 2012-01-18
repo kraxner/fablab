@@ -21,7 +21,7 @@ public class KeycardProvider extends SortableDataProvider<KeyCard> implements Se
 
 	@Inject
 	private EntityManager em;
-	
+
 	public KeycardProvider() {
 		setSort("rfid", true);
 	}
@@ -35,6 +35,11 @@ public class KeycardProvider extends SortableDataProvider<KeyCard> implements Se
 				int dir = getSort().isAscending() ? 1 : -1;
 
 				if ("rfid".equals(getSort().getProperty())) {
+					if (k1.getRfid() == null)
+						k1.setRfid("");
+					if (k2.getRfid() == null)
+						k2.setRfid("");
+					
 					return dir * (k1.getRfid().compareTo(k2.getRfid()));
 				} else {
 					if (k1.getId() > k2.getId())
@@ -44,7 +49,7 @@ public class KeycardProvider extends SortableDataProvider<KeyCard> implements Se
 				}
 			}
 		});
-		
+
 		return results.subList(first, Math.min(first + count, results.size())).iterator();
 	}
 

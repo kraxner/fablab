@@ -106,10 +106,21 @@ public class KeycardDetailPage extends BasePage {
 			addAccessGrantToKeyCard.setEnabled(keycard.getId() != 0);
 
 			add(addAccessGrantToKeyCard);
+			
+			Link<String> goBackButton = new Link<String>("goBack") {
+				private static final long serialVersionUID = -3527050342774869192L;
+
+				public void onClick() {
+					setResponsePage(new KeycardListPage());
+				}
+			};
+			add(goBackButton);
+			
 		}
 
 		public void onSubmit() {
 			keycardMgmt.storeKeyCard(keycard);
+			
 			setResponsePage(new KeycardListPage());
 		}
 	}
