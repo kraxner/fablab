@@ -26,6 +26,7 @@ import org.apache.wicket.protocol.http.WebResponse;
 
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.dataprovider.InvoiceProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
@@ -145,11 +146,12 @@ public class InvoiceListPage extends AdminBasePage{
 				@Override
 				public void populateItem(Item item, String componentId, IModel rowModel) {
 					BigDecimal sum = new BigDecimal(0);
+					CustomBigDecimalConverter bigDecConv = new CustomBigDecimalConverter();
 					Invoice inv = (Invoice) rowModel.getObject();
 					for(ConsumationEntry ce : inv.getIncludesConsumationEntries()){
 						sum = sum.add(ce.getSum());
 					}
-					item.add(new Label(componentId, sum.toString()));
+					item.add(new Label(componentId, bigDecConv.convertToString(sum, null)));
 				}
 			};
 			columns[6] = new DropDownColumn<PaymentMethod>(new Model<String>("Zahlungsart"), "paymentMethod", "paymentMethod", PaymentMethod.class);
@@ -170,18 +172,31 @@ public class InvoiceListPage extends AdminBasePage{
 			add(new DefaultDataTable("invTable", columns, invoices, 5));
 			
 			add(new Button("submit"));
-			Button export = new Button("export"){
+			Button bankExport = new Button("bankExport"){
 				private static final long serialVersionUID = 7607265405984709816L;
 				public void onSubmit() {
 					WebResponse response = (WebResponse) getResponse();
-					response.setAttachmentHeader("export.csv");
+					response.setAttachmentHeader("bankExport.csv"); //TODO: better name
 					response.setContentType("text/csv");
 					OutputStream out = getResponse().getOutputStream();
 					invoices.export(new PrintWriter(out));
                 }
             };
-            export.setDefaultFormProcessing(false);
-            add(export);
+            bankExport.setDefaultFormProcessing(false); //TODO: should exporting save changes before exporting?
+            add(bankExport);
+            Button csvExport = new Button("csvExport"){
+				private static final long serialVersionUID = 7607265405984709816L;
+				public void onSubmit() {
+//					WebResponse response = (WebResponse) getResponse();
+//					response.setAttachmentHeader("csvExport.csv"); //TODO: better name
+//					response.setContentType("text/csv");
+//					OutputStream out = getResponse().getOutputStream();
+//					invoices.export(new PrintWriter(out));
+                }
+            };
+            csvExport.setDefaultFormProcessing(false); //TODO: should exporting save changes before exporting?
+            add(csvExport);
+            
 		}
 
 		public void onSubmit() {

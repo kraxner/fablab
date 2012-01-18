@@ -37,6 +37,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.dataprovider.InvoiceProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
@@ -145,11 +146,12 @@ public class InvoicePanel extends Panel {
 				@Override
 				public void populateItem(Item item, String componentId, IModel rowModel) {
 					BigDecimal sum = new BigDecimal(0);
+					CustomBigDecimalConverter bigDecConv = new CustomBigDecimalConverter();
 					Invoice inv = (Invoice) rowModel.getObject();
 					for(ConsumationEntry ce : inv.getIncludesConsumationEntries()){
 						sum = sum.add(ce.getSum());
 					}
-					item.add(new Label(componentId, sum.toString()));
+					item.add(new Label(componentId, bigDecConv.convertToString(sum, null)));
 				}
 			};
 			columns[2] = new DropDownColumn<PaymentMethod>(new Model<String>("Zahlungsart"), "paymentMethod", "paymentMethod", PaymentMethod.class);
