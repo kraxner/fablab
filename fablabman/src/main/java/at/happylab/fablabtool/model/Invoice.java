@@ -98,6 +98,8 @@ public class Invoice implements Serializable{
 		// copy default values from member
 		recipient = member.getName();
 		address = member.getAddress();
+		paymentMethod = member.getPaymentMethod();
+		
 		date = new Date();
 		state = InvoiceState.OPEN;
 

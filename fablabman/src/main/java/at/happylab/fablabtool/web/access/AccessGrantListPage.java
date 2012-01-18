@@ -160,7 +160,7 @@ public class AccessGrantListPage extends BasePage {
 
 		public void onSubmit() {
 
-			if (keycard == null) {
+			if (keycard != null) {
 				setResponsePage(new AccessGrantDetailPage(new AccessGrant()));
 			} else {
 				keycardMgmt.storeKeyCard(keycard);

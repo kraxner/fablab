@@ -48,7 +48,7 @@ public class Consumable implements Serializable{
 	}
 	
 	public String toString() {
-		return this.name;
+		return getName();
 	}
 
 }

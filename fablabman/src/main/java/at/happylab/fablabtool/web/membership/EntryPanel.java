@@ -101,6 +101,7 @@ public class EntryPanel extends Panel {
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Beschreibung"), "text", "text"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Einzelpreis"), "price", "price"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Anzahl"), "quantity", "quantity"));
+		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Einheit"), "unit", "unit"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Gesamt"), "sum", "sum"));
 		columns.add(new LinkPropertyColumn(new Model<String>("Aktionen"), new Model("edit")) {
 			@Override

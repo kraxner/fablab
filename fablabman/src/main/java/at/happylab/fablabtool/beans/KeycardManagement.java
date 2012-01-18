@@ -167,7 +167,8 @@ public class KeycardManagement implements Serializable {
 			user = (User) qry.getSingleResult();
 
 		} catch (NoResultException e) {
-			return false;	
+			// there is no user, therefore only the access times of this keycards count
+			return result;	
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
