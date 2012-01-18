@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:extend>
 	<div style="padding: 10px;">
 		<span id="feedback"></span>
+		
+		<h1><span wicket:id="pageHeader"></span></h1>
+		<div wicket:id="feedback" style="color:red;"/>
+		
 		<form wicket:id="form" action="" method="POST" class="yform" style="width: 500px">
 
 			<fieldset class="columnar">
-				<legend>Pakete</legend>
+				<legend>Details</legend>
 
 				<div class="type-select">
 					<label for="">Paket</label> <select wicket:id="booksPackage"></select>
 				</div>
 
 				<div class="type-text">
-					<label for="">Anmeldung seit</label> <input wicket:id="ValidFrom" type="text">
+					<label for="">Anmeldung seit</label> <input wicket:id="ValidFrom" type="text"/>
 				</div>
 
 				<wicket:container wicket:id="cancelSubscription">
 					<div class="type-text">
-						<label for="">G&uuml;ltig bis</label> <input wicket:id="ValidTo" type="text">
+						<label for="">G&uuml;ltig bis</label> <input wicket:id="ValidTo" type="text"/>
 					</div>
 				</wicket:container>
 
 				<div class="type-text">
-					<label for="">Bezahlt bis</label> <input wicket:id="payedUntil" type="text">
+					<label for="">Bezahlt bis</label> <input wicket:id="payedUntil" type="text"/>
 				</div>
 				
 				<div class="type-text">
-					<label for="">Preis</label> <input wicket:id="priceOverruled" type="text">
+					<label for="">Preis</label> <input wicket:id="priceOverruled" type="text"/>
 				</div>
 
 				<div class="type-select">
@@ -35,15 +40,16 @@
 				</div>
 
 				<div class="type-text">
-					<label for="">Details</label> <textarea wicket:id="description" type="text" cols="50" rows="4"> </textarea>
+					<label for="">Details</label> <textarea wicket:id="description" cols="50" rows="4"> </textarea>
 				</div>
 
 			</fieldset>
 
-			<input wicket:id="submit" type="submit" value="Speichern" class="minimal">
-			<input wicket:id="cancelCancelation" type="submit" class="minimal">
-			<input wicket:id="deleteSubscription" type="submit" class="minimal">
+			<input wicket:id="submit" type="submit" value="Speichern" class="minimal"/>
+			<input wicket:id="cancelCancelation" type="submit" class="minimal"/>
+			<input wicket:id="deleteSubscription" type="submit" class="minimal"/>
 		</form>
 	</div>
 
 </wicket:extend>
+</html>

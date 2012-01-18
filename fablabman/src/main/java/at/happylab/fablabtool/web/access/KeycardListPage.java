@@ -19,6 +19,7 @@ import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class KeycardListPage extends BasePage {
 
@@ -35,6 +36,7 @@ public class KeycardListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = 5612256017598665667L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				KeyCard k = (KeyCard) model.getObject();
@@ -45,10 +47,28 @@ public class KeycardListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<KeyCard>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 			private static final long serialVersionUID = 4741807491393228633L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
-			public void onClick(Item item, String componentId, IModel model) {
-				KeyCard k = (KeyCard) model.getObject();
-				keycardMgmt.removeKeycard(k);
+			public void onClick(Item item, String componentId, final IModel model) {
+				
+				setResponsePage(new ConfirmDeletePage("Wollen sie diese Keycard wirklich löschen?") {
+					private static final long serialVersionUID = 215242593335920710L;
+
+					@Override
+					protected void onConfirm() {
+						KeyCard k = (KeyCard) model.getObject();
+						keycardMgmt.removeKeycard(k);
+						
+						setResponsePage(KeycardListPage.this);
+					}
+
+					@Override
+					protected void onCancel() {
+						setResponsePage(KeycardListPage.this);
+					}
+
+				});
+				
 			}
 		});
 

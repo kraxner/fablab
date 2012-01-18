@@ -1,9 +1,6 @@
 package at.happylab.fablabtool.web.membership;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -11,16 +8,17 @@ import javax.inject.Inject;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
@@ -39,7 +37,6 @@ public class SubscriptionDetailPage extends AdminBasePage {
 	private PackageManagement packageMgmt;
 	@Inject
 	private MembershipManagement membershipMgmt;
-
 	@Inject
 	private SubscriptionManagement subscriptionMgmt;
 
@@ -52,6 +49,13 @@ public class SubscriptionDetailPage extends AdminBasePage {
 
 		if (this.subs.getPaymentMethod() == null)
 			this.subs.setPaymentMethod(this.member.getPaymentMethod());
+		
+		if (sub.getId() == 0)
+			add(new Label("pageHeader", "Neue Subscription"));
+		else
+			add(new Label("pageHeader", "Subscription bearbeiten"));
+		
+		add(new FeedbackPanel("feedback"));
 
 		add(new SubscriptionForm("form"));
 

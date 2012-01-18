@@ -78,7 +78,7 @@ public class Invoice implements Serializable{
 		date = new Date();
 		
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, 14); // TODO: Anzahl der Tage einstellbar machen
+		cal.add(Calendar.DATE, 14); // TODO: getting real due dates.
 		dueDate = cal.getTime();
 	}
 	

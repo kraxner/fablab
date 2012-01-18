@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:extend>
 	<div style="padding: 10px;">
-		<h1>Neues Paket</h1>
+		<h1><span wicket:id="pageHeader"></span></h1>
+		<div wicket:id="feedback" style="color:red;"/>
 
-		<form wicket:id="form" action="" method="POST" class="yform"
-			style="width: 500px">
+		<form wicket:id="form" action="" method="POST" class="yform" style="width: 500px">
 
 			<fieldset id="fldNonProfit" class="columnar">
 				<legend>Details</legend>
 				<div class="type-text">
-					<label for="name">Name</label>
-					<input wicket:id="name" type="text" />
+					<label for="name">Name</label> <input wicket:id="name" type="text" />
 				</div>
-				
+
 				<div class="type-text">
 					<label for="description">Beschreibung</label>
 					<textarea wicket:id="description" cols="50" rows="4"></textarea>
 				</div>
-				
+
 				<div class="type-text">
-					<label for="price">Preis</label>
-					<input wicket:id="price" type="text">
+					<label for="price">Preis</label> <input wicket:id="price" type="text" />
 				</div>
-				
+
 				<div class="type-select">
-					<label for="">Typ</label>
-					<select wicket:id="PackageType"></select>
+					<label for="">Typ</label> <select wicket:id="PackageType"></select>
 				</div>
-				
+
 				<div class="type-select">
-					<label for="">Abrechnungsperiode</label>
-					<select wicket:id="billingCycle"></select>
+					<label for="">Abrechnungsperiode</label> <select wicket:id="billingCycle"></select>
 				</div>
-				
+
 				<div class="type-select">
-					<label for="">K&uuml;ndigung m&ouml;glich</label>
-					<select wicket:id="cancelationPeriodAdvance"></select>
+					<label for="">K&uuml;ndigung m&ouml;glich</label> <select wicket:id="cancelationPeriodAdvance"></select>
 				</div>
-				
+
 				<div class="type-text">
-					<label for="">K&uuml;ndigungsfrist (Monate)</label>
-					<input wicket:id="cancelationPeriod" type="text">
+					<label for="">K&uuml;ndigungsfrist (Monate)</label> <input wicket:id="cancelationPeriod" type="text" />
 				</div>
 
 			</fieldset>
-			
-			<input type="submit" value="Speichern" class="minimal">
+
+			<input type="submit" value="Speichern" class="minimal" />
 		</form>
 	</div>
 </wicket:extend>
+</html>

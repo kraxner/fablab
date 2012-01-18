@@ -15,6 +15,7 @@ import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.session.SessionScopeProducer;
+import at.happylab.fablabtool.model.MembershipType;
 
 public class MembershipManagement implements Serializable {
 
@@ -37,7 +38,17 @@ public class MembershipManagement implements Serializable {
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
-		em.persist(member);
+		// clean up superfluous users
+		while (member.getUsers().size() > member.getMaxUser()) {
+			// remove the last one
+			member.removeUser(member.getUsers().get(member.getUsers().size()));
+		}
+
+		// adjustments for non profit memberships
+		if (member.getMembershipType() == MembershipType.PRIVATE) {
+			
+		}
+		em.persist(em.merge(member));
 		em.getTransaction().commit();
 		Logger.getLogger("Membershipmanagement").info("number of Members: " + String.valueOf(em.createQuery("select count(m) from Membership m ").getSingleResult()));
 	}

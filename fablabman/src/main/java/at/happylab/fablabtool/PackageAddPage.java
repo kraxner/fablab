@@ -1,31 +1,22 @@
 package at.happylab.fablabtool;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.model.DayOfWeek;
-import at.happylab.fablabtool.model.Gender;
-import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
@@ -40,10 +31,17 @@ public class PackageAddPage extends BasePage {
 		navigation.selectStammdaten();
 		pkg = p;
 
+		if (pkg.getId() == 0)
+			add(new Label("pageHeader", "Neues Paket"));
+		else
+			add(new Label("pageHeader", "Paket bearbeiten"));
+		
+		add(new FeedbackPanel("feedback"));
+
 		add(new PackageForm("form", p));
 	}
 
-	class PackageForm extends Form {
+	class PackageForm extends Form<Package> {
 		private static final long serialVersionUID = 9185780707344670737L;
 
 		public PackageForm(String s, Package p) {

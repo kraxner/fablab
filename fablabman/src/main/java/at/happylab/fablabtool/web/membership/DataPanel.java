@@ -75,6 +75,7 @@ public class DataPanel extends Panel{
 		 * @param user
 		 */
 		private void addUserFields(MarkupContainer parent, User user) {
+			
 			parent.add(new TextField<Object>("firstname"));
 			parent.add(new TextField<Object>("lastname"));
 			
@@ -186,9 +187,9 @@ public class DataPanel extends Panel{
 			businessContainer.add(new TextField<String>("companyEmail").add(EmailAddressValidator.getInstance()));
 			businessContainer.add(new TextField<String>("companyPhone"));
 			
-			businessContainer.add(new TextField<String>("address.street"));	// in HTML code
-			businessContainer.add(new TextField<String>("address.city"));
-			businessContainer.add(new TextField<String>("address.zipCode"));
+			businessContainer.add(new TextField<String>("companyAddress.street"));	// in HTML code
+			businessContainer.add(new TextField<String>("companyAddress.city"));
+			businessContainer.add(new TextField<String>("companyAddress.zipCode"));
 
 			businessContainer.setOutputMarkupPlaceholderTag(true);
 			businessContainer.setOutputMarkupId(true);
@@ -281,7 +282,7 @@ public class DataPanel extends Panel{
 					membershipMgmt.storeMembership(member);
 					//setResponsePage(new MitgliedDatenPage(member, membershipMgmt));
 					//setResponsePage(new MitgliederPage());
-					setResponsePage(MembershipListPage.class);
+//					setResponsePage(MembershipListPage.class);
 				}
 			});
 		}

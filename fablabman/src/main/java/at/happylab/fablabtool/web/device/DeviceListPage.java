@@ -17,6 +17,7 @@ import at.happylab.fablabtool.beans.DeviceManagement;
 import at.happylab.fablabtool.dataprovider.DeviceProvider;
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class DeviceListPage extends BasePage {
 
@@ -31,6 +32,7 @@ public class DeviceListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Geräte ID"), "deviceId", "deviceId"){
 			private static final long serialVersionUID = 6856979945257260759L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Device k = (Device) model.getObject();
@@ -41,6 +43,7 @@ public class DeviceListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Name"), "name", "name") {
 			private static final long serialVersionUID = 1055679629834100798L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Device k = (Device) model.getObject();
@@ -51,10 +54,27 @@ public class DeviceListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Device>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 			private static final long serialVersionUID = -2707789802150151990L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
-			public void onClick(Item item, String componentId, IModel model) {
-				Device k = (Device) model.getObject();
-				deviceMgmt.removeDevice(k);
+			public void onClick(Item item, String componentId, final IModel model) {
+				setResponsePage(new ConfirmDeletePage("Wollen sie dieses Gerät wirklich löschen?") {
+					private static final long serialVersionUID = 215242593335920710L;
+
+					@Override
+					protected void onConfirm() {
+						Device k = (Device) model.getObject();
+						deviceMgmt.removeDevice(k);
+						
+						setResponsePage(DeviceListPage.this);
+					}
+
+					@Override
+					protected void onCancel() {
+						setResponsePage(DeviceListPage.this);
+					}
+
+				});
+				
 			}
 		});
 

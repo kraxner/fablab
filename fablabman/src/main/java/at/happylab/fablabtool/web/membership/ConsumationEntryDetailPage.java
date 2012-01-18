@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -16,18 +16,12 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.model.Consumable;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class ConsumationEntryDetailPage extends AdminBasePage {
-
-	@Inject
-	private EntityManager em;
 	
 	private ConsumationEntry entry;
 	private Membership member;
@@ -46,23 +40,32 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 
 		this.entry= entry;
 		this.member = member;
+		
 
 		entry.setConsumedBy(member);
 
+		if (entry.getId() == 0)
+			add(new Label("pageHeader", "Neue Buchung"));
+		else
+			add(new Label("pageHeader", "Buchung bearbeiten"));
+		
 		add(new ConsumationEntryForm("form"));
 	}
 	
-	class ConsumationEntryForm extends Form {
+	class ConsumationEntryForm extends Form<ConsumationEntry> {
 		private static final long serialVersionUID = -7480286477673641461L;
 
 		public ConsumationEntryForm(String s) {
-			super(s, new CompoundPropertyModel<Object>(entry));
+			super(s, new CompoundPropertyModel<ConsumationEntry>(entry));
 			
 			final RequiredTextField<Date> date = new RequiredTextField<Date>("date");
 			add(date);
 			
-			final RequiredTextField<String> text = new RequiredTextField<String>("text");
+			final RequiredTextField<String> text = new RequiredTextField<String>("text", String.class);
 			add(text);
+
+			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price", BigDecimal.class);
+			add(price);
 			
 			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
 			add(price);
@@ -79,8 +82,11 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 
 				protected void onSelectionChanged(final Consumable c) {
 					text.setModelValue(new String[] { c.getName() } );
+
 					price.setModelValue(new String[] { c.getPricePerUnit().toString() } );
 					unit.setModelValue(new String[] { c.getUnit() });
+
+//					price.setModelValue(new String[] { c.getPricePerUnit().toPlainString().replace(",", "") } );
 				}
 			};
 			add(availableConsumables);
@@ -92,33 +98,27 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 				private static final long serialVersionUID = 1L;
 				
 				public void onSubmit() {
-					em.getTransaction().begin();
-					em.persist(entry);
-					em.getTransaction().commit();
-
+					consumationEntryMgmt.storeConsumationEntry(entry);
 					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 2));
 				}
 				
 			};
 			add(btnSaveEntry);
 			
-			
 			final Button btnDeleteEntry = new Button("deleteEntry", Model.of("Löschen")) {
 				private static final long serialVersionUID = -9206366064931940268L;
 
 				public void onSubmit() {
 					consumationEntryMgmt.removeEntry(entry);
-					
 					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 2)); // Panel Buchungen laden
 				}
 			};
 			
-			if (entry.getId() > 0) {
+			if (entry.getId() > 0) 
 				btnDeleteEntry.setVisible(true);
-			}
-			else {
+			else 
 				btnDeleteEntry.setVisible(false);
-			}
+			
 			add(btnDeleteEntry);
 			
 		}

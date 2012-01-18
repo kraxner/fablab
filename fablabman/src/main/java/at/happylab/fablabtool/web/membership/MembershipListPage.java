@@ -1,12 +1,9 @@
 package at.happylab.fablabtool.web.membership;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 
 import javax.inject.Inject;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -14,15 +11,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.lang.EnumeratedType;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.converter.EnumConverter;
 import at.happylab.fablabtool.dataprovider.UserProvider;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipStatus;
@@ -90,7 +82,7 @@ public class MembershipListPage extends AdminBasePage {
 			}
 	};
 		
-		form.add(new DefaultDataTable("mitgliederTabelle", columns, userProvider, 5));
+		form.add(new DefaultDataTable<User>("mitgliederTabelle", columns, userProvider, 5));
 		
 		form.add(new Label("mitgliederAnzahl", userProvider.size() + " Datensätze"));
 

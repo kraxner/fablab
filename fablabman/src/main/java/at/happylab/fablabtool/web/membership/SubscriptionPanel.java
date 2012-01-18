@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
-import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
@@ -65,9 +64,10 @@ public class SubscriptionPanel extends Panel {
 		columns.add(new PropertyColumn<String>(new Model<String>("angemeldet bis"), "validTo", "validTo"));
 		columns.add(new PropertyColumn<String>(new Model<String>("bezahlt bis"), "payedUntil", "payedUntil"));
 		columns.add(new PropertyColumn<String>(new Model<String>("Preis"), "priceOverruled", "priceOverruled"));
-		columns.add(new LinkPropertyColumn<String>(new Model<String>("Bearbeiten"), new Model("edit")) {
+		columns.add(new LinkPropertyColumn<String>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = 1594610370135323737L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -80,13 +80,16 @@ public class SubscriptionPanel extends Panel {
 
 		form.add(new Label("subscriptionsCount", subscriptionsFromMembershipProvider.size() + " Datensätze"));
 
-		form.add(new Link("addSubscription") {
+		form.add(new Link<String>("addSubscription") {
 			private static final long serialVersionUID = 9170539765267094210L;
 
 			public void onClick() {
 				Subscription s = new Subscription();
 				s.setValidFrom(new Date());
 				setResponsePage(new SubscriptionDetailPage(member, s));
+				
+				// TODO: Replace Methode einsetzen um Panel auszutauschen
+				
 			}
 		});
 

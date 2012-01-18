@@ -8,11 +8,13 @@ import javax.inject.Inject;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -40,6 +42,13 @@ public class KeycardDetailPage extends BasePage {
 	public KeycardDetailPage(KeyCard keycard) {
 		this.keycard = keycard;
 
+		if (keycard.getId() == 0)
+			add(new Label("pageHeader", "Neue Keycard"));
+		else
+			add(new Label("pageHeader", "Keycard bearbeiten"));
+		
+		add(new FeedbackPanel("feedback"));
+		
 		add(new KeycardForm("form"));
 	}
 
@@ -71,6 +80,7 @@ public class KeycardDetailPage extends BasePage {
 			columns.add(new LinkPropertyColumn<AccessGrant>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 				private static final long serialVersionUID = -9096631630737840648L;
 
+				@SuppressWarnings("rawtypes")
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					AccessGrant a = (AccessGrant) model.getObject();

@@ -38,6 +38,7 @@ public class SubscriptionListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = -4135397597596972629L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -51,12 +52,6 @@ public class SubscriptionListPage extends BasePage {
 		add(table);
 		
 		add(new Label("subscriptionCount", subscriptionProvider.size() + " Datensätze"));
-
-//		add(new Link("addSubscription") {
-//            public void onClick() {
-//                setResponsePage(new SubscriptionAddPage(new Subscription()));
-//            }
-//        });
 
 	}
 
