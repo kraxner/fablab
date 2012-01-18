@@ -17,11 +17,9 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.markup.html.form.TextField;
 
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
@@ -45,6 +43,7 @@ public class SubscriptionPanel extends Panel {
 	@Inject
 	private ConsumationEntryManagement consumationEntryMgmt;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SubscriptionPanel(String id, final Membership member, final MembershipManagement membershipMgmt) {
 		super(id);
 
@@ -73,7 +72,7 @@ public class SubscriptionPanel extends Panel {
 		columns.add(new LinkPropertyColumn<String>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = 1594610370135323737L;
 
-			@SuppressWarnings("rawtypes")
+			
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -93,9 +92,6 @@ public class SubscriptionPanel extends Panel {
 				Subscription s = new Subscription();
 				s.setValidFrom(new Date());
 				setResponsePage(new SubscriptionDetailPage(member, s));
-				
-				// TODO: Replace Methode einsetzen um Panel auszutauschen
-				
 			}
 		});
 

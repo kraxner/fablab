@@ -12,11 +12,14 @@ import org.apache.wicket.extensions.model.AbstractCheckBoxModel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.AccessGrantProvider;
@@ -42,7 +45,7 @@ public class AccessGrantListPage extends BasePage {
 
 	/**
 	 * I kc is null the ordinary list for the accesstime administration is
-	 * presented. If not null, a table with a checkbox column is presented to
+	 * presented. If NOT null, a table with a checkbox column is presented to
 	 * the user to select access times for the Keycard.
 	 * 
 	 * @param kc
@@ -53,14 +56,14 @@ public class AccessGrantListPage extends BasePage {
 		this.keycard = kc;
 
 		add(new AccessGrantTableForm("form"));
-		
+
 	}
 
-	class AccessGrantTableForm extends Form<AccessGrant> {
+	class AccessGrantTableForm extends Form<KeyCard> {
 		private static final long serialVersionUID = 1L;
 
 		public AccessGrantTableForm(String id) {
-			super(id);
+			super(id, new CompoundPropertyModel<KeyCard>(keycard));
 
 			@SuppressWarnings("rawtypes")
 			ArrayList<IColumn> columns = new ArrayList<IColumn>();
@@ -101,9 +104,8 @@ public class AccessGrantListPage extends BasePage {
 						};
 					}
 				});
-			else
-				columns.add(new PropertyColumn<AccessGrant>(new Model<String>("ID"), "id", "id"));
 
+			columns.add(new PropertyColumn<AccessGrant>(new Model<String>("ID"), "id", "id"));
 			columns.add(new PropertyColumn<AccessGrant>(new Model<String>("Name"), "name", "name"));
 			columns.add(new EnumPropertyColumn<DayOfWeek>(new Model<String>("Wochentag"), "DayOfWeek", "DayOfWeek", DayOfWeek.class, this));
 			columns.add(new DateTimeColumn<AccessGrant>(new Model<String>("Von"), "TimeFrom", "HH:mm"));
@@ -133,7 +135,7 @@ public class AccessGrantListPage extends BasePage {
 							protected void onConfirm() {
 								AccessGrant ag = (AccessGrant) model.getObject();
 								accessGrantMgmt.removeAccessGrant(ag);
-								
+
 								setResponsePage(AccessGrantListPage.this);
 							}
 
@@ -149,19 +151,36 @@ public class AccessGrantListPage extends BasePage {
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			DefaultDataTable<AccessGrant> table = new DefaultDataTable("AccessGrantTable", columns, accessGrantProvider, 5);
 			add(table);
-			
+
 			add(new Label("AccessGrantCount", accessGrantProvider.size() + " Datensätze"));
 
 			if (keycard == null)
 				add(new Button("submit", Model.of("Neue Zugangszeit")));
 			else
 				add(new Button("submit", Model.of("Hinzufügen")));
+			
+
+			Link<String> goBackButton = new Link<String>("goBack") {
+				private static final long serialVersionUID = -3527050342774869192L;
+
+				public void onClick() {
+					if (keycard == null) {
+						setResponsePage(new StammdatenPage());
+						
+					} else {
+						setResponsePage(new KeycardDetailPage(keycard));
+					}
+				}
+			};
+			add(goBackButton);
+			
 		}
 
 		public void onSubmit() {
 
-			if (keycard != null) {
+			if (keycard == null) {
 				setResponsePage(new AccessGrantDetailPage(new AccessGrant()));
+				
 			} else {
 				keycardMgmt.storeKeyCard(keycard);
 				setResponsePage(new KeycardDetailPage(keycard));

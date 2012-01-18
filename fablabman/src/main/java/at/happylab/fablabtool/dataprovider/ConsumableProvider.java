@@ -1,8 +1,6 @@
 package at.happylab.fablabtool.dataprovider;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 

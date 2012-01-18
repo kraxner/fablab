@@ -2,13 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:extend>
 
-<h1>Ger&auml;te</h1>
+	<h1>Ger&auml;te</h1>
+	
+	<form wicket:id="form" action="" method="POST" class="yform" style="width: 500px">
+		<table wicket:id="deviceTable"></table>
+		<br /> 
+		<span wicket:id="deviceCount"></span> <br /><br /> 
+		
+		<input wicket:id="submit" type="submit" class="minimal"/>
+		<button wicket:id="goBack" class="minimal">Zur&uuml;ck</button>
 
-<table wicket:id="deviceTable"></table>
-
-<br/> <span wicket:id="deviceCount"></span> <br/><br/>
-
-<input wicket:id="addDevice" type="button" value="neues Ger&auml;t" class="minimal"/>
+	</form>
 
 </wicket:extend>
 </html>

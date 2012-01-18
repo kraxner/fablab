@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -52,6 +53,15 @@ public class SubscriptionListPage extends BasePage {
 		add(table);
 		
 		add(new Label("subscriptionCount", subscriptionProvider.size() + " Datensätze"));
+		
+		Link<String> goBackButton = new Link<String>("goBack") {
+			private static final long serialVersionUID = -3527050342774869192L;
+
+			public void onClick() {
+				setResponsePage(new StammdatenPage());
+			}
+		};
+		add(goBackButton);
 
 	}
 

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -54,6 +55,15 @@ public class ConsumableAddPage extends BasePage {
 			unit.setRequired(true);
 			unit.add(StringValidator.maximumLength(50));
 			add(unit);
+			
+			Link<String> goBackButton = new Link<String>("goBack") {
+				private static final long serialVersionUID = -3527050342774869192L;
+
+				public void onClick() {
+					setResponsePage(new ConsumableListPage());
+				}
+			};
+			add(goBackButton);
 
 		}
 

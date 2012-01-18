@@ -14,14 +14,16 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.authentication.AdminBasePage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
+import at.happylab.fablabtool.web.util.WarningPage;
 
-public class KeycardListPage extends BasePage {
+public class KeycardListPage extends AdminBasePage {
 
 	@Inject
 	KeycardProvider keycardProvider;
@@ -50,16 +52,27 @@ public class KeycardListPage extends BasePage {
 			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, final IModel model) {
-				
+
 				setResponsePage(new ConfirmDeletePage("Wollen sie diese Keycard wirklich löschen?") {
 					private static final long serialVersionUID = 215242593335920710L;
 
 					@Override
 					protected void onConfirm() {
 						KeyCard k = (KeyCard) model.getObject();
-						keycardMgmt.removeKeycard(k);
-						
-						setResponsePage(KeycardListPage.this);
+
+						try {
+							keycardMgmt.removeKeycard(k);
+							setResponsePage(KeycardListPage.this);
+							
+						} catch (Exception e) {
+							// Fehlermeldung, falls die Keycard noch einem Mitglied zugeordnet ist.
+							setResponsePage(new WarningPage("Diese Keycard kann nicht gelöscht werden.") {
+								@Override
+								protected void onConfirm() {
+									setResponsePage(KeycardListPage.this);
+								}
+							});
+						}
 					}
 
 					@Override
@@ -68,7 +81,7 @@ public class KeycardListPage extends BasePage {
 					}
 
 				});
-				
+
 			}
 		});
 
@@ -83,6 +96,15 @@ public class KeycardListPage extends BasePage {
 				setResponsePage(new KeycardDetailPage(new KeyCard()));
 			}
 		});
+
+		Link<String> goBackButton = new Link<String>("goBack") {
+			private static final long serialVersionUID = -3527050342774869192L;
+
+			public void onClick() {
+				setResponsePage(new StammdatenPage());
+			}
+		};
+		add(goBackButton);
 
 	}
 

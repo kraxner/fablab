@@ -17,7 +17,6 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.dataprovider.ConsumableProvider;
 import at.happylab.fablabtool.model.Consumable;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
@@ -38,6 +37,7 @@ public class ConsumableListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Consumable>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = -523422943144381848L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Consumable cons = (Consumable) model.getObject();
@@ -48,6 +48,7 @@ public class ConsumableListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Consumable>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 			private static final long serialVersionUID = -3524734341372805625L;
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, final IModel model) {
 				
@@ -84,6 +85,15 @@ public class ConsumableListPage extends BasePage {
 				setResponsePage(new ConsumableAddPage(new Consumable()));
 			}
 		});
+		
+		Link<String> goBackButton = new Link<String>("goBack") {
+			private static final long serialVersionUID = -3527050342774869192L;
+
+			public void onClick() {
+				setResponsePage(new StammdatenPage());
+			}
+		};
+		add(goBackButton);
 
 	}
 

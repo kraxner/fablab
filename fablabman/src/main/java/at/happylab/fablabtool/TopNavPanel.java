@@ -17,27 +17,31 @@ public class TopNavPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private BookmarkablePageLink mitglieder;
-	private BookmarkablePageLink rechnungen;
-	private BookmarkablePageLink stammdaten;
-	private BookmarkablePageLink aufgaben;
+	private BookmarkablePageLink<String> mitglieder;
+	private BookmarkablePageLink<String> subscriptions;
+	private BookmarkablePageLink<String> rechnungen;
+	private BookmarkablePageLink<String> stammdaten;
+	private BookmarkablePageLink<String> aufgaben;
 	
+	@SuppressWarnings("unused")
 	@Inject @LoggedIn private WebUser user;
-	
 	
 	public TopNavPanel(String id) {
         super(id);
         
-        mitglieder = new BookmarkablePageLink("mitgliederLink", MembershipListPage.class); 
+        mitglieder = new BookmarkablePageLink<String>("mitgliederLink", MembershipListPage.class); 
         add(mitglieder);
         
-        rechnungen = new BookmarkablePageLink("rechnungenLink", InvoiceListPage.class); 
+        subscriptions = new BookmarkablePageLink<String>("subscriptionsLink", SubscriptionListPage.class); 
+        add(subscriptions);
+        
+        rechnungen = new BookmarkablePageLink<String>("rechnungenLink", InvoiceListPage.class); 
         add(rechnungen);
         
-        stammdaten = new BookmarkablePageLink("stammdatenLink", StammdatenPage.class);
+        stammdaten = new BookmarkablePageLink<String>("stammdatenLink", StammdatenPage.class);
         add(stammdaten);
         
-        aufgaben = new BookmarkablePageLink("aufgabenLink", AufgabenPage.class);
+        aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AufgabenPage.class);
         add(aufgaben);
         
         if (getSession() instanceof FablabAuthenticatedWebSession) {
@@ -54,6 +58,10 @@ public class TopNavPanel extends Panel {
 	
 	public void selectRechnungen() {
 		rechnungen.add(new SimpleAttributeModifier("class", "selected"));
+	}
+	
+	public void selectSubscriptions() {
+		subscriptions.add(new SimpleAttributeModifier("class", "selected"));
 	}
 	
 	public void selectStammdaten() {

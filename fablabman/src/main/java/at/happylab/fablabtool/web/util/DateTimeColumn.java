@@ -27,6 +27,7 @@ public class DateTimeColumn<T> extends PropertyColumn<T> {
 		this.format = format;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DateTimeColumn(IModel iModel, String sortProperty, String propertyExpression, String format) {
 		super(iModel, sortProperty, propertyExpression);
 		this.format = format;
@@ -36,7 +37,7 @@ public class DateTimeColumn<T> extends PropertyColumn<T> {
 	// Other Methods
 	// **********************************************************************************************************************
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected IModel createLabelModel(IModel iModel) {
 		return new DateTimeModel(super.createLabelModel(iModel));
@@ -47,9 +48,10 @@ public class DateTimeColumn<T> extends PropertyColumn<T> {
 	// **********************************************************************************************************************
 
 	private class DateTimeModel implements IModel<String> {
-		private final IModel inner;
+		private final IModel<Date> inner;
 		private static final long serialVersionUID = 190887916985140272L;
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		private DateTimeModel(IModel inner) {
 			this.inner = inner;
 		}
