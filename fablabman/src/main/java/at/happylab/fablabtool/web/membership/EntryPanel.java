@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -145,6 +146,8 @@ public class EntryPanel extends Panel {
             		Arrays.asList(PaymentMethod.values()),
             		new EnumChoiceRenderer<PaymentMethod>(this));
             add(payMeth);
+            
+            add(new TextArea<String>("comment"));
             
 			add(new Button("submit"));
 		}

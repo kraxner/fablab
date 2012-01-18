@@ -49,7 +49,7 @@ public class MembershipListPage extends AdminBasePage {
 		};
 		columns[1] = new PropertyColumn<String>(new Model<String>("Vorname"), "firstname", "firstname");
 		columns[2] = new PropertyColumn<String>(new Model<String>("Nachname"), "lastname", "lastname");
-		columns[3] = new EnumPropertyColumn<MembershipStatus>(new Model<String>("Art"), "type", "membership.type", MembershipStatus.class, this);
+		columns[3] = new EnumPropertyColumn<MembershipType>(new Model<String>("Art"), "type", "membership.membershipType", MembershipType.class, this);
 //		columns[3] = new PropertyColumn<MembershipStatus>(new Model<String>("Art"), "type", "membership.type") {
 //			@Override
 //			public void populateItem(
