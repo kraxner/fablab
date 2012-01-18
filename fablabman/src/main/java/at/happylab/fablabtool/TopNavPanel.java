@@ -20,6 +20,7 @@ public class TopNavPanel extends Panel {
 	private BookmarkablePageLink mitglieder;
 	private BookmarkablePageLink rechnungen;
 	private BookmarkablePageLink stammdaten;
+	private BookmarkablePageLink aufgaben;
 	
 	@Inject @LoggedIn private WebUser user;
 	
@@ -35,6 +36,9 @@ public class TopNavPanel extends Panel {
         
         stammdaten = new BookmarkablePageLink("stammdatenLink", StammdatenPage.class);
         add(stammdaten);
+        
+        aufgaben = new BookmarkablePageLink("aufgabenLink", AufgabenPage.class);
+        add(aufgaben);
         
         if (getSession() instanceof FablabAuthenticatedWebSession) {
         	FablabAuthenticatedWebSession fablabSession = (FablabAuthenticatedWebSession)getSession(); 
@@ -56,4 +60,7 @@ public class TopNavPanel extends Panel {
 		stammdaten.add(new SimpleAttributeModifier("class", "selected"));
 	}
 	
+	public void selectAufgaben() {
+		aufgaben.add(new SimpleAttributeModifier("class", "selected"));
+	}
 }

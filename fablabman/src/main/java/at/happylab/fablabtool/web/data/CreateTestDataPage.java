@@ -60,15 +60,18 @@ public class CreateTestDataPage extends AdminBasePage {
 				a.setStreet(items[11]);
 				a.setZipCode(items[12]);
 				a.setCity(items[13]);
-				u.setAddress(a);
 				
-				m.addUser(u);
 				if (items[4].equals("P")) {
 					m.setMembershipType(MembershipType.PRIVATE);
+					u.setAddress(a);
 				}
 				else {
 					m.setMembershipType(MembershipType.BUSINESS);
+					m.setCompanyName(items[8]);
+					m.setCompanyAddress(a);
 				}
+				
+				m.addUser(u);
 				
 				try {
 					m.setEntryDate(dateFormat.parse(items[14]));

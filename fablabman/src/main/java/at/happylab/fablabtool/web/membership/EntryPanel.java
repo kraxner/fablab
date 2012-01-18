@@ -29,6 +29,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
@@ -52,6 +53,9 @@ public class EntryPanel extends Panel {
 	
 	@Inject
 	ConsumationEntryProvider entryFromMembershipProvider;
+	
+	@Inject 
+	InvoiceManagement invoiceMgmt;
 	
 	private Set<ConsumationEntry> selected = new HashSet<ConsumationEntry>();
 
@@ -152,9 +156,7 @@ public class EntryPanel extends Panel {
 			List<ConsumationEntry> list = new ArrayList<ConsumationEntry>(selected);
 			invoice.setIncludesConsumationEntries(list);
 			
-			em.getTransaction().begin();
-			em.persist(invoice);
-			em.getTransaction().commit();
+			invoiceMgmt.storeInvoice(invoice);
 
 			setResponsePage(new MembershipDetailPage(member, membershipMgmt));
 		}

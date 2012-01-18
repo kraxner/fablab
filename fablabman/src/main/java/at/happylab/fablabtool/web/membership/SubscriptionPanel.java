@@ -13,6 +13,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColu
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -22,9 +23,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.markup.html.form.TextField;
 
+import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
+import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
@@ -38,6 +41,9 @@ public class SubscriptionPanel extends Panel {
 
 	@Inject
 	SubscriptionManagement subscriptionMgmt;
+	
+	@Inject
+	private ConsumationEntryManagement consumationEntryMgmt;
 
 	public SubscriptionPanel(String id, final Membership member, final MembershipManagement membershipMgmt) {
 		super(id);
@@ -106,15 +112,21 @@ public class SubscriptionPanel extends Panel {
 		public CreateEntriesForm(String id) {
 			super(id);
 			
-			add(new TextField<Date>("accountUntil", new PropertyModel(this, "accountUntil")));
+			// Defaultmäßig auf heutiges Datum
+			accountUntil = new Date();
+			
+			add(new RequiredTextField<Date>("accountUntil", new PropertyModel(this, "accountUntil")));
 		}
 		
 		public void onSubmit() {
 			
-			Iterator<Subscription> subscriptions = subscriptionsFromMembershipProvider.iterator(0, 1);
+			Iterator<Subscription> subscriptions = subscriptionsFromMembershipProvider.iterator(0, subscriptionsFromMembershipProvider.size());
 			
 			while (subscriptions.hasNext()) {
-				subscriptions.next().createEntries(accountUntil);
+				ConsumationEntry entry = subscriptions.next().createEntry(accountUntil);
+				if (entry != null) {
+					consumationEntryMgmt.storeConsumationEntry(entry);
+				}
 			}
 		}
 		
