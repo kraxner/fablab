@@ -36,6 +36,7 @@ import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.panels.DropDownColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.panels.TextFieldColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class InvoiceListPage extends AdminBasePage{
@@ -157,7 +158,7 @@ public class InvoiceListPage extends AdminBasePage{
 			columns[6] = new DropDownColumn<PaymentMethod>(new Model<String>("Zahlungsart"), "paymentMethod", "paymentMethod", PaymentMethod.class);
 			columns[7] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Rechnungsdatum"), "date", "date");
 			columns[8] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Fälligkeitsdatum"), "dueDate", "dueDate");
-			columns[9] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Zahlungseingangsdatum"), "payedAt", "payedAt");
+			columns[9] = new TextFieldColumn<Invoice>(new Model<String>("Zahlungseingangsdatum"), "payedAt", "payedAt");
 			columns[10] = new DropDownColumn<InvoiceState>(new Model<String>("Status"), "state", "state", InvoiceState.class);
 			columns[11] = new LinkPropertyColumn<String>(new Model<String>("Aktion"), new Model("Detailansicht"), new PopupSettings(10).setHeight(1024).setWidth(680)) {
 				@Override

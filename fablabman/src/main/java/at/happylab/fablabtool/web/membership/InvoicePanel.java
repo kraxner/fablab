@@ -48,6 +48,7 @@ import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.panels.DropDownColumn;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.panels.TextFieldColumn;
 import at.happylab.fablabtool.web.invoice.InvoiceDetailPage;
 import at.happylab.fablabtool.web.util.CheckBoxColumn;
 
@@ -157,9 +158,11 @@ public class InvoicePanel extends Panel {
 			columns[2] = new DropDownColumn<PaymentMethod>(new Model<String>("Zahlungsart"), "paymentMethod", "paymentMethod", PaymentMethod.class);
 			columns[3] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Rechnungsdatum"), "date", "date");
 			columns[4] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Fälligkeitsdatum"), "dueDate", "dueDate");
-			columns[5] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Zahlungseingangsdatum"), "payedAt", "payedAt");
+			columns[5] = new TextFieldColumn<Invoice>(new Model<String>("Zahlungseingangsdatum"), "payedAt", "payedAt");
 			columns[6] = new DropDownColumn<InvoiceState>(new Model<String>("Status"), "state", "state", InvoiceState.class);
 			columns[7] = new LinkPropertyColumn<String>(new Model<String>("Aktion"), new Model("Detailansicht"), new PopupSettings(10).setHeight(1024).setWidth(680)) {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice) model.getObject();

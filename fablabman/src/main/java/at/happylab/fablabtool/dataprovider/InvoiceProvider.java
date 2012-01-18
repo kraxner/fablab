@@ -81,17 +81,6 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		this.member=member;
 	}
 	
-	
-//	@SuppressWarnings("unchecked")
-//	public Iterator<Invoice> iterator(int first, int count) {
-//		if(member == null)
-//			return em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
-//					.setFirstResult(first).setMaxResults(count).getResultList().iterator();
-//		else
-//			return em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
-//					.setFirstResult(first).setMaxResults(count).getResultList().iterator();
-//	}
-	
 	public Iterator<Invoice> iterator(int first, int count) {
 		List<Invoice> data = getFiltered();
 		
@@ -114,52 +103,10 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 					}
 					return 0;
 				} else if("first".equals(getSort().getProperty())) {
-//				  	MembershipType type1 = o1.getRelatedTo().getMembershipType();
-//					String name1;
-//					if(type1.equals(MembershipType.PRIVATE)){
-//						name1 = o1.getRelatedTo().getUsers().get(0).getFirstname();
-//					} else {
-//						name1 = "";
-//					}
-//					MembershipType type2 = o2.getRelatedTo().getMembershipType();
-//					String name2;
-//					if(type2.equals(MembershipType.PRIVATE)){
-//						name2 = o2.getRelatedTo().getUsers().get(0).getFirstname();
-//					} else {
-//						name2 = "";
-//					}
 				  	return dir * (getFirstName(o1).compareTo(getFirstName(o2)));
 				} else if("last".equals(getSort().getProperty())) {
-//					MembershipType type1 = o1.getRelatedTo().getMembershipType();
-//					String name1;
-//					if(type1.equals(MembershipType.PRIVATE)){
-//						name1 = o1.getRelatedTo().getUsers().get(0).getLastname();
-//					} else {
-//						name1 = o1.getRelatedTo().getContactPerson();
-//					}
-//					MembershipType type2 = o2.getRelatedTo().getMembershipType();
-//					String name2;
-//					if(type2.equals(MembershipType.PRIVATE)){
-//						name2 = o2.getRelatedTo().getUsers().get(0).getLastname();
-//					} else {
-//						name2 = o2.getRelatedTo().getContactPerson();
-//					}
 					return dir * (getLastName(o1).compareTo(getLastName(o2)));
 				} else if("company".equals(getSort().getProperty())) {
-//					MembershipType type1 = o1.getRelatedTo().getMembershipType();
-//					String name1;
-//					if(type1.equals(MembershipType.PRIVATE)){
-//						name1 = "";
-//					} else {
-//						name1 = o1.getRelatedTo().getCompanyName();
-//					}
-//					MembershipType type2 = o2.getRelatedTo().getMembershipType();
-//					String name2;
-//					if(type2.equals(MembershipType.PRIVATE)){
-//						name2 = "";
-//					} else {
-//						name2 = o2.getRelatedTo().getCompanyName();
-//					}
 					return dir * (getCompanyName(o1).compareTo(getCompanyName(o2)));
 				} else if("amount".equals(getSort().getProperty())) {
 					return dir * (getAmount(o1).compareTo(getAmount(o2)));
@@ -180,22 +127,6 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 			}
 		};
 	}
-	
-//	public int size() {
-//		Long count = 0L;
-//		
-//		if(member == null)
-//		{
-//			count = (Long) em.createQuery("SELECT COUNT(*) FROM Invoice WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
-//				.getSingleResult();
-//		}
-//		else
-//		{
-//			count = (Long) em.createQuery("SELECT COUNT(*) FROM Invoice WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
-//					.getSingleResult();
-//		}
-//		return count.intValue();
-//	}
 	
 	public int size() {
 		return getFiltered().size();
@@ -269,7 +200,8 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 					&& Long.toString(inv.getRelatedTo().getMemberId()).toUpperCase().indexOf(upper) < 0
 					&& getFirstName(inv).toUpperCase().indexOf(upper) < 0
 					&& getLastName(inv).toUpperCase().indexOf(upper) < 0
-					&& getCompanyName(inv).toUpperCase().indexOf(upper) < 0)
+					&& getCompanyName(inv).toUpperCase().indexOf(upper) < 0
+					&& cdc.convertToString(inv.getPayedAt(), null).toUpperCase().indexOf(upper) < 0)
 				{
 					it.remove();
 				}
