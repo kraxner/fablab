@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -100,6 +101,7 @@ public class EntryPanel extends Panel {
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Beschreibung"), "text", "text"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Einzelpreis"), "price", "price"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Anzahl"), "quantity", "quantity"));
+		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Einheit"), "unit", "unit"));
 		columns.add(new PropertyColumn<ConsumationEntry>(new Model<String>("Gesamt"), "sum", "sum"));
 		columns.add(new LinkPropertyColumn(new Model<String>("Aktionen"), new Model("edit")) {
 			@Override
@@ -140,6 +142,8 @@ public class EntryPanel extends Panel {
             		Arrays.asList(PaymentMethod.values()),
             		new EnumChoiceRenderer<PaymentMethod>(this));
             add(payMeth);
+            
+            add(new TextArea<String>("comment"));
             
 			add(new Button("submit"));
 		}
