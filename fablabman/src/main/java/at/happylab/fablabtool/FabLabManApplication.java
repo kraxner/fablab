@@ -26,6 +26,7 @@ import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.converter.CustomDateConverter;
+import at.happylab.fablabtool.converter.CustomDoubleConverter;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.web.authentication.FablabSignInPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
@@ -127,6 +128,8 @@ public class FabLabManApplication extends AuthenticatedWebApplication
         converterLocator.set(java.sql.Date.class, new CustomDateConverter());
         converterLocator.set(java.sql.Time.class, new CustomDateConverter());
         converterLocator.set(java.sql.Timestamp.class, new CustomDateConverter());
+        
+        converterLocator.set(Double.class, new CustomDoubleConverter());
         
         return converterLocator;
     }

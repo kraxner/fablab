@@ -26,7 +26,7 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 	public Iterator<Consumable> iterator(int first, int count) {
 		List<Consumable> results = em.createQuery("FROM Consumable").getResultList();
 
-		Collections.sort(results, new Comparator<Consumable>() {
+/*		Collections.sort(results, new Comparator<Consumable>() {
 			public int compare(Consumable c1, Consumable c2) {
 				int dir = getSort().isAscending() ? 1 : -1;
 
@@ -46,7 +46,7 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 //				}
 			}
 		});
-
+*/
 		return results.subList(first, Math.min(first+count, results.size())).iterator();
 	}
 	

@@ -56,7 +56,7 @@ public class SubscriptionDetailPage extends AdminBasePage {
 		add(new SubscriptionForm("form"));
 
 	}
-
+	
 	class SubscriptionForm extends Form<Object> {
 		private static final long serialVersionUID = -416444319008642513L;
 

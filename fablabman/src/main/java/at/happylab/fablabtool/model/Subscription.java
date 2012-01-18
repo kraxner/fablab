@@ -111,12 +111,49 @@ public class Subscription implements Serializable{
 	
 	public void createEntries(Date end) {
 		
+		Date now = new Date();
+		
 		// validFrom
+		if (validFrom.after(end)) {
+			return;
+		}
+		
 		// validTo
 		// payedUntil
 		
+		if (payedUntil.before(end)) {
+			//payedUntil.getMonth()
+		}
+		
 		// booksPackage.billingCycle
+		int months;
+		switch (booksPackage.getBillingCycle()) {
+			case MONTHLY:
+				months = 1;
+				break;
+			
+			case QUARTER:
+				months = 3;
+				break;
+			
+			case ANNUAL:
+				months = 12;
+				break;
+			
+		}
+		
+		// Anzahl der Monate seit letzter abrechnung berechnen ....
+		
+		
 		// priceOverruled
+		
+//		ConsumationEntry entry = new ConsumationEntry();
+//		entry.setConsumedBy(getBookedBy());
+//		entry.setText(getDescription());
+//		entry.setDate();
+//		entry.setPrice();
+//		entry.setQuantity();
+		
 		
 	}
 

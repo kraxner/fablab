@@ -64,6 +64,12 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 			final RequiredTextField<String> text = new RequiredTextField<String>("text");
 			add(text);
 			
+			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
+			add(price);
+			
+			final RequiredTextField<Double> unit = new RequiredTextField<Double>("unit");
+			add(unit);
+			
 			final DropDownChoice<Consumable> availableConsumables = new DropDownChoice<Consumable>("consumedItem", consumableMgmt.getAllConsumables()) {
 				private static final long serialVersionUID = -385671748734684239L;
 
@@ -72,20 +78,12 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 				}
 
 				protected void onSelectionChanged(final Consumable c) {
-					
-					System.out.println("-----SELECTED: " + c.getName() + "  " + c);
-					
-					entry.setText(c.getName());
 					text.setModelValue(new String[] { c.getName() } );
-					
-					entry.setPrice(c.getPricePerUnit());
+					price.setModelValue(new String[] { c.getPricePerUnit().toString() } );
+					unit.setModelValue(new String[] { c.getUnit() });
 				}
 			};
 			add(availableConsumables);
-			
-			
-			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price");
-			add(price);
 			
 			final RequiredTextField<Integer> quantity = new RequiredTextField<Integer>("quantity");
 			add(quantity);

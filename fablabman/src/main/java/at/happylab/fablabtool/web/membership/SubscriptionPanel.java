@@ -2,6 +2,7 @@ package at.happylab.fablabtool.web.membership;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -105,10 +107,12 @@ public class SubscriptionPanel extends Panel {
 		}
 		
 		public void onSubmit() {
-			// foreach Subscription of member
-			//   (?) ConsumationEntry e = subscription.createEntry();
 			
+			Iterator<Subscription> subscriptions = subscriptionsFromMembershipProvider.iterator(0, 1);
 			
+			while (subscriptions.hasNext()) {
+				subscriptions.next().createEntries(accountUntil);
+			}
 		}
 		
 		public Date getAccountUntil() {

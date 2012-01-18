@@ -21,14 +21,10 @@ public class ConsumationEntry implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	/**
-	 * TODO: what kind of text?
-	 */
 	private String text;
-	
-	private int quantity;
-	
+	private double quantity;
 	private BigDecimal price;
+	private String unit;
 	
 	@ManyToOne
 	private Consumable consumedItem;
@@ -69,11 +65,11 @@ public class ConsumationEntry implements Serializable{
 		this.text = text;
 	}
 
-	public int getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -112,4 +108,13 @@ public class ConsumationEntry implements Serializable{
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
 	}
+	
+	public void setUnit(String u) {
+		this.unit = u;
+	}
+	
+	public String getUnit() {
+		return this.unit;
+	}
+
 }
