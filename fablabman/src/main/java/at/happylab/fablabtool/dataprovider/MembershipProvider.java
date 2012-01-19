@@ -66,7 +66,7 @@ public class MembershipProvider extends SortableDataProvider<Membership> impleme
 	}
 	
 	public Iterator<Membership> getMembersWithEntries() {
-		List<Membership> memberships = em.createQuery("SELECT distinct m FROM ConsumationEntry as entry join entry.consumedBy as m WHERE invoice_id is NULL").getResultList();
+		List<Membership> memberships = em.createQuery("select m from Membership m where exists (select entry from ConsumationEntry entry where (entry.invoice is NULL) and (entry.consumedBy = m) )").getResultList();
 		return memberships.iterator();
 	}
 

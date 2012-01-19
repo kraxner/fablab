@@ -50,7 +50,7 @@ public class SubscriptionListPage extends BasePage {
 		});
 
 
-		DefaultDataTable<Subscription> table = new DefaultDataTable<Subscription>("subscriptionTable", columns, subscriptionProvider, 5);
+		DefaultDataTable<Subscription> table = new DefaultDataTable<Subscription>("subscriptionTable", columns, subscriptionProvider, 50);
 		add(table);
 		
 		add(new Label("subscriptionCount", subscriptionProvider.size() + " Datensätze"));

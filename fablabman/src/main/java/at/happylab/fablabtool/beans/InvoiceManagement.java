@@ -31,6 +31,13 @@ public class InvoiceManagement implements Serializable{
 	public void storeInvoice(Invoice inv) {
 		// TODO, das muss in die Transaction!!!
 		
+	
+		
+		
+		if (!em.getTransaction().isActive()) {
+			em.getTransaction().begin();
+		}
+		
 		// Rechnungsnummer im Format YYBNNNN
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(inv.getDate());
@@ -43,11 +50,6 @@ public class InvoiceManagement implements Serializable{
 		}
 				
 		inv.setInvoiceNumberShort(lastInvoiceNumber+1);
-		
-		
-		if (!em.getTransaction().isActive()) {
-			em.getTransaction().begin();
-		}
 		
 		em.persist(inv);
 		

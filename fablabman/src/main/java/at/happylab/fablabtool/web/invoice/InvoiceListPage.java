@@ -171,7 +171,7 @@ public class InvoiceListPage extends AdminBasePage{
 				 
 			};
 			
-			add(new DefaultDataTable("invTable", columns, invoices, 5));
+			add(new DefaultDataTable("invTable", columns, invoices, 50));
 			
 			add(new Button("submit"));
 			Button bankExport = new Button("bankExport"){
