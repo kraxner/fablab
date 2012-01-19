@@ -55,8 +55,9 @@ public class InvoiceListPage extends AdminBasePage{
 	private Label resultDiv;
 
 	public InvoiceListPage() {
-		invoices.setFilter();
+		navigation.selectRechnungen();
 		
+		invoices.setFilter();
 		add(new Label("invoiceLabel", "Rechnungen"));
 		
 		init();

@@ -32,6 +32,7 @@ public class MembershipListPage extends AdminBasePage {
 	@Inject UserProvider userProvider;
 
 	public MembershipListPage() {
+		navigation.selectMitglieder();
 		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 

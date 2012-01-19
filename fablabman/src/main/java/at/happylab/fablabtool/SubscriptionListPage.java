@@ -25,7 +25,8 @@ public class SubscriptionListPage extends BasePage {
 	SubscriptionProvider subscriptionProvider;
 
 	public SubscriptionListPage() {
-
+		navigation.selectSubscriptions();
+		
 		List<IColumn<Subscription>> columns = new ArrayList<IColumn<Subscription>>();
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Membership ID"), "memberId", "bookedBy.memberId"));
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Firmenname"), "bookedBy.companyName", "bookedBy.companyName"));
