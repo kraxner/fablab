@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -17,7 +18,6 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.UserProvider;
 import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.model.MembershipStatus;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
@@ -26,16 +26,18 @@ import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class MembershipListPage extends AdminBasePage {
 
-	@Inject
-	private MembershipManagement membershipMgmt;
-	
-	@Inject UserProvider userProvider;
+	@Inject private MembershipManagement membershipMgmt;
+	@Inject private UserProvider userProvider;
 
 	public MembershipListPage() {
 		
 		add(new Label("mitgliederLabel", "Mitglieder"));
 
-		final Form<String> form = new Form<String>("main");
+		final Form<User> form = new Form<User>("main");
+		
+		TextField<String> filterInput = new TextField<String>("filterInput");
+		
+		form.add( filterInput );
 
 		IColumn[] columns = new IColumn[11];
 		// nr, Vorname, Nachname, Art der Mitgliedschaft, Firmenname, Telefonnummer, Email, Eintrittsdatum, (evtl. Austrittsdatum), Kommentar )
@@ -50,23 +52,6 @@ public class MembershipListPage extends AdminBasePage {
 		columns[1] = new PropertyColumn<String>(new Model<String>("Vorname"), "firstname", "firstname");
 		columns[2] = new PropertyColumn<String>(new Model<String>("Nachname"), "lastname", "lastname");
 		columns[3] = new EnumPropertyColumn<MembershipType>(new Model<String>("Art"), "type", "membership.membershipType", MembershipType.class, this);
-//		columns[3] = new PropertyColumn<MembershipStatus>(new Model<String>("Art"), "type", "membership.type") {
-//			@Override
-//			public void populateItem(
-//					Item<ICellPopulator<MembershipStatus>> item,
-//					String componentId, IModel<MembershipStatus> rowModel) {
-//				
-//				
-//				item.add(new Label(componentId, new PropertyModel(rowModel, getPropertyExpression())){
-//					private static final long serialVersionUID = 1L;
-//
-//					@Override
-//					public IConverter getConverter(Class<?> type) {
-//						return new EnumConverter<MembershipStatus>(MembershipStatus.class, this);
-//					}
-//				});
-//			}
-//		};
 		columns[4] = new PropertyColumn<String>(new Model<String>("Firmenname"), "companyName", "membership.companyName");
 		columns[5] = new PropertyColumn<String>(new Model<String>("Telefonnummer"), "phone", "membership.phone");
 		columns[6] = new PropertyColumn<String>(new Model<String>("Email"), "email", "membership.email");
