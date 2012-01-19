@@ -4,19 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.model.KeyCard;
-import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 
 public class KeycardTests {

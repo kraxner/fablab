@@ -5,12 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.hsqldb.lib.KMPSearchAlgorithm;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,14 +16,12 @@ import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.beans.UserManagement;
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
-import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.session.SessionScopeProducer;
@@ -38,7 +33,6 @@ public class KeycardAccessTests {
 	private static UserManagement userMgmt;
 	private static AccessGrantManagement agMgmt;
 	private static PackageManagement pMgmt;
-	private static SubscriptionManagement sMgmt;
 
 	private static EntityManager em;
 
@@ -47,7 +41,6 @@ public class KeycardAccessTests {
 	private static Membership m;
 	private static AccessGrant ag;
 	private static Package p;
-	private static Subscription s;
 
 	private static String rfid;
 
@@ -61,7 +54,6 @@ public class KeycardAccessTests {
 		userMgmt = new UserManagement(em);
 		agMgmt = new AccessGrantManagement(em);
 		pMgmt = new PackageManagement(em);
-		sMgmt = new SubscriptionManagement(em);
 
 		m = new Membership();
 		u = new User();

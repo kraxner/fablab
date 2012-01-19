@@ -78,50 +78,52 @@ public class PackageManagement implements Serializable {
 		return selectOptions;
 	}
 
-	
 	/**
 	 * Methode liefert das nächstmögliche Kündigungsdatum eines Paketes zurück.
-	 * @param pkg das Packet
+	 * 
+	 * @param pkg
+	 *            das Packet
 	 * @return das errechnete Kündigungsdatum
 	 * 
 	 * @author Johannes Bauer
 	 */
 	public Date getNextCancelationDate(Package pkg) {
-		GregorianCalendar c = new GregorianCalendar();
+		return getNextCancelationDate(pkg, new GregorianCalendar());
+	}
+
+	public Date getNextCancelationDate(Package pkg, GregorianCalendar c) {
 
 		/**
-		 *  Zum aktuellen Datum die Kündigungsfrist in Monaten dazuzählen.
+		 * Zum aktuellen Datum die Kündigungsfrist in Monaten dazuzählen.
 		 */
 		c.add(Calendar.MONTH, pkg.getCancelationPeriod());
 
 		/**
-		 *  Kündigung nur zu bestimmten Zeiten möglich
-		 *  nur am Ende von Monat/Quartal/Jahr
+		 * Kündigung nur zu bestimmten Zeiten möglich nur am Ende von
+		 * Monat/Quartal/Jahr
 		 */
 		if (pkg.getCancelationPeriodAdvance() == TimePeriod.MONTHLY) {
-			c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+			//c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DATE));
 
 		} else if (pkg.getCancelationPeriodAdvance() == TimePeriod.QUARTER) {
 
 			if (c.get(Calendar.MONTH) <= Calendar.MARCH)
 				c.set(Calendar.MONTH, Calendar.MARCH);
 			else if (c.get(Calendar.MONTH) <= Calendar.JUNE)
-				c.set(Calendar.MONTH, Calendar.MARCH);
+				c.set(Calendar.MONTH, Calendar.JUNE);
 			else if (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)
 				c.set(Calendar.MONTH, Calendar.SEPTEMBER);
 			else if (c.get(Calendar.MONTH) <= Calendar.DECEMBER)
 				c.set(Calendar.MONTH, Calendar.DECEMBER);
-
-			c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
 
 		} else if (pkg.getCancelationPeriodAdvance() == TimePeriod.ANNUAL) {
 			c.set(Calendar.MONTH, Calendar.DECEMBER);
 		}
 
 		/**
-		 *  Kündigung nur am letzten Tag eines Monats
+		 * Kündigung immer nur am letzten Tag eines Monats
 		 */
-		c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
 
 		return c.getTime();
 	}

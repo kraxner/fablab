@@ -80,7 +80,7 @@ public class MembershipManagement implements Serializable {
 		int memberID = 0;
 
 		try {
-			Query qry = em.createQuery("select m.id from membership m  inner join user u on m.id = u.membership_id inner join Keycard k on u.keycard_id=k.id where k.rfid=:rfid");
+			Query qry = em.createQuery("SELECT m.id from membership m  inner join user u on m.id = u.membership_id inner join Keycard k on u.keycard_id=k.id where k.rfid=:rfid");
 			qry.setParameter("rfid", rfid);
 			memberID = Integer.valueOf((String) qry.getSingleResult());
 		} catch (NoResultException e) {
