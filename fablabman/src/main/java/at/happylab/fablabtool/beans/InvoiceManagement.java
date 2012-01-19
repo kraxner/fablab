@@ -36,7 +36,11 @@ public class InvoiceManagement implements Serializable{
 		cal.setTime(inv.getDate());
 		int year = cal.get(Calendar.YEAR);
 		
-		long lastInvoiceNumber = (Long)em.createQuery("select MAX(invoiceNumberShort) from Invoice WHERE year(date) = " + year).getSingleResult();
+		Object result = em.createQuery("select MAX(invoiceNumberShort) from Invoice WHERE year(date) = " + year).getSingleResult();
+		long lastInvoiceNumber = 0;
+		if (result != null) {
+			 lastInvoiceNumber = (Long)result;
+		}
 				
 		inv.setInvoiceNumberShort(lastInvoiceNumber+1);
 		
