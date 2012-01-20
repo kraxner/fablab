@@ -11,9 +11,9 @@ import at.happylab.fablabtool.web.device.DeviceListPage;
 import at.happylab.fablabtool.web.maintenance.data.CreateTestDataPage;
 import at.happylab.fablabtool.web.membership.UserListPage;
 
-public class StammdatenPage extends BasePage {
+public class MasterDataPage extends BasePage {
 
-	public StammdatenPage() {
+	public MasterDataPage() {
 		navigation.selectStammdaten();
 		add(new Label("stammdatenLabel","Stammdaten"));
 		

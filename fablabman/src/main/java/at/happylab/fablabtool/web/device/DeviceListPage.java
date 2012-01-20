@@ -24,7 +24,7 @@ import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.web.BasePage;
-import at.happylab.fablabtool.web.maintenance.StammdatenPage;
+import at.happylab.fablabtool.web.maintenance.MasterDataPage;
 import at.happylab.fablabtool.web.membership.UserDetailPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 import at.happylab.fablabtool.web.util.WarningPage;
@@ -156,7 +156,7 @@ public class DeviceListPage extends BasePage {
 				private static final long serialVersionUID = -3527050342774869192L;
 
 				public void onClick() {
-					setResponsePage(new StammdatenPage());
+					setResponsePage(new MasterDataPage());
 				}
 			};
 			add(goBackButton);

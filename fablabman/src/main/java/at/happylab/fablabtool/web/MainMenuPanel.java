@@ -12,7 +12,7 @@ import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.LoggedIn;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 import at.happylab.fablabtool.web.invoice.InvoiceListPage;
-import at.happylab.fablabtool.web.maintenance.StammdatenPage;
+import at.happylab.fablabtool.web.maintenance.MasterDataPage;
 import at.happylab.fablabtool.web.maintenance.SubscriptionListPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
@@ -41,7 +41,7 @@ public class MainMenuPanel extends Panel {
         rechnungen = new BookmarkablePageLink<String>("rechnungenLink", InvoiceListPage.class); 
         add(rechnungen);
         
-        stammdaten = new BookmarkablePageLink<String>("stammdatenLink", StammdatenPage.class);
+        stammdaten = new BookmarkablePageLink<String>("stammdatenLink", MasterDataPage.class);
         add(stammdaten);
         
         aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AccountingPage.class);
