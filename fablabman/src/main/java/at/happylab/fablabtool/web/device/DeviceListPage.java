@@ -18,12 +18,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.BasePage;
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.DeviceManagement;
 import at.happylab.fablabtool.dataprovider.DeviceProvider;
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.membership.UserDetailPage;
 import at.happylab.fablabtool.web.util.CheckBoxColumn;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;

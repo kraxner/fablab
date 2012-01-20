@@ -1,4 +1,4 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web;
 
 import java.io.Serializable;
 

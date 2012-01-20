@@ -1,4 +1,4 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web.maintenance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.dataprovider.PackageProvider;
 import at.happylab.fablabtool.model.Package;

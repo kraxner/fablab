@@ -1,4 +1,4 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web.maintenance;
 
 import java.math.BigDecimal;
 
@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
+import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.model.Consumable;
 

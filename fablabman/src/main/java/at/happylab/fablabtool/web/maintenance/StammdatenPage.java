@@ -1,12 +1,14 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web.maintenance;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 
+import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.web.HomePage;
 import at.happylab.fablabtool.web.access.AccessGrantListPage;
 import at.happylab.fablabtool.web.access.KeycardListPage;
-import at.happylab.fablabtool.web.data.CreateTestDataPage;
 import at.happylab.fablabtool.web.device.DeviceListPage;
+import at.happylab.fablabtool.web.maintenance.data.CreateTestDataPage;
 import at.happylab.fablabtool.web.membership.UserListPage;
 
 public class StammdatenPage extends BasePage {

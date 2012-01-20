@@ -14,13 +14,13 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.dataprovider.UserProvider;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.panels.EnumPropertyColumn;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
+import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.util.DateTimeColumn;
 
 public class UserListPage extends AdminBasePage {

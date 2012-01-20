@@ -14,12 +14,12 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
+import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 import at.happylab.fablabtool.web.util.WarningPage;
 

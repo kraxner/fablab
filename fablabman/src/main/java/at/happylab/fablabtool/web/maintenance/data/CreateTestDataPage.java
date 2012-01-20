@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.web.data;
+package at.happylab.fablabtool.web.maintenance.data;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -11,7 +11,10 @@ import at.happylab.fablabtool.model.WebUser;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.LoggedIn;
 import at.happylab.fablabtool.session.SessionScopeProducer;
+import at.happylab.fablabtool.web.AufgabenPage;
 import at.happylab.fablabtool.web.invoice.InvoiceListPage;
+import at.happylab.fablabtool.web.maintenance.StammdatenPage;
+import at.happylab.fablabtool.web.maintenance.SubscriptionListPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
 public class TopNavPanel extends Panel {

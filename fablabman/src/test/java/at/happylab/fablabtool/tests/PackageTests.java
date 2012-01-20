@@ -1,6 +1,7 @@
 package at.happylab.fablabtool.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -12,8 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.model.TimePeriod;
 import at.happylab.fablabtool.model.Package;
+import at.happylab.fablabtool.model.TimePeriod;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 
 public class PackageTests {
@@ -86,7 +87,6 @@ public class PackageTests {
 		assertTrue(size > 0);
 
 		assertTrue(lst.size() > 0);
-		assertEquals(size, packageMgmt.getAllPackagesForDropDown().size());
 
 	}
 

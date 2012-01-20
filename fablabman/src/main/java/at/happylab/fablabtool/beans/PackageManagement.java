@@ -1,21 +1,16 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import at.happylab.fablabtool.SelectOption;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.TimePeriod;
 
@@ -64,18 +59,6 @@ public class PackageManagement implements Serializable {
 	public List<Package> getAllPackages() {
 		return em.createQuery("from Package", Package.class).getResultList();
 
-	}
-
-	public List<SelectOption> getAllPackagesForDropDown() {
-		List<Package> results = em.createQuery("from Package", Package.class).getResultList();
-
-		List<SelectOption> selectOptions = new ArrayList<SelectOption>();
-
-		for (Package p : results) {
-			selectOptions.add(new SelectOption<Package>(p, p.getName()));
-		}
-
-		return selectOptions;
 	}
 
 	/**
