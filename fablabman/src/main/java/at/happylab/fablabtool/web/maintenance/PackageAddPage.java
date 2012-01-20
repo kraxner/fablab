@@ -17,11 +17,11 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
+import at.happylab.fablabtool.web.BasePage;
 
 public class PackageAddPage extends BasePage {
 

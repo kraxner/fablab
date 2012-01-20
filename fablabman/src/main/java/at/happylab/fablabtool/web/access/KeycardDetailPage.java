@@ -21,13 +21,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.AccessGrantsFromKeycardProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.DateTimeColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
+import at.happylab.fablabtool.web.BasePage;
 
 public class KeycardDetailPage extends BasePage {
 

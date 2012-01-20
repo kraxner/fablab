@@ -1,9 +1,10 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web;
 
 import java.io.Serializable;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+
 
 public class BasePage extends WebPage implements Serializable {
 	protected MainMenuPanel navigation;

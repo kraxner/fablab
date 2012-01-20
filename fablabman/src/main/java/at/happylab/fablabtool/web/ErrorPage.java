@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.PropertyModel;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.model.ErrorLog;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.SessionScopeProducer;

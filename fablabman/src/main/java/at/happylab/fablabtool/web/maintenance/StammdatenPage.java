@@ -3,7 +3,7 @@ package at.happylab.fablabtool.web.maintenance;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 
-import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.web.BasePage;
 import at.happylab.fablabtool.web.HomePage;
 import at.happylab.fablabtool.web.access.AccessGrantListPage;
 import at.happylab.fablabtool.web.access.KeycardListPage;

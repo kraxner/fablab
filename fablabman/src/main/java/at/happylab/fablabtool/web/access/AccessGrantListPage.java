@@ -18,7 +18,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.AccessGrantProvider;
@@ -29,6 +28,7 @@ import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.KeyCard;
+import at.happylab.fablabtool.web.BasePage;
 import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 

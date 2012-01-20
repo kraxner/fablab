@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.PropertyModel;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;

@@ -1,4 +1,4 @@
-package at.happylab.fablabtool;
+package at.happylab.fablabtool.web;
 
 import javax.inject.Inject;
 
@@ -11,7 +11,6 @@ import at.happylab.fablabtool.model.WebUser;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.LoggedIn;
 import at.happylab.fablabtool.session.SessionScopeProducer;
-import at.happylab.fablabtool.web.AufgabenPage;
 import at.happylab.fablabtool.web.invoice.InvoiceListPage;
 import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.maintenance.SubscriptionListPage;
