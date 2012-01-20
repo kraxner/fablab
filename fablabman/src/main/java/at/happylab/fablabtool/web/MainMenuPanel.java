@@ -44,7 +44,7 @@ public class MainMenuPanel extends Panel {
         stammdaten = new BookmarkablePageLink<String>("stammdatenLink", StammdatenPage.class);
         add(stammdaten);
         
-        aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AufgabenPage.class);
+        aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AccountingPage.class);
         add(aufgaben);
         
         String username = "";

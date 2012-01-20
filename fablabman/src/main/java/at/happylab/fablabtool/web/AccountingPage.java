@@ -20,7 +20,7 @@ import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 
-public class AufgabenPage extends BasePage {
+public class AccountingPage extends BasePage {
 
 	@Inject
 	SubscriptionProvider subscriptionProvider;
@@ -38,7 +38,7 @@ public class AufgabenPage extends BasePage {
 	@Inject 
 	InvoiceManagement invoiceMgmt;
 	
-	public AufgabenPage() {
+	public AccountingPage() {
 		navigation.selectAufgaben();
 		
 		add(new CreateEntriesForm("createEntries"));
