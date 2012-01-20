@@ -34,6 +34,9 @@ import at.happylab.fablabtool.web.membership.MembershipListPage;
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
  * 
+ * - It uses Wicket's authentication framework
+ * - and provides entrypoints for Weld
+ * 
  * @see wicket.myproject.Start#main(String[])
  */
 public class FabLabManApplication extends AuthenticatedWebApplication
@@ -81,7 +84,7 @@ public class FabLabManApplication extends AuthenticatedWebApplication
 	   @Override
 	   public RequestCycle newRequestCycle(final Request request, final Response response)
 	   {
-	      return new SeamRequestCycle(this, (WebRequest) request, (WebResponse) response);
+	      return new FabLabRequestCycle(this, (WebRequest) request, (WebResponse) response);//SeamRequestCycle(this, (WebRequest) request, (WebResponse) response);
 	   }
 	   
 	   @Override

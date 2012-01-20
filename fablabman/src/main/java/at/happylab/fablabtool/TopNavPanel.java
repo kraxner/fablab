@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import at.happylab.fablabtool.model.WebUser;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.session.LoggedIn;
+import at.happylab.fablabtool.session.SessionScopeProducer;
 import at.happylab.fablabtool.web.invoice.InvoiceListPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
@@ -44,12 +45,14 @@ public class TopNavPanel extends Panel {
         aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AufgabenPage.class);
         add(aufgaben);
         
-        if (getSession() instanceof FablabAuthenticatedWebSession) {
-        	FablabAuthenticatedWebSession fablabSession = (FablabAuthenticatedWebSession)getSession(); 
-        	add(new Label("loggedInUser", fablabSession.getSessionScopeProducer().getLoggedInUser().getFullname()));
-        } else {
-        	throw new IllegalStateException("This class requires a " + FablabAuthenticatedWebSession.class.getSimpleName());
+        String username = "";
+        if (getSession() instanceof FablabAuthenticatedWebSession ) {
+        	SessionScopeProducer sessionScopeProducer = ((FablabAuthenticatedWebSession)getSession()).getSessionScopeProducer();
+        	if (sessionScopeProducer != null) {
+        		username = sessionScopeProducer.getLoggedInUser().getFullname();
+        	}
         }
+        add(new Label("loggedInUser", username));        
     }
 	
 	public void selectMitglieder() {

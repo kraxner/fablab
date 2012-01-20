@@ -85,6 +85,16 @@ public class StammdatenPage extends BasePage {
 		        setResponsePage(new CreateTestDataPage());
 		    }
 		});
+		
+		add(new Link<String>("RuntimeExceptionLink") {
+			private static final long serialVersionUID = -1585556011311826709L;
+
+			public void onClick() {
+		        throw new RuntimeException("Diese Runtime exception wurde absichtlich ausgelöst.");
+		    }
+		});
+		
+		
 	}
 
 }

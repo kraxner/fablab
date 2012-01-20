@@ -24,7 +24,6 @@ import at.happylab.fablabtool.model.WebUser;
 public class FablabAuthenticatedWebSession extends AuthenticatedWebSession {
 	private static final long serialVersionUID = 1L;
 	
-	private NonContextual<SessionScopeProducer> sessionScopeProducerRef;
 	private SessionScopeProducer sessionScopeProducer;
 	
 	public FablabAuthenticatedWebSession(Request request) {
@@ -39,10 +38,7 @@ public class FablabAuthenticatedWebSession extends AuthenticatedWebSession {
 	@Override
 	public boolean authenticate(final String username, final String password) {
 		try {
-		    BeanManager manager = new BeanManagerLocator().getBeanManager();
-			sessionScopeProducerRef = NonContextual.of(SessionScopeProducer.class, manager);
-
-			sessionScopeProducer = sessionScopeProducerRef.newInstance().produce().inject().get();
+			sessionScopeProducer = SessionScopeProducer.getInstance();
 			EntityManager em = sessionScopeProducer.getEm();
 			
 			// sic! sql injection is a topic for us!
