@@ -35,7 +35,9 @@ import at.happylab.fablabtool.web.membership.MembershipListPage;
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
  * 
  * - It uses Wicket's authentication framework
- * - and provides entrypoints for Weld
+ * - provides entrypoints for Weld
+ * - registers converters
+ * - and our FabLabRequestCycle which handles exceptions 
  * 
  * @see wicket.myproject.Start#main(String[])
  */

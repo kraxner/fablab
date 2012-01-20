@@ -17,7 +17,7 @@ import at.happylab.fablabtool.web.maintenance.StammdatenPage;
 import at.happylab.fablabtool.web.maintenance.SubscriptionListPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
-public class TopNavPanel extends Panel {
+public class MainMenuPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class TopNavPanel extends Panel {
 	@SuppressWarnings("unused")
 	@Inject @LoggedIn private WebUser user;
 	
-	public TopNavPanel(String id) {
+	public MainMenuPanel(String id) {
         super(id);
         
         mitglieder = new BookmarkablePageLink<String>("mitgliederLink", MembershipListPage.class); 

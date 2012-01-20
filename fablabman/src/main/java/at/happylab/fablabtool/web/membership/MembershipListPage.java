@@ -17,11 +17,11 @@ import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.UserProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
-import at.happylab.fablabtool.panels.EnumPropertyColumn;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class MembershipListPage extends AdminBasePage {

@@ -14,7 +14,12 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.Model;
 
 /**
- * Homepage
+ * Homepage for first "Hello World" prototype
+ * - as the first page should be the membership list, it is not really used any more
+ * - still it provides an interface to test the access service
+ * 
+ * @author Michael Kraxner
+ * 
  */
 public class HomePage extends WebPage {
 
@@ -22,7 +27,6 @@ public class HomePage extends WebPage {
 
 	private String rfid;
 
-	// TODO Add any page properties or variables here
 	public HomePage() {
 		add(new Label("message", "Hello world, happy lab user!"));
 		

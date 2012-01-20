@@ -17,11 +17,11 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.dataprovider.PackageProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
-import at.happylab.fablabtool.panels.EnumPropertyColumn;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class PackageList extends BasePage {

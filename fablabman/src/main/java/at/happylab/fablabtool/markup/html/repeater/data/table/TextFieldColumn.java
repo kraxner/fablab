@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.panels;
+package at.happylab.fablabtool.markup.html.repeater.data.table;
 
 import java.util.Arrays;
 import java.util.Date;

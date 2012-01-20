@@ -3,15 +3,12 @@
  */
 package at.happylab.fablabtool.session;
 
-import javax.enterprise.inject.spi.BeanManager;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
-import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.model.WebUser;
 

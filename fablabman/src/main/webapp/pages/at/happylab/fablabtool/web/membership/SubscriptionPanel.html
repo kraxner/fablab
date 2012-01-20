@@ -1,4 +1,5 @@
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
 <wicket:panel>
 	<div style="padding: 10px;">
 		<form wicket:id="main">
@@ -15,18 +16,18 @@
 				<table wicket:id="subscriptionsTable"></table>
 			</div>
 
-			<br> <span wicket:id="subscriptionsCount"></span> <br> <br>
+			<br/> <span wicket:id="subscriptionsCount"></span> <br/> <br/>
 
 			<input wicket:id="addSubscription" type="submit"
-				value="Zusatzpaket buchen" class="minimal">
+				value="Zusatzpaket buchen" class="minimal"/>
 		</form>
 		
 		<form wicket:id="createEntries">
 			
 			<div class="type-text">
-				<label for="">laufende Packete bis</label> <input wicket:id="accountUntil" type="text"> <label>abrechnen</label>
+				<label for="">laufende Packete bis</label> <input wicket:id="accountUntil" type="text"/> <label>abrechnen</label>
 			</div>
-			<input type="submit" value="Buchungen erstellen" class="minimal">
+			<input type="submit" value="Buchungen erstellen" class="minimal"/>
 		</form>
 	</div>
 </wicket:panel>

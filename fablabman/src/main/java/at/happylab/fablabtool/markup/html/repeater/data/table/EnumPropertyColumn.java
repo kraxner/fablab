@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.panels;
+package at.happylab.fablabtool.markup.html.repeater.data.table;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;

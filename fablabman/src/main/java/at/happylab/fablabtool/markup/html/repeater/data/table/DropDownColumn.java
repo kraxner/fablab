@@ -1,30 +1,17 @@
-package at.happylab.fablabtool.panels;
+package at.happylab.fablabtool.markup.html.repeater.data.table;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
-
-import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
-import org.apache.wicket.markup.html.link.PopupSettings;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.util.convert.IConverter;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
-import at.happylab.fablabtool.converter.EnumConverter;
-import at.happylab.fablabtool.model.Gender;
-import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
-import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PaymentMethod;
 
 public class DropDownColumn<T extends Enum<T>> extends PropertyColumn<T>{

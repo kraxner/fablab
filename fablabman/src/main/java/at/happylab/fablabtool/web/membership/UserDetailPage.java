@@ -21,9 +21,9 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.beans.UserManagement;
 import at.happylab.fablabtool.dataprovider.TrainedDevicesFromUserProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.model.User;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 import at.happylab.fablabtool.web.device.DeviceListPage;
 

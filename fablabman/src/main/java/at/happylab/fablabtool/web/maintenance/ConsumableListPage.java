@@ -17,8 +17,8 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.dataprovider.ConsumableProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Consumable;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class ConsumableListPage extends BasePage {

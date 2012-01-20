@@ -39,18 +39,18 @@ import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.dataprovider.InvoiceProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.DropDownColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.TextFieldColumn;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipStatus;
 import at.happylab.fablabtool.model.PaymentMethod;
-import at.happylab.fablabtool.panels.DropDownColumn;
-import at.happylab.fablabtool.panels.EnumPropertyColumn;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.panels.TextFieldColumn;
 import at.happylab.fablabtool.web.invoice.InvoiceDetailPage;
-import at.happylab.fablabtool.web.util.CheckBoxColumn;
 
 public class InvoicePanel extends Panel {
 	private static final long serialVersionUID = -7129490579199414107L;

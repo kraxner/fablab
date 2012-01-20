@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.panels;
+package at.happylab.fablabtool.markup.html.repeater.data.table;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,6 +19,8 @@ import org.apache.wicket.model.IModel;
  */
 public abstract class LinkPropertyColumn<T> extends PropertyColumn<T> {
 
+	private static final long serialVersionUID = 1L;
+	
 	PopupSettings popupSettings;
 	IModel labelModel;
 

@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.web.util;
+package at.happylab.fablabtool.markup.html.repeater.data.table;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;

@@ -1,6 +1,5 @@
 package at.happylab.fablabtool.web.membership;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,7 +9,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -21,7 +19,6 @@ import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -32,18 +29,15 @@ import org.apache.wicket.model.Model;
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PaymentMethod;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.web.util.CheckBoxColumn;
 
 public class EntryPanel extends Panel {
 	private static final long serialVersionUID = -9180787774643758400L;
-	
-	@Inject
-	private EntityManager em;
 	
 	private Invoice invoice;
 	private Membership member;

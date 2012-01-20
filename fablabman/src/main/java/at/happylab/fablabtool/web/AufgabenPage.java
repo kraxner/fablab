@@ -57,7 +57,7 @@ public class AufgabenPage extends BasePage {
 			// Defaultmäßig auf heutiges Datum
 			accountUntil = new Date();
 			
-			add(new RequiredTextField<Date>("accountUntil", new PropertyModel(this, "accountUntil")));
+			add(new RequiredTextField<Date>("accountUntil", new PropertyModel<Date>(this, "accountUntil")));
 			add(new Label("entryCount", ""));
 		}
 		
