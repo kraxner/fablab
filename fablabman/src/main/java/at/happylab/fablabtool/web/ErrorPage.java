@@ -1,5 +1,8 @@
 package at.happylab.fablabtool.web;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import javax.persistence.EntityManager;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -32,7 +35,9 @@ public class ErrorPage extends BasePage {
 			
 			errorLog = new ErrorLog();
 			if (e != null) {
-				errorLog.setCause(e.getMessage());
+				StringWriter sw = new StringWriter();
+				e.printStackTrace(new PrintWriter(sw));
+			    errorLog.setCause(sw.toString());
 			}
 			
 			add(new Label("errormessageLabel",  new PropertyModel<ErrorLog>(errorLog, "cause")));
