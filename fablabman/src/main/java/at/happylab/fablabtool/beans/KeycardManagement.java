@@ -112,6 +112,7 @@ public class KeycardManagement implements Serializable {
 		/**
 		 * 3. Check the Access Times
 		 */
+		/*
 		result = false;
 
 		List<AccessGrant> agList = k.getAccessgrants();
@@ -148,6 +149,8 @@ public class KeycardManagement implements Serializable {
 		if (!result)
 			return false;
 
+		*/
+		
 		/**
 		 * 4a. Membership subscribed to a valid Access Package?
 		 */

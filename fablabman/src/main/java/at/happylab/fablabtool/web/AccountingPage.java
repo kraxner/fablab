@@ -76,10 +76,12 @@ public class AccountingPage extends BasePage {
 			addOrReplace(new Label("entryCount", "Es wurden " + count + " Buchungen erstellt."));
 		}
 		
+		@SuppressWarnings("unused")
 		public Date getAccountUntil() {
 			return accountUntil;
 		}
 
+		@SuppressWarnings("unused")
 		public void setAccountUntil(Date accountUntil) {
 			this.accountUntil = accountUntil;
 		}

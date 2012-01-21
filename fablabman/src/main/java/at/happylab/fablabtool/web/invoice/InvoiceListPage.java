@@ -96,7 +96,7 @@ public class InvoiceListPage extends AdminBasePage{
 			
 			IColumn[] columns = new IColumn[12];
 			
-			columns[0] = new PropertyColumn<Invoice>(new Model<String>("Mitgliedsnummer"), "relatedTo.memberId", "relatedTo.memberId");
+			columns[0] = new PropertyColumn<Invoice>(new Model<String>("#"), "relatedTo.memberId", "relatedTo.memberId");
 			columns[1] = new PropertyColumn<String>(new Model<String>("Vorname"), "first", ""){
 				private static final long serialVersionUID = 1L;
 				@Override
