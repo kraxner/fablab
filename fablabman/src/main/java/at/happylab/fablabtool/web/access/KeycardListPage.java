@@ -19,7 +19,7 @@ import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
-import at.happylab.fablabtool.web.maintenance.MasterDataPage;
+import at.happylab.fablabtool.web.maintenance.MasterdataPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 import at.happylab.fablabtool.web.util.WarningPage;
 
@@ -101,7 +101,7 @@ public class KeycardListPage extends AdminBasePage {
 			private static final long serialVersionUID = -3527050342774869192L;
 
 			public void onClick() {
-				setResponsePage(new MasterDataPage());
+				setResponsePage(new MasterdataPage());
 			}
 		};
 		add(goBackButton);

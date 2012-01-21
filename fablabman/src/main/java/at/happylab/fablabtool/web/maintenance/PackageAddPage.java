@@ -81,7 +81,7 @@ public class PackageAddPage extends BasePage {
 				private static final long serialVersionUID = -3527050342774869192L;
 
 				public void onClick() {
-					setResponsePage(new MasterDataPage());
+					setResponsePage(new MasterdataPage());
 				}
 			};
 			add(goBackButton);
