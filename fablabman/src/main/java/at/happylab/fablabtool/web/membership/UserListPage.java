@@ -21,7 +21,7 @@ import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
-import at.happylab.fablabtool.web.maintenance.MasterdataPage;
+import at.happylab.fablabtool.web.maintenance.MasterDataPage;
 
 public class UserListPage extends AdminBasePage {
 	
@@ -56,7 +56,7 @@ public class UserListPage extends AdminBasePage {
 			private static final long serialVersionUID = -3527050342774869192L;
 
 			public void onClick() {
-				setResponsePage(new MasterdataPage());
+				setResponsePage(new MasterDataPage());
 			}
 		};
 		add(goBackButton);
