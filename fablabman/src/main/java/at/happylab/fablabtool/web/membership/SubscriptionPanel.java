@@ -25,10 +25,10 @@ import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 
 public class SubscriptionPanel extends Panel {
 

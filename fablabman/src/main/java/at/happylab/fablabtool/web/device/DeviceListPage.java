@@ -17,15 +17,15 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.DeviceManagement;
 import at.happylab.fablabtool.dataprovider.DeviceProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.model.User;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
+import at.happylab.fablabtool.web.BasePage;
+import at.happylab.fablabtool.web.maintenance.MasterdataPage;
 import at.happylab.fablabtool.web.membership.UserDetailPage;
-import at.happylab.fablabtool.web.util.CheckBoxColumn;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 import at.happylab.fablabtool.web.util.WarningPage;
 
@@ -156,7 +156,7 @@ public class DeviceListPage extends BasePage {
 				private static final long serialVersionUID = -3527050342774869192L;
 
 				public void onClick() {
-					setResponsePage(new StammdatenPage());
+					setResponsePage(new MasterdataPage());
 				}
 			};
 			add(goBackButton);

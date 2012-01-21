@@ -18,19 +18,19 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.BasePage;
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.dataprovider.AccessGrantProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.DateTimeColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.KeyCard;
-import at.happylab.fablabtool.panels.EnumPropertyColumn;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.web.util.CheckBoxColumn;
+import at.happylab.fablabtool.web.BasePage;
+import at.happylab.fablabtool.web.maintenance.MasterdataPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
-import at.happylab.fablabtool.web.util.DateTimeColumn;
 
 public class AccessGrantListPage extends BasePage {
 
@@ -165,7 +165,7 @@ public class AccessGrantListPage extends BasePage {
 
 				public void onClick() {
 					if (keycard == null) {
-						setResponsePage(new StammdatenPage());
+						setResponsePage(new MasterdataPage());
 						
 					} else {
 						setResponsePage(new KeycardDetailPage(keycard));

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -23,6 +25,9 @@ public class KeyCard implements Serializable{
 	private String description;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="KEYCARD_ACCESSGRANT",
+		joinColumns={@JoinColumn(name="KEYCARD_ID", referencedColumnName="ID")},
+		inverseJoinColumns={@JoinColumn(name="ACCESSGRANT_ID", referencedColumnName="ID")})
 	private List<AccessGrant> accessgrants = new ArrayList<AccessGrant>();
 	
 	public long getId() {

@@ -1,21 +1,13 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import at.happylab.fablabtool.SelectOption;
-import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.Device;
-import at.happylab.fablabtool.model.Package;
 
 public class DeviceManagement implements Serializable {
 

@@ -3,7 +3,7 @@ package at.happylab.fablabtool.web.authentication;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
-import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.web.BasePage;
 
 /**
  * Base class for all pages which should be only accessible by fablab staff

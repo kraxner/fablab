@@ -15,10 +15,10 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import org.apache.wicket.validation.validator.StringValidator;
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.AccessGrantManagement;
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
+import at.happylab.fablabtool.web.BasePage;
 
 public class AccessGrantDetailPage extends BasePage {
 

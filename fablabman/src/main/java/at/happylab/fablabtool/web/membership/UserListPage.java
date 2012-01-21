@@ -14,14 +14,14 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.StammdatenPage;
 import at.happylab.fablabtool.dataprovider.UserProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.DateTimeColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
+import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.User;
-import at.happylab.fablabtool.panels.EnumPropertyColumn;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
-import at.happylab.fablabtool.web.util.DateTimeColumn;
+import at.happylab.fablabtool.web.maintenance.MasterdataPage;
 
 public class UserListPage extends AdminBasePage {
 	
@@ -35,7 +35,7 @@ public class UserListPage extends AdminBasePage {
 		columns.add(new PropertyColumn<User>(new Model<String>("Vorname"), "firstname", "firstname"));
 		columns.add(new PropertyColumn<User>(new Model<String>("Nachname"), "lastname", "lastname"));
 		columns.add(new DateTimeColumn<User>(new Model<String>("Geburtstag"), "birthday", "dd.MM.yyyy"));
-		columns.add(new EnumPropertyColumn<MembershipType>(new Model<String>("Mitgliedschaft"), "membership.type", "membership.type", MembershipType.class, this));
+		columns.add(new EnumPropertyColumn<MembershipType>(new Model<String>("Mitgliedschaft"), "membership.membershipType", "membership.membershipType", MembershipType.class, this));
 		columns.add(new PropertyColumn<User>(new Model<String>("Keycard"), "KeyCard.rfid"));
 		
 		columns.add(new LinkPropertyColumn<User>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
@@ -56,7 +56,7 @@ public class UserListPage extends AdminBasePage {
 			private static final long serialVersionUID = -3527050342774869192L;
 
 			public void onClick() {
-				setResponsePage(new StammdatenPage());
+				setResponsePage(new MasterdataPage());
 			}
 		};
 		add(goBackButton);

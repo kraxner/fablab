@@ -8,7 +8,9 @@ import org.apache.wicket.util.convert.converters.BigDecimalConverter;
 
 public class CustomBigDecimalConverter extends BigDecimalConverter {
 
-    @Override
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public BigDecimal convertToObject(String value, Locale locale) {
         // NB: this isn't universal & your mileage problably varies!
         // (Specifically, this breaks if '.' is used as thousands separator)

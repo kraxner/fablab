@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -16,8 +15,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
-import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
@@ -25,20 +22,15 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.model.User;
-import at.happylab.fablabtool.session.SessionScopeProducer;
 
 public class KeycardManagement implements Serializable {
 
 	private static final long serialVersionUID = -3130705490590748129L;
 
-	private NonContextual<SessionScopeProducer> sessionScopeProducerRef;
-	private SessionScopeProducer sessionScopeProducer;
-
 	@Inject
 	private EntityManager em;
 
 	public KeycardManagement() {
-
 	}
 
 	public KeycardManagement(EntityManager em) {
@@ -89,16 +81,10 @@ public class KeycardManagement implements Serializable {
 		Query qry;
 		ArrayList<Subscription> subscriptions;
 
-		if (em == null) {
-			BeanManager manager = new BeanManagerLocator().getBeanManager();
-			sessionScopeProducerRef = NonContextual.of(SessionScopeProducer.class, manager);
-
-			sessionScopeProducer = sessionScopeProducerRef.newInstance().produce().inject().get();
-			em = sessionScopeProducer.getEm();
-		}
-
 		KeyCard k = null;
 
+		// FIXME: this should not happen here, the logic for determining if the keyCard may access should be in a separate method
+		//        this way testing is hard... 
 		try {
 			qry = em.createQuery("from KeyCard WHERE rfid=:rfid", KeyCard.class);
 			qry.setParameter("rfid", rfid);

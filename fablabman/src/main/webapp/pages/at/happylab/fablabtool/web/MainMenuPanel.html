@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+<wicket:head>
+<!-- Ein- und Ausblenden von Formfelder -->
+<script type="text/javascript">
+$(document).ready(function(){
+	 
+	$("#txtPayment").change(function(){
+		if($(this).val() == "Lastschrift") {
+			$("#fldKontodaten").slideDown("fast");
+		}
+		else {
+			$("#fldKontodaten").slideUp("fast");
+		}
+	 }); 
+});	
+</script>
+</wicket:head>
+<wicket:panel>
+<div id="menubar">
+	<div style="float:left;">
+	<ul id="mainmenu">
+		<li><a wicket:id="membershipsLink" href="">Mitglieder</a></li>
+		<li><a wicket:id="subscriptionsLink" href="">Subscriptions</a></li>
+		<li><a wicket:id="invoicesLink" href="">Rechnungen</a></li>
+		<li><a wicket:id="masterdataLink" href="">Stammdaten</a></li>
+		<li><a wicket:id="accountingLink" href="">Aufgaben</a></li>
+	</ul>
+	</div>
+	<div style="float:right;">
+	<wicket:link><a href="/at/happylab/fablabtool/web/authentication/FablabSignOutPage.html"><span wicket:id="loggedInUser" /> abmelden</a></wicket:link>
+	</div>
+</div>
+</wicket:panel>
+</html>

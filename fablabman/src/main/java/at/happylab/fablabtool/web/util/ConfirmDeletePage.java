@@ -3,7 +3,7 @@ package at.happylab.fablabtool.web.util;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 
-import at.happylab.fablabtool.BasePage;
+import at.happylab.fablabtool.web.BasePage;
 
 /**
  * Component to render a new panel with a Message and two links

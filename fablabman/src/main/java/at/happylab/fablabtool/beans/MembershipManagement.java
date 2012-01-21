@@ -3,18 +3,14 @@ package at.happylab.fablabtool.beans;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
-import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.model.Membership;
-import at.happylab.fablabtool.session.SessionScopeProducer;
 import at.happylab.fablabtool.model.MembershipType;
 
 public class MembershipManagement implements Serializable {
@@ -23,12 +19,11 @@ public class MembershipManagement implements Serializable {
 
 	@Inject
 	private EntityManager em;
-	private NonContextual<SessionScopeProducer> sessionScopeProducerRef;
-	private SessionScopeProducer sessionScopeProducer;
 
 	public MembershipManagement() {
 		
 	}
+	
 	
 	public MembershipManagement(EntityManager em) {
 		this.em = em;
@@ -71,16 +66,10 @@ public class MembershipManagement implements Serializable {
 	}
 
 	public Membership loadMembershipFromKeycard(String rfid) {
-		BeanManager manager = new BeanManagerLocator().getBeanManager();
-		sessionScopeProducerRef = NonContextual.of(SessionScopeProducer.class, manager);
-
-		sessionScopeProducer = sessionScopeProducerRef.newInstance().produce().inject().get();
-		EntityManager em = sessionScopeProducer.getEm();
-
 		int memberID = 0;
 
 		try {
-			Query qry = em.createQuery("select m.id from membership m  inner join user u on m.id = u.membership_id inner join Keycard k on u.keycard_id=k.id where k.rfid=:rfid");
+			Query qry = em.createQuery("SELECT m.id from membership m  inner join user u on m.id = u.membership_id inner join Keycard k on u.keycard_id=k.id where k.rfid=:rfid");
 			qry.setParameter("rfid", rfid);
 			memberID = Integer.valueOf((String) qry.getSingleResult());
 		} catch (NoResultException e) {

@@ -11,9 +11,9 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.DeviceManagement;
 import at.happylab.fablabtool.model.Device;
+import at.happylab.fablabtool.web.BasePage;
 
 public class DeviceDetailPage extends BasePage {
 	
@@ -23,7 +23,7 @@ public class DeviceDetailPage extends BasePage {
 	private Device device;
 
 	public DeviceDetailPage(Device d) {
-		navigation.selectStammdaten();
+		navigation.selectMasterData();
 		
 		this.device = d;
 		

@@ -64,7 +64,18 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
             <version>${resteasy.version}</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+		     <groupId>org.jboss.resteasy</groupId>
+		     <artifactId>resteasy-cdi</artifactId>
+		     <version>${resteasy.version}</version>
+		     <exclusions>
+		          <exclusion>
+		               <groupId>org.jboss.resteasy</groupId>
+		               <artifactId>resteasy-jaxrs</artifactId>
+		          </exclusion>
+		     </exclusions>
+		</dependency>
          <dependency>
          	<groupId>javax.ws.rs</groupId>
          	<artifactId>jsr311-api</artifactId>

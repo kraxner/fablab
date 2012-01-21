@@ -1,11 +1,12 @@
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
 <wicket:panel>
 <div style="padding: 10px;">
 
 
 <form wicket:id="form" method="POST" class="yform" style="width:750px">
 
-<table border="1" wicket:id="entryTable" />
+<table wicket:id="entryTable" />
 <br />
 <button class="minimal" wicket:id="addEntry">Buchung hinzuf&uuml;gen</button>
 
@@ -15,40 +16,40 @@
 	<legend>Rechnungsdaten</legend>
 	<div class="type-text">
 		<label for="recipient">Empf&auml;nger</label>
-		<input wicket:id="recipient" type="text" size="50" name="recipient">
+		<input wicket:id="recipient" type="text" size="50" name="recipient"/>
 	</div>
 	
 	<div class="type-text">
 		<label for="">Stra&szlig;e/Hausnummer</label>
-		<input wicket:id="address.street" type="text" size="50" name="street">
+		<input wicket:id="address.street" type="text" size="50" name="street"/>
 	</div>
 	<div class="type-text">
 		<label for="">Postleitzahl</label>
-		<input wicket:id="address.zipCode" type="text" size="50" name="zipCode">
+		<input wicket:id="address.zipCode" type="text" size="50" name="zipCode"/>
 	</div>
 	<div class="type-text">
 		<label for="">Ort</label>
-		<input wicket:id="address.city" type="text" size="50" name="city">
+		<input wicket:id="address.city" type="text" size="50" name="city"/>
 	</div>
 	
 	<div class="type-text">
 		<label for="">Rechnungsdatum</label>
-		<input wicket:id="date" type="text" size="50" name="date">
+		<input wicket:id="date" type="text" size="50" name="date"/>
 	</div>
 	<div class="type-text">
 		<label for="">F&auml;llig am</label>
-		<input wicket:id="dueDate" type="text" size="50" name="dueDate">
+		<input wicket:id="dueDate" type="text" size="50" name="dueDate"/>
 	</div>
 	<div class="type-select">
 		<label for="paymentMethod">Zahlungsart</label>
 		<select wicket:id="paymentMethod" name="txtPayment" id="paymentMethod"></select>
 	</div>
 	<div class="type-text">
-		<label for="">Anmerkung<br><small>(wird auf Rechnung gedruckt)</small></label>
+		<label for="">Anmerkung<br/><small>(wird auf Rechnung gedruckt)</small></label>
 		<textarea wicket:id="comment" name="txtCompanyAddress" cols="50" rows="4"></textarea>
 	</div>
 
- 	 <input wicket:id="submit" type="submit" value="Rechnung erstellen" class="minimal">
+ 	 <input wicket:id="submit" type="submit" value="Rechnung erstellen" class="minimal"/>
 </fieldset>
 
 </form>

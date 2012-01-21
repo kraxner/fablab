@@ -59,7 +59,7 @@ public class Membership implements Serializable{
 	private PaymentMethod paymentMethod;
 
 	@Enumerated(EnumType.STRING)
-	private MembershipStatus type;
+	private MembershipStatus status;
 
 
 	/**
@@ -84,7 +84,7 @@ public class Membership implements Serializable{
 	
 	public Membership() {
 		companyAddress = new Address();
-		type = MembershipStatus.REGULAR;
+		status = MembershipStatus.REGULAR;
 		paymentMethod = PaymentMethod.CASH_IN_ADVANCE;
 		bankDetails = new DebitInfo();
 		membershipType = MembershipType.PRIVATE;
@@ -198,7 +198,7 @@ public class Membership implements Serializable{
 		internalComment = m.internalComment;
 		maxUser = m.maxUser;
 		paymentMethod = m.paymentMethod;
-		type = m.type;
+		status = m.status;
 
 		// note that the users are not recreated
 		users.addAll(m.users);
@@ -279,12 +279,12 @@ public class Membership implements Serializable{
 		this.paymentMethod = paymentMethod;
 	}
 
-	public MembershipStatus getType() {
-		return type;
+	public MembershipStatus getStatus() {
+		return status;
 	}
 
-	public void setType(MembershipStatus type) {
-		this.type = type;
+	public void setStatus(MembershipStatus type) {
+		this.status = type;
 	}
 
 	public List<User> getUsers() {

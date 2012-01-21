@@ -40,8 +40,8 @@ public class MembershipProvider extends SortableDataProvider<Membership> impleme
 					return dir * (compareStrings(m1Val, m2Val));
 				} else if ("companyName".equals(getSort().getProperty())) {
 					return dir * (compareStrings(m1.getCompanyName(), m2.getCompanyName()));
-				} else if ("type".equals(getSort().getProperty())) {
-					return dir * (m1.getType().compareTo(m2.getType()));
+				} else if ("status".equals(getSort().getProperty())) {
+					return dir * (m1.getStatus().compareTo(m2.getStatus()));
 				} else {
 					if (m1.getId() > m2.getId())
 						return dir;

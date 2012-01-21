@@ -1,8 +1,6 @@
 package at.happylab.fablabtool.web.invoice;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -11,35 +9,21 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import at.happylab.fablabtool.BasePage;
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
-import at.happylab.fablabtool.dataprovider.InvoiceProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
-import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
-import at.happylab.fablabtool.model.PaymentMethod;
-import at.happylab.fablabtool.panels.LinkPropertyColumn;
-import at.happylab.fablabtool.web.membership.MembershipDetailPage;
-import at.happylab.fablabtool.web.membership.MembershipListPage;
-import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
+import at.happylab.fablabtool.web.BasePage;
 
 public class InvoiceDetailPage extends WebPage{
 	

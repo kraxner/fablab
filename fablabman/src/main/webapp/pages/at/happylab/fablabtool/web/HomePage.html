@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+    <head>
+		<link rel="stylesheet" type="text/css" href="css/happylab.css" media="all" />
+	    <title>Happy Lab Management Tool</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    </head>
+    <body>
+    <div id="wrapper">
+    <div id="headerbar">
+	   <div id="logo"><a href="http://www.happylab.at"><img src="img/happylab-logo.png" alt=""/></a></div>
+	   <div id="mainmenu">    
+        <ul><li>Happy Lab Management Tool</li></ul>
+       </div>
+    </div>
+    <br/>        
+    <h1><span wicket:id="message">message will be here</span></h1>
+    <form wicket:id="main" >
+	&Uuml;berpr&uuml;fe, ob folgende Keycard Zutritt hat:  <input type="text" wicket:id="inputRfid" />  <input wicket:id="updateLink" type="submit" value="Update"/>
+    <a href="#" wicket:id="checkAccess">more information</a> <br/>
+    (derzeit hat nur rfid "admin" zugang)
+	</form>
+	
+	</div>        
+        
+    </body>
+</html>
+

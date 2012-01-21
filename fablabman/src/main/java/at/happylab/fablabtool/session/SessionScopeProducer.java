@@ -5,9 +5,13 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.seam.wicket.util.NonContextual;
 
 import at.happylab.fablabtool.model.WebUser;
 
@@ -27,6 +31,15 @@ public class SessionScopeProducer implements Serializable{
 
 	private WebUser user = null;
 	
+	public static SessionScopeProducer getInstance() {
+		NonContextual<SessionScopeProducer> sessionScopeProducerRef;
+		
+	    BeanManager manager = new BeanManagerLocator().getBeanManager();
+		sessionScopeProducerRef = NonContextual.of(SessionScopeProducer.class, manager);
+
+		return sessionScopeProducerRef.newInstance().produce().inject().get(); 		
+	}
+	
 	/**
 	 * Responsible for creating an EntityManager instance
 	 * 
@@ -37,6 +50,8 @@ public class SessionScopeProducer implements Serializable{
 		//emf = Persistence.createEntityManagerFactory("fablabman");
 		return emf.createEntityManager();
 	}
+	
+	
 	
 	public void destroy(@Disposes EntityManager em) {
 		em.close();

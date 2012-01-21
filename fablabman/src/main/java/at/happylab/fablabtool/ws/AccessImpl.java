@@ -8,9 +8,12 @@ import at.happylab.fablabtool.beans.KeycardManagement;
 @ApplicationScoped
 public class AccessImpl implements Access {
 	
+	@Inject KeycardManagement keycardManagement;
 	
 	public String mayEnter(String rfid) {
-		if (new KeycardManagement().hasAccess(rfid)) {
+		
+		
+		if (keycardManagement.hasAccess(rfid)) {
 			return "welcome " + rfid;
 		} else {
 			return "keycard " + rfid +" must not enter";

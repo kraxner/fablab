@@ -17,7 +17,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackBorder;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -253,7 +252,7 @@ public class DataPanel extends Panel{
 	        container.add(nonProfitContainer);
 			
 			// common information about membership
-			DropDownChoice<MembershipStatus> memType = new DropDownChoice<MembershipStatus>("type",
+			DropDownChoice<MembershipStatus> memType = new DropDownChoice<MembershipStatus>("status",
 					Arrays.asList(MembershipStatus.values()),
 					new EnumChoiceRenderer<MembershipStatus>(this));
 			memType.setRequired(true);
