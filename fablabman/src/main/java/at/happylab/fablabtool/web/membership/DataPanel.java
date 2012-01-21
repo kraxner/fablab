@@ -252,7 +252,7 @@ public class DataPanel extends Panel{
 	        container.add(nonProfitContainer);
 			
 			// common information about membership
-			DropDownChoice<MembershipStatus> memType = new DropDownChoice<MembershipStatus>("type",
+			DropDownChoice<MembershipStatus> memType = new DropDownChoice<MembershipStatus>("status",
 					Arrays.asList(MembershipStatus.values()),
 					new EnumChoiceRenderer<MembershipStatus>(this));
 			memType.setRequired(true);

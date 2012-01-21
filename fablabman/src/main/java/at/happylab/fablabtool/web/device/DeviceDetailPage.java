@@ -23,7 +23,7 @@ public class DeviceDetailPage extends BasePage {
 	private Device device;
 
 	public DeviceDetailPage(Device d) {
-		navigation.selectStammdaten();
+		navigation.selectMasterData();
 		
 		this.device = d;
 		

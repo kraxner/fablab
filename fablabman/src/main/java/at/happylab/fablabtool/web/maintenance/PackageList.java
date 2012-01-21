@@ -33,7 +33,7 @@ public class PackageList extends BasePage {
 	
 
 	public PackageList() {
-		navigation.selectStammdaten();
+		navigation.selectMasterData();
 
 		@SuppressWarnings("rawtypes")
 		List<IColumn> columns = new ArrayList<IColumn>();

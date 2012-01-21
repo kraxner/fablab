@@ -23,7 +23,7 @@ public class MainMenuPanel extends Panel {
 	private BookmarkablePageLink<String> mitglieder;
 	private BookmarkablePageLink<String> subscriptions;
 	private BookmarkablePageLink<String> rechnungen;
-	private BookmarkablePageLink<String> stammdaten;
+	private BookmarkablePageLink<String> masterdata;
 	private BookmarkablePageLink<String> aufgaben;
 	
 	@SuppressWarnings("unused")
@@ -41,8 +41,8 @@ public class MainMenuPanel extends Panel {
         rechnungen = new BookmarkablePageLink<String>("rechnungenLink", InvoiceListPage.class); 
         add(rechnungen);
         
-        stammdaten = new BookmarkablePageLink<String>("stammdatenLink", MasterDataPage.class);
-        add(stammdaten);
+        masterdata = new BookmarkablePageLink<String>("masterdataLink", MasterDataPage.class);
+        add(masterdata);
         
         aufgaben = new BookmarkablePageLink<String>("aufgabenLink", AccountingPage.class);
         add(aufgaben);
@@ -69,8 +69,8 @@ public class MainMenuPanel extends Panel {
 		subscriptions.add(new SimpleAttributeModifier("class", "selected"));
 	}
 	
-	public void selectStammdaten() {
-		stammdaten.add(new SimpleAttributeModifier("class", "selected"));
+	public void selectMasterData() {
+		masterdata.add(new SimpleAttributeModifier("class", "selected"));
 	}
 	
 	public void selectAufgaben() {

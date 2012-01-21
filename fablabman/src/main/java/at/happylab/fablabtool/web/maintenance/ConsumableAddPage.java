@@ -24,7 +24,7 @@ public class ConsumableAddPage extends BasePage {
 	private Consumable consumable;
 
 	public ConsumableAddPage(Consumable cons) {
-		navigation.selectStammdaten();
+		navigation.selectMasterData();
 		consumable = cons;
 
 		if (consumable.getId() == 0)

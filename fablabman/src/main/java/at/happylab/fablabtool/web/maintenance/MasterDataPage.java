@@ -14,8 +14,8 @@ import at.happylab.fablabtool.web.membership.UserListPage;
 public class MasterDataPage extends BasePage {
 
 	public MasterDataPage() {
-		navigation.selectStammdaten();
-		add(new Label("stammdatenLabel","Stammdaten"));
+		navigation.selectMasterData();
+		add(new Label("masterdataLabel","Stammdaten"));
 		
 		add(new Link<String>("PackageLink") {
 			private static final long serialVersionUID = -7089980845681924976L;

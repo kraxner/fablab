@@ -30,7 +30,7 @@ public class PackageAddPage extends BasePage {
 	private Package pkg;
 
 	public PackageAddPage(Package p) {
-		navigation.selectStammdaten();
+		navigation.selectMasterData();
 		pkg = p;
 
 		if (pkg.getId() == 0)
