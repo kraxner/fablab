@@ -35,7 +35,7 @@ public class UserListPage extends AdminBasePage {
 		columns.add(new PropertyColumn<User>(new Model<String>("Vorname"), "firstname", "firstname"));
 		columns.add(new PropertyColumn<User>(new Model<String>("Nachname"), "lastname", "lastname"));
 		columns.add(new DateTimeColumn<User>(new Model<String>("Geburtstag"), "birthday", "dd.MM.yyyy"));
-		columns.add(new EnumPropertyColumn<MembershipType>(new Model<String>("Mitgliedschaft"), "membership.type", "membership.type", MembershipType.class, this));
+		columns.add(new EnumPropertyColumn<MembershipType>(new Model<String>("Mitgliedschaft"), "membership.membershipType", "membership.membershipType", MembershipType.class, this));
 		columns.add(new PropertyColumn<User>(new Model<String>("Keycard"), "KeyCard.rfid"));
 		
 		columns.add(new LinkPropertyColumn<User>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
