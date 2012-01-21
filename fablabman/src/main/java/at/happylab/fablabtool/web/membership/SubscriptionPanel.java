@@ -21,6 +21,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import at.happylab.fablabtool.beans.Billing;
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
@@ -119,7 +120,8 @@ public class SubscriptionPanel extends Panel {
 			Iterator<Subscription> subscriptions = subscriptionsFromMembershipProvider.iterator(0, subscriptionsFromMembershipProvider.size());
 			
 			while (subscriptions.hasNext()) {
-				ConsumationEntry entry = subscriptions.next().createEntry(accountUntil);
+				ConsumationEntry entry = Billing.createEntryFromSubscription(subscriptions.next(), accountUntil); 
+				
 				if (entry != null) {
 					consumationEntryMgmt.storeConsumationEntry(entry);
 				}
