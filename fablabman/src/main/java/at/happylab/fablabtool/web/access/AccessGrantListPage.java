@@ -29,7 +29,7 @@ import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.web.BasePage;
-import at.happylab.fablabtool.web.maintenance.MasterdataPage;
+import at.happylab.fablabtool.web.maintenance.MasterDataPage;
 import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class AccessGrantListPage extends BasePage {
@@ -165,7 +165,7 @@ public class AccessGrantListPage extends BasePage {
 
 				public void onClick() {
 					if (keycard == null) {
-						setResponsePage(new MasterdataPage());
+						setResponsePage(new MasterDataPage());
 						
 					} else {
 						setResponsePage(new KeycardDetailPage(keycard));
