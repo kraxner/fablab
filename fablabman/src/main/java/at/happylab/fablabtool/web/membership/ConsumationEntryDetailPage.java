@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
@@ -67,7 +68,7 @@ public class ConsumationEntryDetailPage extends AdminBasePage {
 			final RequiredTextField<BigDecimal> price = new RequiredTextField<BigDecimal>("price", BigDecimal.class);
 			add(price);
 			
-			final RequiredTextField<Double> unit = new RequiredTextField<Double>("unit");
+			final TextField<Double> unit = new TextField<Double>("unit");
 			add(unit);
 			
 			final DropDownChoice<Consumable> availableConsumables = new DropDownChoice<Consumable>("consumedItem", consumableMgmt.getAllConsumables()) {

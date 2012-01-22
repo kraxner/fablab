@@ -84,6 +84,26 @@ public class MembershipManagement implements Serializable {
 			return null;
 		}
 	}
+	
+	public Membership loadMembershipFromMemberId(long id) {
+		
+		long memberID = -1;
+		
+		try {
+			Query qry = em.createQuery("select id from Membership where memberId=:id");
+			qry.setParameter("id", id);
+			memberID = (Long)qry.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+		
+		try {
+			return this.loadMembership(memberID);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+		
+	}
 
 	
 	public List<Membership> getAllMemberships() {

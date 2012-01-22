@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.PropertyModel;
 
+import at.happylab.fablabtool.beans.Billing;
 import at.happylab.fablabtool.beans.ConsumationEntryManagement;
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
@@ -66,7 +67,8 @@ public class AccountingPage extends BasePage {
 			int count = 0;
 			
 			while (subscriptions.hasNext()) {
-				ConsumationEntry entry = subscriptions.next().createEntry(accountUntil);
+				ConsumationEntry entry = Billing.createEntryFromSubscription(subscriptions.next(), accountUntil);
+				
 				if (entry != null) {
 					consumationEntryMgmt.storeConsumationEntry(entry);
 					count++;
@@ -76,10 +78,12 @@ public class AccountingPage extends BasePage {
 			addOrReplace(new Label("entryCount", "Es wurden " + count + " Buchungen erstellt."));
 		}
 		
+		@SuppressWarnings("unused")
 		public Date getAccountUntil() {
 			return accountUntil;
 		}
 
+		@SuppressWarnings("unused")
 		public void setAccountUntil(Date accountUntil) {
 			this.accountUntil = accountUntil;
 		}

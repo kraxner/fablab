@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.tests;
+package at.happylab.fablabtool.beans;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ import at.happylab.fablabtool.beans.KeycardManagement;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 
-public class KeycardTests {
+public class KeycardManagementTest {
 
 	private static KeycardManagement keycardMgmt;
 	private static EntityManager em;

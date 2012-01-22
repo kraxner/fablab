@@ -31,19 +31,20 @@ public class InvoiceManagement implements Serializable{
 	public void storeInvoice(Invoice inv) {
 		// TODO, das muss in die Transaction!!!
 		
-		// Rechnungsnummer im Format YYBNNNN
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(inv.getDate());
-		int year = cal.get(Calendar.YEAR);
-		
-		Object result = em.createQuery("select MAX(invoiceNumberShort) from Invoice WHERE year(date) = " + year).getSingleResult();
-		long lastInvoiceNumber = 0;
-		if (result != null) {
-			 lastInvoiceNumber = (Long)result;
+		if (inv.getInvoiceNumberShort() == 0) {
+			// Rechnungsnummer im Format YYBNNNN
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(inv.getDate());
+			int year = cal.get(Calendar.YEAR);
+			
+			Object result = em.createQuery("select MAX(invoiceNumberShort) from Invoice WHERE year(date) = " + year).getSingleResult();
+			long lastInvoiceNumber = 0;
+			if (result != null) {
+				 lastInvoiceNumber = (Long)result;
+			}
+					
+			inv.setInvoiceNumberShort(lastInvoiceNumber+1);
 		}
-				
-		inv.setInvoiceNumberShort(lastInvoiceNumber+1);
-		
 		
 		if (!em.getTransaction().isActive()) {
 			em.getTransaction().begin();

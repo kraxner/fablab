@@ -107,6 +107,10 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 					return dir * (s1.getBookedBy().getUsers().get(0).getLastname().compareTo(s2.getBookedBy().getUsers().get(0).getLastname()));
 				} else if ("companyname".equals(getSort().getProperty())) {
 					return dir * (s1.getBookedBy().getCompanyName().compareTo(s2.getBookedBy().getCompanyName()));
+				} else if ("phone".equals(getSort().getProperty())) {
+					return dir * (s1.getBookedBy().getPhone().compareTo(s2.getBookedBy().getPhone()));
+				} else if ("bookedBy.membershipType".equals(getSort().getProperty())) {
+					return dir * (s1.getBookedBy().getMembershipType().toString().compareTo(s2.getBookedBy().getMembershipType().toString()));
 				} else if ("Package.name".equals(getSort().getProperty())) {
 					return dir * (s1.getBooksPackage().getName().compareTo(s2.getBooksPackage().getName()));
 				} else {

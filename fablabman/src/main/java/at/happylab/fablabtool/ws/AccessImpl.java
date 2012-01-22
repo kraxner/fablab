@@ -13,10 +13,12 @@ public class AccessImpl implements Access {
 	public String mayEnter(String rfid) {
 		
 		
+		System.out.println("GOT REQUEST: " + rfid);
+		
 		if (keycardManagement.hasAccess(rfid)) {
-			return "welcome " + rfid;
+			return "30000;10000;2000\r\n";
 		} else {
-			return "keycard " + rfid +" must not enter";
+			return "0\r\n";
 		}
 	}
 

@@ -59,7 +59,7 @@ public abstract class LinkPropertyColumn<T> extends PropertyColumn<T> {
 	* Override this method to react to link clicks.
 	* Your own/internal row id will most likely be inside the model.
 	*/
-	public abstract void onClick(Item item, String componentId, IModel model);
+	public abstract void onClick(Item<T> item, String componentId, IModel<T> model);
 
 
 	public class LinkPanel extends Panel {

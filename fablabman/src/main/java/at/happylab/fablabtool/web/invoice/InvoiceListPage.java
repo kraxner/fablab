@@ -99,7 +99,7 @@ public class InvoiceListPage extends AdminBasePage{
 			
 			IColumn[] columns = new IColumn[12];
 			
-			columns[0] = new LinkPropertyColumn<Invoice>(new Model<String>("Mitgliedsnummer"), "relatedTo.memberId", "relatedTo.memberId") {
+			columns[0] = new LinkPropertyColumn<Invoice>(new Model<String>("#"), "relatedTo.memberId", "relatedTo.memberId") {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
@@ -187,7 +187,7 @@ public class InvoiceListPage extends AdminBasePage{
 				 
 			};
 			
-			add(new DefaultDataTable<Invoice>("invTable", columns, invoices, 5));
+			add(new DefaultDataTable<Invoice>("invTable", columns, invoices, 50));
 			
 			add(new Button("submit"));
 			Button bankExport = new Button("bankExport"){
