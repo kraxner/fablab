@@ -81,12 +81,17 @@ public class MembershipListPage extends AdminBasePage {
 		form.add(membershipTable);
 		membershipTable.setOutputMarkupId(true); 
 		
+		final Label membershipCountLabel = new Label("mitgliederAnzahl", userProvider.getMembershipCountModel());
+		membershipCountLabel.setOutputMarkupId(true);
+		form.add(membershipCountLabel);
+		
 		final CheckBox showPreRegistrationsCheckbox = new CheckBox("showPreRegistrationsCheckbox", userProvider.getShowPreRegistrations());
 		form.add(showPreRegistrationsCheckbox);
 		showPreRegistrationsCheckbox.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 		       @Override
 		       protected void onUpdate(AjaxRequestTarget target) {
 		         target.addComponent(membershipTable);
+		         target.addComponent(membershipCountLabel);
 		       }    
 		});
 		
@@ -96,20 +101,25 @@ public class MembershipListPage extends AdminBasePage {
 		       @Override
 		       protected void onUpdate(AjaxRequestTarget target) {
 		         target.addComponent(membershipTable);
+		         target.addComponent(membershipCountLabel);
 		       }    
 		});
-		
+
 		final TextField<String> filterInput = new TextField<String>("filterInput", userProvider.getFilterModel());
 		form.add( filterInput );
 		filterInput.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-		       @Override
+			private static final long serialVersionUID = 1L;
+
+			@Override
 		       protected void onUpdate(AjaxRequestTarget target) {
 		         target.addComponent(membershipTable);
+		         target.addComponent(membershipCountLabel);
 		       }    
 		    });
 		
 		
-		//form.add(new Label("mitgliederAnzahl", userProvider.size() + " Datensätze"));
+		
+
 		form.add(new Link("addPrivateMembershipLink") {
 			private static final long serialVersionUID = -146742357652575068L;
 

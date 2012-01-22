@@ -36,6 +36,7 @@ public class UserProvider extends SortableDataProvider<User> implements
 	private IModel<String> filterModel = new Model<String>("");
 	private IModel<Boolean> showPreRegistrations = new Model<Boolean>(Boolean.FALSE);
 	private IModel<Boolean> showInactiveMamberships = new Model<Boolean>(Boolean.FALSE);
+	private IModel<Long> membershipCountModel = new Model<Long>(Long.valueOf(0));
 	
 	private String filterExpression;
 	
@@ -65,6 +66,19 @@ public class UserProvider extends SortableDataProvider<User> implements
 //		String orderBy = getSort().getProperty() + " " + (getSort().isAscending()?" ASC " : " DESC ");
 //		List<User> results = em.createQuery("FROM User order by " + orderBy).getResultList();
 		
+		String condition = makeFilter();
+		Query query = em.createQuery("FROM User " + condition);
+		query.setParameter("confirmed", !showPreRegistrations.getObject());
+		query.setParameter("today", new Date());
+		
+		List<User> results = query.getResultList();
+		Collections.sort(results , new SortableDataProviderComparator<User>(getSort()));
+		membershipCountModel.setObject(Long.valueOf(results.size()));
+				
+		return results.subList(first, Math.min(first+count, results.size())).iterator();
+	}
+	
+	private String makeFilter() {
 		String filter = filterModel.getObject() == null? "" : filterModel.getObject();
 
 		String filterexpr = "";
@@ -79,19 +93,14 @@ public class UserProvider extends SortableDataProvider<User> implements
 		} else {
 			condition = condition + " and (membership.leavingDate is null or membership.leavingDate >= :today) ";
 		}
-		condition = condition + filterexpr;
-		Query query = em.createQuery("FROM User " + condition);
-		query.setParameter("confirmed", !showPreRegistrations.getObject());
-		query.setParameter("today", new Date());
-		
-		List<User> results = query.getResultList();
-		Collections.sort(results , new SortableDataProviderComparator<User>(getSort()));
-				
-		return results.subList(first, Math.min(first+count, results.size())).iterator();
+		return condition + filterexpr;
 	}
 
 	public int size() {
-		Long count=(Long) em.createQuery("select count(*) from User").getSingleResult();
+		Query query = em.createQuery("select count(*) from User" + makeFilter());
+		query.setParameter("confirmed", !showPreRegistrations.getObject());
+		query.setParameter("today", new Date());
+		Long count=(Long) query.getSingleResult();
 		return count.intValue();
 	}
 
@@ -116,5 +125,10 @@ public class UserProvider extends SortableDataProvider<User> implements
 
 	public IModel<Boolean> getShowInactiveMamberships() {
 		return showInactiveMamberships;
+	}
+
+
+	public IModel<Long> getMembershipCountModel() {
+		return membershipCountModel;
 	}
 }
