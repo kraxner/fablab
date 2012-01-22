@@ -14,7 +14,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -22,13 +21,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.converter.CustomDateConverter;
-import at.happylab.fablabtool.converter.EnumConverter;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
-import at.happylab.fablabtool.model.PaymentMethod;
 
 public class InvoiceProvider extends SortableDataProvider<Invoice> implements Serializable {
 
