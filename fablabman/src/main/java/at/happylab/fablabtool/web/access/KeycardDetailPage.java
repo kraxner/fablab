@@ -121,7 +121,7 @@ public class KeycardDetailPage extends BasePage {
 		public void onSubmit() {
 			keycardMgmt.storeKeyCard(keycard);
 			
-			setResponsePage(new KeycardListPage());
+			setResponsePage(KeycardListPage.class);
 		}
 	}
 }

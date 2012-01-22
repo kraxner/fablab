@@ -158,7 +158,6 @@ public class AccessGrantListPage extends BasePage {
 				add(new Button("submit", Model.of("Neue Zugangszeit")));
 			else
 				add(new Button("submit", Model.of("Hinzufügen")));
-			
 
 			Link<String> goBackButton = new Link<String>("goBack") {
 				private static final long serialVersionUID = -3527050342774869192L;
@@ -166,23 +165,27 @@ public class AccessGrantListPage extends BasePage {
 				public void onClick() {
 					if (keycard == null) {
 						setResponsePage(new MasterDataPage());
-						
+
 					} else {
 						setResponsePage(new KeycardDetailPage(keycard));
 					}
 				}
 			};
 			add(goBackButton);
-			
+
 		}
 
 		public void onSubmit() {
 
 			if (keycard == null) {
 				setResponsePage(new AccessGrantDetailPage(new AccessGrant()));
-				
+
 			} else {
-				keycardMgmt.storeKeyCard(keycard);
+				try {
+					keycardMgmt.storeKeyCard(keycard);
+				} catch (Exception e) {
+
+				}
 				setResponsePage(new KeycardDetailPage(keycard));
 			}
 
