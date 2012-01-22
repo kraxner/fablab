@@ -59,6 +59,7 @@ public class HomePage extends WebPage {
 		form.add(checkLink);
 
 		final Component updateButton = new AjaxButton("updateLink") {
+			private static final long serialVersionUID = -7166321044295697652L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget arg0, Form<?> arg1) {

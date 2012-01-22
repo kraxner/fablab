@@ -1,5 +1,7 @@
 package at.happylab.fablabtool.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,8 +11,10 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 //INSERT INTO WEBUSER (username, password, firstname, lastname, admin) values ('mk', 'mk', 'Michael', 'Kraxner', '1')
-public class WebUser {
+public class WebUser implements Serializable {
 	
+	private static final long serialVersionUID = -3464063998529477370L;
+
 	@Id @GeneratedValue
 	private long id;
 	

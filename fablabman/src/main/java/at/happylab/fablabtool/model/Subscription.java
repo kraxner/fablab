@@ -2,9 +2,6 @@ package at.happylab.fablabtool.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Embedded;
