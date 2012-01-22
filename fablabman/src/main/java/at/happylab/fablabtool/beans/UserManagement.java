@@ -3,6 +3,8 @@ package at.happylab.fablabtool.beans;
 import java.io.Serializable;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -16,9 +18,9 @@ public class UserManagement implements Serializable {
 	private EntityManager em;
 
 	public UserManagement() {
-		
+
 	}
-	
+
 	public UserManagement(EntityManager em) {
 		this.em = em;
 	}
@@ -29,11 +31,7 @@ public class UserManagement implements Serializable {
 		}
 		em.persist(u);
 		em.getTransaction().commit();
-		Logger.getLogger("UserManagement").info(
-				"number of Users: "
-						+ String.valueOf(em.createQuery(
-								"select count(d) from User d ")
-								.getSingleResult()));
+		Logger.getLogger("UserManagement").info("number of Users: " + String.valueOf(em.createQuery("select count(d) from User d ").getSingleResult()));
 	}
 
 	/**
@@ -53,5 +51,21 @@ public class UserManagement implements Serializable {
 		return em.find(User.class, id);
 	}
 
+	public User loadUserFromKeycard(String rfid) {
+		User user = null;
+		Query qry = em.createQuery("from User where Keycard_id=:keycard_id", User.class);
+		qry.setParameter("keycard_id", rfid);
+
+		try {
+			user = (User) qry.getSingleResult();
+		} catch (NoResultException e) {
+			// there is no user, therefore only the access times of this keycards count
+			user = null;
+		} catch (IllegalArgumentException e) {
+			user = null;
+		}
+
+		return user;
+	}
 
 }
