@@ -209,8 +209,34 @@
          	<artifactId>jboss-logging-logmanager</artifactId>
          	<version>2.2.0.CR2</version>
          </dependency>
+         
+         <dependency>
+	          <groupId>net.sourceforge.htmlunit</groupId>
+	          <artifactId>htmlunit</artifactId>
+	          <version>2.7</version>
+         </dependency>
 
 
+         <dependency>
+         	<groupId>commons-lang</groupId>
+         	<artifactId>commons-lang</artifactId>
+         	<version>2.6</version>
+         </dependency>
+         <dependency>
+         	<groupId>net.sourceforge.htmlunit</groupId>
+         	<artifactId>htmlunit-core-js</artifactId>
+         	<version>2.9</version>
+         </dependency>
+         <dependency>
+         	<groupId>org.apache.httpcomponents</groupId>
+         	<artifactId>httpmime</artifactId>
+         	<version>4.1.2</version>
+         </dependency>
+         <dependency>
+         	<groupId>org.apache.httpcomponents</groupId>
+         	<artifactId>httpcore</artifactId>
+         	<version>4.1.2</version>
+         </dependency>
 	</dependencies>
 
 	<build>
