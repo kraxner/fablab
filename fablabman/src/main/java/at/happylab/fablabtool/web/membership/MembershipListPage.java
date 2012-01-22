@@ -90,8 +90,9 @@ public class MembershipListPage extends AdminBasePage {
 		showPreRegistrationsCheckbox.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 		       @Override
 		       protected void onUpdate(AjaxRequestTarget target) {
-		         target.addComponent(membershipTable);
-		         target.addComponent(membershipCountLabel);
+		    	   userProvider.getMembershipCountModel().setObject(Long.valueOf(0));
+                   target.addComponent(membershipTable);
+		           target.addComponent(membershipCountLabel);
 		       }    
 		});
 		
@@ -100,8 +101,9 @@ public class MembershipListPage extends AdminBasePage {
 		showPreRegistrationsCheckbox.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 		       @Override
 		       protected void onUpdate(AjaxRequestTarget target) {
-		         target.addComponent(membershipTable);
-		         target.addComponent(membershipCountLabel);
+		    	   userProvider.getMembershipCountModel().setObject(Long.valueOf(0));
+		           target.addComponent(membershipTable);
+		           target.addComponent(membershipCountLabel);
 		       }    
 		});
 
@@ -112,8 +114,9 @@ public class MembershipListPage extends AdminBasePage {
 
 			@Override
 		       protected void onUpdate(AjaxRequestTarget target) {
-		         target.addComponent(membershipTable);
-		         target.addComponent(membershipCountLabel);
+		    	  userProvider.getMembershipCountModel().setObject(Long.valueOf(0));
+                  target.addComponent(membershipTable);
+		          target.addComponent(membershipCountLabel);
 		       }    
 		    });
 		

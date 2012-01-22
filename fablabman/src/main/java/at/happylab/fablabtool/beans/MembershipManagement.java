@@ -1,6 +1,7 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,7 +39,18 @@ public class MembershipManagement implements Serializable {
 			// remove the last one
 			member.removeUser(member.getUsers().get(member.getUsers().size()));
 		}
+		// FIXME: we need a sequencer, this is not save (if there is more than one user ...)
+		if (member.getMemberId() == 0) {
+			Object result = em.createQuery("select MAX(memberId) from Membership ").getSingleResult();
+			long lastMemberId = 0;
+			if (result != null) {
+				lastMemberId = (Long)result;
+			}
+					
+			member.setMemberId(lastMemberId+1);
+		}
 
+		
 		// adjustments for non profit memberships
 		if (member.getMembershipType() == MembershipType.PRIVATE) {
 			

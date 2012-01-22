@@ -25,7 +25,6 @@ public class Membership implements Serializable{
 	@Id @GeneratedValue
 	private long id;
 
-	@GeneratedValue()
 	private long memberId;
 	
 	@Enumerated(EnumType.STRING)
