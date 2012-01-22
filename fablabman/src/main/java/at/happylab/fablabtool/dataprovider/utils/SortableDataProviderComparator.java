@@ -36,7 +36,11 @@ public class SortableDataProviderComparator<T> implements Serializable,
 
 		int result = 0;
 		if (model1.getObject() != null) {
-			result = model1.getObject().compareTo(model2.getObject());
+			if (model2.getObject() != null) {
+				result = model1.getObject().compareTo(model2.getObject());
+			} else {
+				return 1;
+			}
 		} else {
 			if (model2.getObject() != null) {
 				return 0;					
