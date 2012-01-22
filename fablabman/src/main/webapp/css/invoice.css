@@ -64,12 +64,17 @@ h1
 	width: 100%;
 	border-collapse: collapse;
 	border:1px solid black;
+	text-align: right;
 }
 .entrytable td, th
 {
 	padding-left: 5px; 
 	padding-right: 5px;
 	border:1px solid black;
+}
+#sum
+{
+	width: 144px;
 }
 #disc
 {

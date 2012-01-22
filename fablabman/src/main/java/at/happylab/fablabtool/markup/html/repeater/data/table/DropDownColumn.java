@@ -34,6 +34,7 @@ public class DropDownColumn<T extends Enum<T>> extends PropertyColumn<T>{
 
 		private static final long serialVersionUID = 1L;
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public DropDownPanel(String componentId, final IModel<T> dropDownModel) {
 			super(componentId);
 			Object[] enumValues = null;

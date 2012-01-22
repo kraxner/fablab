@@ -18,10 +18,13 @@ public class CustomDateConverter extends DateConverter {
 	
 	@Override
     public String convertToString(Object value, Locale locale) {
-		 DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		 format.setLenient(true);
-		 
-		 return format.format(value);
+		if(value == null){
+			return "";
+		}
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		format.setLenient(true);
+		
+		return format.format(value);
     }
 
 }
