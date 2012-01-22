@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div style="padding: 10px;">
+		<h1><span wicket:id="pageHeader"></span></h1>
+		<div wicket:id="feedback" style="color:red;"/>
+
+		<form wicket:id="form" action="" method="POST" class="yform" style="width: 500px">
+
+			<fieldset id="fldNonProfit" class="columnar">
+				<legend>Details</legend>
+				<div class="type-text">
+					<label>Vorname</label>
+					<input wicket:id="firstname" type="text" />
+				</div>
+				<div class="type-text">
+					<label>Nachname</label>
+					<input wicket:id="lastname" type="text" />
+				</div>
+				<div class="type-text">
+					<label>Username</label>
+					<input wicket:id="username" type="text" />
+				</div>
+				<div class="type-text">
+					<label>Passwort</label>
+					<input wicket:id="password" type="password" />
+				</div>
+				<div class="type-text">
+					<label>Passwort bestätigen</label>
+					<input wicket:id="cpassword" type="password" />
+				</div>
+			</fieldset>
+
+			<input type="submit" value="Speichern" class="minimal" />
+			<button wicket:id="goBack" class="minimal">Zur&uuml;ck</button>
+		</form>
+	</div>
+</wicket:extend>
+</html>

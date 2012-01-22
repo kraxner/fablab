@@ -39,7 +39,7 @@ public class ErrorPage extends BasePage {
 			    errorLog.setCause(sw.toString());
 			}
 			
-			add(new Label("errormessageLabel",  new PropertyModel<ErrorLog>(errorLog, "cause")));
+//			add(new Label("errormessageLabel",  new PropertyModel<ErrorLog>(errorLog, "cause")));
 			add(new TextArea<ErrorLog>("commentInput", new PropertyModel<ErrorLog>(errorLog, "comment")));
 			add(new Button("submitButton"));
 			

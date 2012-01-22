@@ -73,6 +73,14 @@ public class MasterDataPage extends BasePage {
 		    }
 		});
 		
+		add(new Link<String>("WebUserLink") {
+			private static final long serialVersionUID = 1829678788524180514L;
+
+			public void onClick() {
+		        setResponsePage(new WebUserListPage());
+		    }
+		});
+		
 		add(new Link<String>("AccessTestLink") {
 			private static final long serialVersionUID = -1585556011311826709L;
 

@@ -10,15 +10,15 @@ div
 {
 /* 	border: 2px solid; */
 }
-table, th, td
-{
-	padding: 2px;
-}
-td, th
-{
-	padding-left: 5px; 
-	padding-right: 5px;
-}
+/* table, th, td */
+/* { */
+/* 	padding: 2px; */
+/* } */
+/* td, th */
+/* { */
+/* 	padding-left: 5px;  */
+/* 	padding-right: 5px; */
+/* } */
 #page
 {
 	position: absolute;
@@ -64,12 +64,29 @@ h1
 	width: 100%;
 	border-collapse: collapse;
 	border:1px solid black;
+	text-align: right;
 }
 .entrytable td, th
 {
 	padding-left: 5px; 
 	padding-right: 5px;
 	border:1px solid black;
+}
+#sumtable
+{
+	border:1px solid black;
+	width: 100%;
+}
+#sumtext
+{
+	text-align: left;
+	padding-left: 5px; 
+
+}
+#sumvalue
+{
+	text-align: right;
+	padding-right: 3px;
 }
 #disc
 {

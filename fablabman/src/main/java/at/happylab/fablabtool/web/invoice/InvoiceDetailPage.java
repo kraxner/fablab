@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -30,11 +31,6 @@ public class InvoiceDetailPage extends WebPage{
 	@Inject
 	private ConsumationEntryProvider consEntrOfInvoice;
 	
-	@Inject
-	private InvoiceManagement invoiceMgmt;
-	
-	private MembershipManagement membershipMgmt;
-	private Membership member;
 	private Invoice inv;
 	private CustomBigDecimalConverter cv;
 	
@@ -44,11 +40,9 @@ public class InvoiceDetailPage extends WebPage{
 	private String iban;
 	private String bic;
 	
-	public InvoiceDetailPage(Membership member, MembershipManagement membershipMgmt, Invoice inv) {
+	public InvoiceDetailPage(Invoice inv) {
 		add(new StyleSheetReference("stylesheetInv", BasePage.class, "/css/invoice.css"));
 		
-		this.member = member;
-		this.membershipMgmt = membershipMgmt;
 		this.inv = inv;
 		this.cv = new CustomBigDecimalConverter();
 		
@@ -63,13 +57,11 @@ public class InvoiceDetailPage extends WebPage{
 	}
 
 	private void init(){
-		//add(new Image("logo", new Model<String>("img/innoc2.JPG")));
-		
 		add(new Label("recipient", new PropertyModel<Invoice>(inv,"recipient")));
 		if(inv.getRelatedTo().getMembershipType().equals(MembershipType.BUSINESS)){
 			contactPerson = "z.Hd. " + inv.getRelatedTo().getContactPerson();
 		}
-		add(new Label("contact", new PropertyModel(this,"contactPerson")));
+		add(new Label("contact", new PropertyModel<String>(this,"contactPerson")));
 		
 		add(new Label("street", new PropertyModel<Invoice>(inv,"Address.street")));
 		add(new Label("zip", new PropertyModel<Invoice>(inv,"Address.zipCode")));
@@ -86,20 +78,20 @@ public class InvoiceDetailPage extends WebPage{
 		columns[3] = new PropertyColumn<ConsumationEntry>(new Model<String>("Gesamt"), ""){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public void populateItem(Item item, String componentId, IModel rowModel) {
-				ConsumationEntry cons = (ConsumationEntry) rowModel.getObject();
+			public void populateItem(Item<ICellPopulator<ConsumationEntry>> item, String componentId, IModel<ConsumationEntry> rowModel) {
+				ConsumationEntry cons = rowModel.getObject();
 				item.add(new Label(componentId, cv.convertToString(cons.getSum(), null)));
 			}
 		};
 
-		add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
-		
+		add(new DefaultDataTable<ConsumationEntry>("consEntrTable", columns, consEntrOfInvoice, 5));
+
 		BigDecimal sum = new BigDecimal(0);
 		for(ConsumationEntry cons : inv.getIncludesConsumationEntries()){
 			sum = sum.add(cons.getSum());
 		}
 		totalSum = cv.convertToString(sum, null);
-		add(new Label("totalSum", new PropertyModel(this,"totalSum")));
+		add(new Label("totalSum", new PropertyModel<String>(this,"totalSum")));
 		
 		switch(inv.getPaymentMethod()){
 		case DEBIT:
@@ -116,82 +108,9 @@ public class InvoiceDetailPage extends WebPage{
 		default:
 			break;
 		}
-		add(new Label("paymeth", new PropertyModel(this,"payMethod")));
-		add(new Label("iban", new PropertyModel(this,"iban")));
-		add(new Label("bic", new PropertyModel(this,"bic")));
+		add(new Label("paymeth", new PropertyModel<String>(this,"payMethod")));
+		add(new Label("iban", new PropertyModel<String>(this,"iban")));
+		add(new Label("bic", new PropertyModel<String>(this,"bic")));
 		add(new Label("comment", new PropertyModel<Invoice>(inv,"comment")));
 	}
-	
-//	private void init() {	
-//		Form<String> form = new Form<String>("main");
-//
-//		IColumn[] columns = new IColumn[7];
-//		columns[0] = new PropertyColumn(new Model<String>("Nr"), "id", "id");
-//		columns[1] = new PropertyColumn(new Model<String>("Datum"), "date", "date");
-//		columns[2] = new PropertyColumn(new Model<String>("Preis"), "price", "price");
-//		columns[3] = new PropertyColumn(new Model<String>("Anzahl"), "quantity", "quantity");
-//		columns[4] = new PropertyColumn(new Model<String>("Bezeichnung"), "text", "text");
-//		columns[5] = new PropertyColumn(new Model<String>("consumedby_id"), "consumedBy", "consumedBy");
-//		columns[6] = new PropertyColumn(new Model<String>("consumeditem:id"), "consumedItem", "consumedItem");
-//
-//		form.add(new DefaultDataTable("consEntrTable", columns, consEntrOfInvoice, 5));
-//		
-//		form.add(new Label("consEntrCount", consEntrOfInvoice.size() + " Datens�tze"));
-//
-//		add(form);
-//		add(new InvForm("form", inv));
-//	}
-//	
-//	class InvForm extends Form<Object>{
-//
-//		private static final long serialVersionUID = 2780639970765950200L;
-//
-//		public InvForm(String s, final Invoice inv) {
-//			super(s, new CompoundPropertyModel<Object>(inv));
-//			
-//			add(new TextField<Object>("id").setEnabled(false));
-//			add(new TextField<Object>("date").setEnabled(false));
-//			add(new TextField<Object>("dueDate").setEnabled(false));
-//			add(new TextField<Object>("recipient").setEnabled(false));
-//			add(new TextField<Object>("Address.street").setEnabled(false));
-//			add(new TextField<Object>("Address.city").setEnabled(false));
-//			add(new TextField<Object>("Address.zipCode").setEnabled(false));
-//			add(new TextField<Object>("generatedAt").setEnabled(false));
-//			add(new TextField<Object>("settlementPeriodFrom").setEnabled(false));
-//			add(new TextField<Object>("settlementPeriodTo").setEnabled(false));
-//			add(new TextField<Object>("paymentMethod").setEnabled(false));
-//			add(new TextField<Object>("payedAt").setEnabled(false));
-//			add(new TextArea<Object>("comment").setEnabled(false));
-//
-//			DropDownChoice<InvoiceState> invState = new DropDownChoice<InvoiceState>("state");
-//			invState.setChoices(new LoadableDetachableModel<List<InvoiceState>>() {
-//
-//				private static final long serialVersionUID = 4565611533591204089L;
-//
-//				public List<InvoiceState> load() {
-//                    List<InvoiceState> list = new ArrayList<InvoiceState>(3);
-//                    list.add(InvoiceState.OPEN);
-//                    list.add(InvoiceState.PAID);
-//                    list.add(InvoiceState.CANCELLED);
-//                    return list;
-//                }
-//            });
-//            add(invState);
-//			
-//			add(new Button("submit"));
-//			Button cancel = new Button("cancel"){
-//				private static final long serialVersionUID = 7607265405984709816L;
-//				public void onSubmit() {
-//                	setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
-//                }
-//            };
-//            cancel.setDefaultFormProcessing(false);
-//            add(cancel);
-//		}
-//
-//		public void onSubmit() {
-//			invoiceMgmt.storeInvoice(inv);
-//			setResponsePage(new MembershipDetailPage(member, membershipMgmt, 3));
-//		}
-//	}
 }

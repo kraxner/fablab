@@ -5,21 +5,26 @@ package at.happylab.fablabtool.dataprovider;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.dataprovider.utils.FilterExpressionBuilder;
+import at.happylab.fablabtool.dataprovider.utils.FilteredDateField;
+import at.happylab.fablabtool.dataprovider.utils.SortableDataProviderComparator;
 import at.happylab.fablabtool.model.User;
 
 /**
- * @author micalo
+ * @author Michael Kraxner
  *
  */
 public class UserProvider extends SortableDataProvider<User> implements
@@ -28,57 +33,74 @@ public class UserProvider extends SortableDataProvider<User> implements
 	
 	@Inject private EntityManager em;
 	
+	private IModel<String> filterModel = new Model<String>("");
+	private IModel<Boolean> showPreRegistrations = new Model<Boolean>(Boolean.FALSE);
+	private IModel<Boolean> showInactiveMamberships = new Model<Boolean>(Boolean.FALSE);
+	private IModel<Long> membershipCountModel = new Model<Long>(Long.valueOf(0));
+	
+	private String filterExpression;
+	
 	public UserProvider(){
 		setSort("id", true);
-	}
 
+		FilterExpressionBuilder filterBuilder = new FilterExpressionBuilder();
+		filterBuilder.addFilteredTextField("firstname");
+		filterBuilder.addFilteredTextField("lastname");
+		filterBuilder.addFilteredTextField("membership.companyName");
+		filterBuilder.addFilteredTextField("membership.companyPhone");
+		filterBuilder.addFilteredTextField("membership.companyEmail");
+		filterBuilder.addFilteredTextField("mobile");
+		filterBuilder.addFilteredTextField("phone");
+		filterBuilder.addFilteredTextField("email");
+		filterBuilder.addFilteredTextField("membership.comment");
+		filterBuilder.add(new FilteredDateField("membership.entryDate"));
+		filterBuilder.add(new FilteredDateField("membership.leavingDate"));
+		filterExpression = filterBuilder.getSQLFilterExpression();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public Iterator<? extends User>iterator(int first, int count) {
-		List<User> results = em.createQuery("FROM User").getResultList();
-		if ((getSort() == null) || (getSort().getProperty() == null)) {
-			setSort("id", true);
-		}
-		Collections.sort(results , new Comparator<User>() {
-			public int compare(User o1, User o2) {
-				int dir = getSort().isAscending() ? 1 : -1;
-
-				if ("firstname".equals(getSort().getProperty())) {
-					String m1Val = o1 != null ? o1.getFirstname() : null;
-					String m2Val = o2 != null ? o2.getFirstname() : null;
-					return dir * (compareStrings(m1Val, m2Val));
-				} else if ("lastname".equals(getSort().getProperty())) {
-					String m1Val = o1 != null ? o1.getLastname() : null;
-					String m2Val = o2 != null ? o2.getLastname() : null;
-					return dir * (compareStrings(m1Val, m2Val));
-				} else if ("companyName".equals(getSort().getProperty())) {
-					String m1Val = o1.getMembership() != null ? o1.getMembership().getCompanyName() : null;
-					String m2Val = o2.getMembership() != null ? o2.getMembership().getCompanyName() : null;
-					return dir * (compareStrings(m1Val, m2Val));
-				} else {
-					if (o1.getId() > o2.getId())
-						return dir;
-					else
-						return -dir;
-				}
+		// would be nice to let the db do the work, but some fields (phone number,...) 
+		// we read either from membership or the first user... thats not possible 
+//		String orderBy = getSort().getProperty() + " " + (getSort().isAscending()?" ASC " : " DESC ");
+//		List<User> results = em.createQuery("FROM User order by " + orderBy).getResultList();
+		
+		String condition = makeFilter();
+		Query query = em.createQuery("FROM User " + condition);
+		query.setParameter("confirmed", !showPreRegistrations.getObject());
+		query.setParameter("today", new Date());
+		
+		List<User> results = query.getResultList();
+		Collections.sort(results , new SortableDataProviderComparator<User>(getSort()));
+		membershipCountModel.setObject(Long.valueOf(results.size()));
 				
-			}
-			private int compareStrings(String a, String b) {
-				if ((a == null) && (b == null)) {
-					return 0;
-				}
-				if ((a != null) && (b == null)){
-					return 1;
-				} else if ((a == null) && (b != null)){
-					return -1;
-				}
-				return b.compareTo(a);
-			}
-		});
 		return results.subList(first, Math.min(first+count, results.size())).iterator();
+	}
+	
+	private String makeFilter() {
+		String filter = filterModel.getObject() == null? "" : filterModel.getObject();
+
+		String filterexpr = "";
+		if (!filter.isEmpty()) {
+			if (!filterExpression.isEmpty()) {
+				filterexpr = " and " +  String.format(filterExpression, "%" + filter + "%");
+			}
+		}
+		String condition = " where (membership.confirmed=:confirmed) ";
+		if (showInactiveMamberships.getObject()) {
+			condition = condition + " and (membership.leavingDate < :today) ";
+		} else {
+			condition = condition + " and (membership.leavingDate is null or membership.leavingDate >= :today) ";
+		}
+		return condition + filterexpr;
 	}
 
 	public int size() {
-		Long count=(Long) em.createQuery("select count(*) from User").getSingleResult();
+		Query query = em.createQuery("select count(*) from User" + makeFilter());
+		query.setParameter("confirmed", !showPreRegistrations.getObject());
+		query.setParameter("today", new Date());
+		Long count=(Long) query.getSingleResult();
 		return count.intValue();
 	}
 
@@ -89,5 +111,24 @@ public class UserProvider extends SortableDataProvider<User> implements
 				return object;
 			}
 		};
+	}
+
+	public IModel<String> getFilterModel() {
+		return filterModel;
+	}
+
+
+	public IModel<Boolean> getShowPreRegistrations() {
+		return showPreRegistrations;
+	}
+
+
+	public IModel<Boolean> getShowInactiveMamberships() {
+		return showInactiveMamberships;
+	}
+
+
+	public IModel<Long> getMembershipCountModel() {
+		return membershipCountModel;
 	}
 }

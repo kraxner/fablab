@@ -53,18 +53,20 @@
 	<div id="enttab">
 		<table wicket:id="consEntrTable" class="entrytable">
 		</table>
-		<table class="entrytable">
+		<table id="sumtable">
 			<tr>
-				<td>
+				<td id="sumtext">
 					<span>Rechnungsbetrag (inkl. 0% USt.):</span>
 				</td>
-				<td/>
-				<td/>
-				<td>
+				<td id="sumvalue">
 					<span wicket:id="totalSum"></span>
 				</td>
 			</tr>
 		</table>
+<!-- 		<div> -->
+<!-- 			<span>Rechnungsbetrag (inkl. 0% USt.):</span> -->
+<!-- 			<span wicket:id="totalSum"></span> -->
+<!-- 		</div> -->
 	</div>
 	<div id="disc">
 		<span>Die „Österreichische Gesellschaft für Innovative Computerwissenschaften“ ist ein gemeinnütziger ideeller Verein gemäß §§
@@ -79,6 +81,7 @@
 	<div id="comment">
 		<span wicket:id="comment"></span>
 	</div>
+	<p></p>
 	<div id="thx">
 		<span>Vielen Dank!</span>
 	</div>

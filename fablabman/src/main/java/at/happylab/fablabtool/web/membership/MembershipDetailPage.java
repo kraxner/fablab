@@ -74,7 +74,7 @@ public class MembershipDetailPage extends AdminBasePage {
 			private static final long serialVersionUID = 7504247263312822569L;
 
 			public Panel getPanel(String panelId) {
-				  return new InvoicePanel(panelId, member, membershipMgmt);
+				  return new InvoicePanel(panelId, member);
 			  }
 		   });
 		
