@@ -54,6 +54,9 @@ public class InvoiceListPage extends AdminBasePage{
 	private MembershipManagement membershipMgmt;
 	
 	private InvListForm invForm;
+	/**
+	 * is used for display of the row count (by wicket)
+	 */
 	private String numOfRows;
 	private Label resultDiv;
 
@@ -63,7 +66,7 @@ public class InvoiceListPage extends AdminBasePage{
 		invoices.setFilter();
 		add(new Label("invoiceLabel", "Rechnungen"));
 		
-		init();
+		addFilterForm();
 		
 		invForm = new InvListForm("form");
 		add(invForm);
@@ -73,7 +76,7 @@ public class InvoiceListPage extends AdminBasePage{
 		add(resultDiv);
 	}
 	
-	private void init(){
+	private void addFilterForm(){
 		Form<InvoiceProvider> filterForm = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoices));
 		filterForm.add(new TextField<Date>("fromFilter"));
 		filterForm.add(new TextField<Date>("toFilter"));
@@ -112,10 +115,8 @@ public class InvoiceListPage extends AdminBasePage{
 			columns[1] = new PropertyColumn<Invoice>(new Model<String>("Vorname"), "first", ""){
 				private static final long serialVersionUID = 1L;
 				@Override
-//				public void populateItem(Item item, String componentId, IModel rowModel) {
 				public void populateItem(Item<ICellPopulator<Invoice>> item, String componentId, IModel<Invoice> rowModel) {
 					Invoice inv = rowModel.getObject();
-//					Invoice inv = (Invoice) rowModel.getObject();
 					MembershipType type = inv.getRelatedTo().getMembershipType();
 					String name;
 					if(type.equals(MembershipType.PRIVATE)){
@@ -189,6 +190,10 @@ public class InvoiceListPage extends AdminBasePage{
 			add(new DefaultDataTable<Invoice>("invTable", columns, invoices, 50));
 			
 			add(new Button("submit"));
+			/**
+			 * saves changes and lets the user download a .csv file for the use as "Bankdatenträger".
+			 * Currently a refresh of the page is needed to see the changes.
+			 */
 			Button bankExport = new Button("bankExport"){
 				private static final long serialVersionUID = 7607265405984709816L;
 				public void onSubmit() {

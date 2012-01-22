@@ -57,7 +57,7 @@ public class InvoicePanel extends Panel {
 		
 		invoicesOfMember.setMember(member);
 
-		init();
+		addFilterForm();
 		
 		invForm = new InvForm("form");
 		add(invForm);
@@ -67,7 +67,7 @@ public class InvoicePanel extends Panel {
 		add(resultDiv);
 	}
 	
-	private void init(){
+	private void addFilterForm(){
 		Form<InvoiceProvider> form = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoicesOfMember));
 		form.add(new TextField<Date>("fromFilter"));
 		form.add(new TextField<Date>("toFilter"));

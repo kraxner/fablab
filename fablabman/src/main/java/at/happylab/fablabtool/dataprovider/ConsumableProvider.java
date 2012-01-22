@@ -1,6 +1,8 @@
 package at.happylab.fablabtool.dataprovider;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,11 +26,10 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 		setSort("name", true);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Iterator<Consumable> iterator(int first, int count) {
-		List<Consumable> results = em.createQuery("FROM Consumable").getResultList();
+		List<Consumable> results = em.createQuery("FROM Consumable",Consumable.class).getResultList();
 
-/*		Collections.sort(results, new Comparator<Consumable>() {
+		Collections.sort(results, new Comparator<Consumable>() {
 			public int compare(Consumable c1, Consumable c2) {
 				int dir = getSort().isAscending() ? 1 : -1;
 
@@ -46,7 +47,7 @@ public class ConsumableProvider extends SortableDataProvider<Consumable> impleme
 				}
 			}
 		});
-*/
+
 		return results.subList(first, Math.min(first+count, results.size())).iterator();
 	}
 	

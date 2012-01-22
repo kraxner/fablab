@@ -1,6 +1,8 @@
 package at.happylab.fablabtool.dataprovider;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,11 +23,29 @@ public class WebUserProvider extends SortableDataProvider<WebUser> implements Se
 	private EntityManager em;
 	
 	public WebUserProvider() {
-		setSort("name", true);
+		setSort("id", true);
 	}
 	
 	public Iterator<WebUser> iterator(int first, int count) {
 		List<WebUser> results = em.createQuery("FROM WebUser WHERE admin=true",WebUser.class).getResultList();
+		
+		Collections.sort(results, new Comparator<WebUser>() {
+			public int compare(WebUser w1, WebUser w2) {
+				int dir = getSort().isAscending() ? 1 : -1;
+
+				if ("firstname".equals(getSort().getProperty())) {
+					return dir * (w1.getFirstname().compareTo(w2.getFirstname()));
+				} else if ("lastname".equals(getSort().getProperty())) {
+					return dir * (w1.getLastname().compareTo(w2.getLastname()));
+				} else {
+					if (w1.getId() > w2.getId())
+						return dir;
+					else
+						return -dir;
+				}
+			}
+		});
+		
 		return results.subList(first, Math.min(first+count, results.size())).iterator();
 	}
 	

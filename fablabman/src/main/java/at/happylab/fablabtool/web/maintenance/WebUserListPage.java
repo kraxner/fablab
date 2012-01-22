@@ -60,7 +60,7 @@ public class WebUserListPage extends BasePage {
 				WebUser currentUser = sessionScopeProducer.getLoggedInUser();
 				if(currentUser.getId() != delUser.getId()){
 					
-					setResponsePage(new ConfirmDeletePage("Wollen sie diesen WebUser wirklich löschen?") {
+					setResponsePage(new ConfirmDeletePage("Wollen sie diesen Administrator wirklich löschen?") {
 						private static final long serialVersionUID = 215242593335920710L;
 
 						@Override
@@ -79,7 +79,7 @@ public class WebUserListPage extends BasePage {
 					});
 					
 				} else {
-					setResponsePage(new WarningPage("Diese Keycard kann nicht gelöscht werden.") {
+					setResponsePage(new WarningPage("Der gerade eingeloggte Administrator kann nicht gelöscht werden.") {
 						@Override
 						protected void onConfirm() {
 							setResponsePage(WebUserListPage.this);

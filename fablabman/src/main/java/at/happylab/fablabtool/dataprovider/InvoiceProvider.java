@@ -27,6 +27,11 @@ import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
 
+/**
+ * @author Robert Koch
+ *
+ */
+
 public class InvoiceProvider extends SortableDataProvider<Invoice> implements Serializable {
 
 	private static final long serialVersionUID = 5913664092473911762L;
@@ -51,6 +56,9 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		initFilter();
 	}
 	
+	/**
+	 * This method is used to set the default filter of the invoice panel (of a membership)
+	 */
 	private void initFilter(){
 		this.toFilter = new Date();
 		Calendar c = Calendar.getInstance();
@@ -85,6 +93,9 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		this.member=member;
 	}
 	
+	/**
+	 * Returns a sorted iterator. Has to be edited if new columns should be sortable.
+	 */
 	public Iterator<Invoice> iterator(int first, int count) {
 		List<Invoice> data = getFiltered();
 		
@@ -136,9 +147,15 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		return getFiltered().size();
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Writes the relevant data for the "Bankdatenträger" in the passed Printwriter in .csv format.
+	 * Only invoices with state OPEN and Paymentmethod DEBIT are selected for the export.
+	 * If exported this way the state of the invoice is changed to PAID and the payedAt date is set to the
+	 * dueDate.
+	 * @param writer the Printwriter the data are appended to.
+	 */
 	public void bankExport(PrintWriter writer){
-		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i WHERE paymentmethod='DEBIT' AND state='OPEN'")
+		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i WHERE paymentmethod='DEBIT' AND state='OPEN'",Invoice.class)
 			.getResultList();
 		if(list.size() > 0){
 			CustomBigDecimalConverter cbdc = new CustomBigDecimalConverter();
@@ -169,10 +186,12 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Writes all the invoice data in the passed Printwriter in .csv format
+	 * @param writer the Printwriter the data are appended to.
+	 */
 	public void fullExport(PrintWriter writer){
-		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i")
-			.getResultList();
+		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i",Invoice.class).getResultList();
 		if(list.size() > 0){
 			CustomBigDecimalConverter cbdc = new CustomBigDecimalConverter();
 			CustomDateConverter cdc = new CustomDateConverter();
@@ -218,14 +237,18 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		return filtered;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Filters all invoices of a given member, if the member is set, or all invoices of all members between
+	 * the fromFilter and the toFilter Dates and also by the filter String. 
+	 * @return a filtered list of invoices
+	 */
 	private List<Invoice> filter() {
 		List<Invoice> filtered;
 		if(member == null)
-			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
+			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		else
-			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
+			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		if (filter != null) {
 			CustomDateConverter cdc = new CustomDateConverter();
@@ -256,6 +279,11 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		super.detach();
 	}
 	
+	/**
+	 * Helper method to get the total amount of an invoice
+	 * @param inv the invoice of which the total amount is to be calculated
+	 * @return the total amount of the passed invoice
+	 */
 	private BigDecimal getAmount(Invoice inv){
 		BigDecimal sum = new BigDecimal(0);
 		for(ConsumationEntry ce : inv.getIncludesConsumationEntries()){
@@ -264,6 +292,11 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		return sum;
 	}
 	
+	/**
+	 * Helper method to fill the firstname column
+	 * @param inv the invoice of which we want the firstname
+	 * @return the firstname of the membership that has to pay the invoice (empty if business membership)
+	 */
 	private String getFirstName(Invoice inv){
 		MembershipType type1 = inv.getRelatedTo().getMembershipType();
 		if(type1.equals(MembershipType.PRIVATE)){
@@ -273,6 +306,12 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		}
 	}
 	
+	/**
+	 * Helper method to fill the lastname column
+	 * @param inv the invoice of which we want the lastname
+	 * @return the lastname of the membership that has to pay the invoice (full name of the contact person
+	 *  if business membership)
+	 */
 	private String getLastName(Invoice inv){
 		MembershipType type2 = inv.getRelatedTo().getMembershipType();
 		if(type2.equals(MembershipType.PRIVATE)){
@@ -282,6 +321,11 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		}
 	}
 	
+	/**
+	 * Helper method to fill the companyname column
+	 * @param inv the invoice of which we want the companyname
+	 * @return the name of the company that has to pay the invoice (empty for non-profit membership)
+	 */
 	private String getCompanyName(Invoice inv){
 		MembershipType type1 = inv.getRelatedTo().getMembershipType();
 		if(type1.equals(MembershipType.PRIVATE)){
