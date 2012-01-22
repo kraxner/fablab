@@ -8,6 +8,8 @@ import java.util.Iterator;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.AbortException;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -38,6 +40,7 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
+import at.happylab.fablabtool.web.membership.MembershipDetailPage;
 
 public class InvoiceListPage extends AdminBasePage{
 
@@ -66,15 +69,15 @@ public class InvoiceListPage extends AdminBasePage{
 		add(invForm);
 		
 		numOfRows = invoices.size() + " Datensätze";
-		resultDiv = new Label("invCount", new PropertyModel(this,"numOfRows") );
+		resultDiv = new Label("invCount", new PropertyModel<String>(this,"numOfRows") );
 		add(resultDiv);
 	}
 	
 	private void init(){
-		Form<InvoiceProvider> form = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoices));
-		form.add(new TextField<Date>("fromFilter"));
-		form.add(new TextField<Date>("toFilter"));
-		form.add(new TextField<String>("filter"));
+		Form<InvoiceProvider> filterForm = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoices));
+		filterForm.add(new TextField<Date>("fromFilter"));
+		filterForm.add(new TextField<Date>("toFilter"));
+		filterForm.add(new TextField<String>("filter"));
 		Button apply = new Button("apply"){
 			private static final long serialVersionUID = 1L;
 			public void onSubmit() {
@@ -82,12 +85,12 @@ public class InvoiceListPage extends AdminBasePage{
 				numOfRows = invoices.size() + " Datensätze";
 			}
 		};
-		form.add(apply);
+		filterForm.add(apply);
 
-		add(form);
+		add(filterForm);
 	}
 	
-	class InvListForm extends Form{
+	class InvListForm extends Form<Invoice>{
 
 		private static final long serialVersionUID = 2780639970765950200L;
 		
@@ -96,12 +99,23 @@ public class InvoiceListPage extends AdminBasePage{
 			
 			IColumn[] columns = new IColumn[12];
 			
-			columns[0] = new PropertyColumn<Invoice>(new Model<String>("#"), "relatedTo.memberId", "relatedTo.memberId");
-			columns[1] = new PropertyColumn<String>(new Model<String>("Vorname"), "first", ""){
+			columns[0] = new LinkPropertyColumn<Invoice>(new Model<String>("#"), "relatedTo.memberId", "relatedTo.memberId") {
 				private static final long serialVersionUID = 1L;
 				@Override
-				public void populateItem(Item item, String componentId, IModel rowModel) {
-					Invoice inv = (Invoice) rowModel.getObject();
+				public void onClick(Item item, String componentId, IModel model) {
+					Invoice inv = (Invoice)model.getObject();
+					Membership m = inv.getRelatedTo();
+					setResponsePage(new MembershipDetailPage(m, membershipMgmt));
+					
+				}
+			};
+			columns[1] = new PropertyColumn<Invoice>(new Model<String>("Vorname"), "first", ""){
+				private static final long serialVersionUID = 1L;
+				@Override
+//				public void populateItem(Item item, String componentId, IModel rowModel) {
+				public void populateItem(Item<ICellPopulator<Invoice>> item, String componentId, IModel<Invoice> rowModel) {
+					Invoice inv = rowModel.getObject();
+//					Invoice inv = (Invoice) rowModel.getObject();
 					MembershipType type = inv.getRelatedTo().getMembershipType();
 					String name;
 					if(type.equals(MembershipType.PRIVATE)){
@@ -112,7 +126,7 @@ public class InvoiceListPage extends AdminBasePage{
 					item.add(new Label(componentId, name));
 				}
 			};
-			columns[2] = new PropertyColumn<String>(new Model<String>("Nachname"), "last", ""){
+			columns[2] = new PropertyColumn<Invoice>(new Model<String>("Nachname"), "last", ""){
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void populateItem(Item item, String componentId, IModel rowModel) {
@@ -127,7 +141,7 @@ public class InvoiceListPage extends AdminBasePage{
 					item.add(new Label(componentId, name));
 				}
 			};
-			columns[3] = new PropertyColumn<String>(new Model<String>("Firma"), "company", ""){
+			columns[3] = new PropertyColumn<Invoice>(new Model<String>("Firma"), "company", ""){
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void populateItem(Item item, String componentId, IModel rowModel) {
@@ -142,14 +156,14 @@ public class InvoiceListPage extends AdminBasePage{
 					item.add(new Label(componentId, name));
 				}
 			};
-			columns[4] = new PropertyColumn<String>(new Model<String>("Rechnungsnummer"), "invoiceNumber", "invoiceNumber");
-			columns[5] = new PropertyColumn<String>(new Model<String>("Betrag"), "amount", ""){
+			columns[4] = new PropertyColumn<Invoice>(new Model<String>("Rechnungsnummer"), "invoiceNumber", "invoiceNumber");
+			columns[5] = new PropertyColumn<Invoice>(new Model<String>("Betrag"), "amount", ""){
 				private static final long serialVersionUID = 1L;
 				@Override
-				public void populateItem(Item item, String componentId, IModel rowModel) {
+				public void populateItem(Item<ICellPopulator<Invoice>> item, String componentId, IModel<Invoice> rowModel) {
 					BigDecimal sum = new BigDecimal(0);
 					CustomBigDecimalConverter bigDecConv = new CustomBigDecimalConverter();
-					Invoice inv = (Invoice) rowModel.getObject();
+					Invoice inv = rowModel.getObject();
 					for(ConsumationEntry ce : inv.getIncludesConsumationEntries()){
 						sum = sum.add(ce.getSum());
 					}
@@ -161,7 +175,9 @@ public class InvoiceListPage extends AdminBasePage{
 			columns[8] = new TextFilteredPropertyColumn<Invoice, Date>(new Model<String>("Fälligkeitsdatum"), "dueDate", "dueDate");
 			columns[9] = new TextFieldColumn<Invoice>(new Model<String>("Zahlungseingangsdatum"), "payedAt", "payedAt");
 			columns[10] = new DropDownColumn<InvoiceState>(new Model<String>("Status"), "state", "state", InvoiceState.class);
-			columns[11] = new LinkPropertyColumn<String>(new Model<String>("Aktion"), new Model("Detailansicht"), new PopupSettings(10).setHeight(1024).setWidth(680)) {
+			columns[11] = new LinkPropertyColumn<Invoice>(new Model<String>("Aktion"), new Model<String>("Detailansicht"), new PopupSettings(10).setHeight(1024).setWidth(680)){
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice) model.getObject();
@@ -171,34 +187,47 @@ public class InvoiceListPage extends AdminBasePage{
 				 
 			};
 			
-			add(new DefaultDataTable("invTable", columns, invoices, 50));
+			add(new DefaultDataTable<Invoice>("invTable", columns, invoices, 50));
 			
 			add(new Button("submit"));
 			Button bankExport = new Button("bankExport"){
 				private static final long serialVersionUID = 7607265405984709816L;
 				public void onSubmit() {
+					Iterator<Invoice> invIter = invoices.iterator(0, invoices.size());
+					while(invIter.hasNext()){
+						invoiceMgmt.storeInvoice(invIter.next());
+					}
 					WebResponse response = (WebResponse) getResponse();
-					response.setAttachmentHeader("bankExport.csv"); //TODO: better name
+					response.setAttachmentHeader("bankExport.csv");
 					response.setContentType("text/csv");
 					OutputStream out = getResponse().getOutputStream();
-					invoices.export(new PrintWriter(out));
-                }
-            };
-            bankExport.setDefaultFormProcessing(false); //TODO: should exporting save changes before exporting?
-            add(bankExport);
-            Button csvExport = new Button("csvExport"){
+					PrintWriter writer = new PrintWriter(out);
+					invoices.bankExport(writer);
+					writer.flush();
+					writer.close();
+					throw new AbortException();
+				}
+			};
+			add(bankExport);
+			Button csvExport = new Button("csvExport"){
 				private static final long serialVersionUID = 7607265405984709816L;
 				public void onSubmit() {
-//					WebResponse response = (WebResponse) getResponse();
-//					response.setAttachmentHeader("csvExport.csv"); //TODO: better name
-//					response.setContentType("text/csv");
-//					OutputStream out = getResponse().getOutputStream();
-//					invoices.export(new PrintWriter(out));
-                }
-            };
-            csvExport.setDefaultFormProcessing(false); //TODO: should exporting save changes before exporting?
-            add(csvExport);
-            
+					Iterator<Invoice> invIter = invoices.iterator(0, invoices.size());
+					while(invIter.hasNext()){
+						invoiceMgmt.storeInvoice(invIter.next());
+					}
+					WebResponse response = (WebResponse) getResponse();
+					response.setAttachmentHeader("fullExport.csv");
+					response.setContentType("text/csv");
+					OutputStream out = getResponse().getOutputStream();
+					PrintWriter writer = new PrintWriter(out);
+					invoices.fullExport(writer);
+					writer.flush();
+					writer.close();
+					throw new AbortException();
+				}
+			};
+			add(csvExport);
 		}
 
 		public void onSubmit() {

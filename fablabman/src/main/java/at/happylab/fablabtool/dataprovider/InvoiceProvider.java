@@ -19,12 +19,16 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
+import at.happylab.fablabtool.beans.InvoiceManagement;
+import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.converter.CustomDateConverter;
+import at.happylab.fablabtool.converter.EnumConverter;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
+import at.happylab.fablabtool.model.PaymentMethod;
 
 public class InvoiceProvider extends SortableDataProvider<Invoice> implements Serializable {
 
@@ -33,6 +37,9 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	@Inject
 	private EntityManager em;
 
+	@Inject
+	private InvoiceManagement invoiceMgmt;
+	
 	private Membership member;
 	
 	private Date fromFilter;
@@ -133,11 +140,13 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void export(PrintWriter writer){
+	public void bankExport(PrintWriter writer){
 		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i WHERE paymentmethod='DEBIT' AND state='OPEN'")
-		.getResultList();
+			.getResultList();
 		if(list.size() > 0){
-			StringBuffer line = new StringBuffer("Mitgl.Nr.;Name;Ktonr.;BLZ;BIC;IBAN;Betrag;Text;AG-Kto.;AG-BLZ;AG-Name;Transakt.Typ");
+			CustomBigDecimalConverter cbdc = new CustomBigDecimalConverter();
+			CustomDateConverter cdc = new CustomDateConverter();
+			StringBuffer line = new StringBuffer("Mitgl.Nr.;Mitgliedsname;Kontoinhaber;Ktonr.;BLZ;BIC;IBAN;Betrag;Text;AG-Kto.;AG-BLZ;AG-Name;Transakt.Typ;Datum");
 			writer.append(line);
 			writer.append("\r\n");
 			for(Invoice inv : list){
@@ -145,30 +154,64 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 				Membership mem = inv.getRelatedTo();
 				line.append(mem.getMemberId()+";");
 				line.append(mem.getName()+";");
+				line.append(mem.getBankDetails().getName()+";");
 				line.append(mem.getBankDetails().getAccountNumber()+";");
 				line.append(mem.getBankDetails().getBankCode()+";");
 				line.append(mem.getBankDetails().getBic()+";");
 				line.append(mem.getBankDetails().getIban()+";");
-				line.append(getAmount(inv).toString().replace(".", ",")+";");
-				line.append(""+";"); //TODO What Text should be displayed here?
-				line.append("10306777;32000;INNOC/Happylab;EZ");
+				line.append(cbdc.convertToString(getAmount(inv), null)+";");
+				line.append(inv.getInvoiceNumber()+";");
+				line.append("10306777;32000;INNOC/Happylab;EZ;");
+				line.append(cdc.convertToString(inv.getDueDate(), null)+";");
 				writer.append(line);
 				writer.append("\r\n");
 				inv.setState(InvoiceState.PAID);
-				storeInvoice(inv);
+				inv.setPayedAt(inv.getDueDate());
+				invoiceMgmt.storeInvoice(inv);
 			}
 		}
-		writer.flush();
-		writer.close();
 	}
 	
-	public void storeInvoice(Invoice inv) {
-		if (!em.getTransaction().isActive()) {
-			em.getTransaction().begin();
+	@SuppressWarnings("unchecked")
+	public void fullExport(PrintWriter writer){
+		List<Invoice> list = em.createQuery("SELECT i FROM Invoice i")
+			.getResultList();
+		if(list.size() > 0){
+			CustomBigDecimalConverter cbdc = new CustomBigDecimalConverter();
+			CustomDateConverter cdc = new CustomDateConverter();
+			StringBuffer line = new StringBuffer("Mitgliedsnummer;Vorname;Nachname;Firma;Rechnungsnummer;Betrag;Zahlungsart;Rechnungsdatum;Fälligkeitsdatum;Zahlungseingangsdatum;Status");
+			writer.append(line);
+			writer.append("\r\n");
+			for(Invoice inv : list){
+				line = new StringBuffer();
+				Membership mem = inv.getRelatedTo();
+				line.append(mem.getMemberId()+";"); // Membership Id
+				if(mem.isPrivateMembership()){ // Firstname
+					line.append(mem.getUsers().get(0).getFirstname()+";");
+				} else {
+					line.append(";");
+				}
+				if(mem.isPrivateMembership()){ // Firstname
+					line.append(mem.getUsers().get(0).getLastname()+";");
+				} else {
+					line.append(mem.getContactPerson()+";");
+				}
+				if(mem.isPrivateMembership()){ // Companyname
+					line.append(";");
+				} else {
+					line.append(mem.getCompanyName()+";");
+				}
+				line.append(inv.getInvoiceNumber()+";"); // Invoice number
+				line.append(cbdc.convertToString(getAmount(inv), null)+";"); // Invoice Amount
+				line.append(inv.getPaymentMethod()+";"); // Payment method
+				line.append(cdc.convertToString(inv.getDate(), null)+";"); // Invoice date
+				line.append(cdc.convertToString(inv.getDueDate(), null)+";"); // Invoice due date
+				line.append(cdc.convertToString(inv.getPayedAt(), null)+";"); // Invoice payed at date
+				line.append(inv.getState()); // Invoice state
+				writer.append(line);
+				writer.append("\r\n");
+			}
 		}
-		em.persist(inv);
-		em.getTransaction().commit();
-		Logger.getLogger("Invoicemanagement").info("number of Invoices: " + String.valueOf(em.createQuery("select count(i) from Invoice i ").getSingleResult()));
 	}
 	
 	private List<Invoice> getFiltered() {
@@ -180,7 +223,6 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	
 	@SuppressWarnings("unchecked")
 	private List<Invoice> filter() {
-		CustomDateConverter cdc = new CustomDateConverter();
 		List<Invoice> filtered;
 		if(member == null)
 			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
@@ -189,18 +231,19 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'")
 					.getResultList();
 		if (filter != null) {
+			CustomDateConverter cdc = new CustomDateConverter();
 			String upper = filter.toUpperCase();
 			Iterator<Invoice> it = filtered.iterator();
 			while (it.hasNext()) {
 				Invoice inv = it.next();
-				if (inv.getInvoiceNumber().toString().toUpperCase().indexOf(upper) < 0
-					&& cdc.convertToString(inv.getDate(), null).toUpperCase().indexOf(upper) < 0
-					&& getAmount(inv).toString().toUpperCase().indexOf(upper) < 0
-					&& cdc.convertToString(inv.getDueDate(), null).toUpperCase().indexOf(upper) < 0
-					&& Long.toString(inv.getRelatedTo().getMemberId()).toUpperCase().indexOf(upper) < 0
+				if (Long.toString(inv.getRelatedTo().getMemberId()).toUpperCase().indexOf(upper) < 0
 					&& getFirstName(inv).toUpperCase().indexOf(upper) < 0
 					&& getLastName(inv).toUpperCase().indexOf(upper) < 0
 					&& getCompanyName(inv).toUpperCase().indexOf(upper) < 0
+					&& inv.getInvoiceNumber().toString().toUpperCase().indexOf(upper) < 0
+					&& getAmount(inv).toString().toUpperCase().indexOf(upper) < 0
+					&& cdc.convertToString(inv.getDate(), null).toUpperCase().indexOf(upper) < 0
+					&& cdc.convertToString(inv.getDueDate(), null).toUpperCase().indexOf(upper) < 0
 					&& cdc.convertToString(inv.getPayedAt(), null).toUpperCase().indexOf(upper) < 0)
 				{
 					it.remove();

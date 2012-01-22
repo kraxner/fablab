@@ -1,8 +1,9 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
+import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
@@ -70,27 +72,45 @@ public class KeycardManagement implements Serializable {
 
 	}
 
-	public boolean hasAccess(String rfid) {
-
-		boolean result = false;
-		Membership member;
-		User user;
-		Query qry;
-		ArrayList<Subscription> subscriptions;
+	public KeyCard loadKeyCardFromRFID(String rfid) {
 
 		KeyCard k = null;
+		Query qry = em.createQuery("from KeyCard WHERE rfid=:rfid", KeyCard.class);
 
-		// FIXME: this should not happen here, the logic for determining if the keyCard may access should be in a separate method
-		//        this way testing is hard... 
+		qry.setParameter("rfid", rfid);
+
 		try {
-			qry = em.createQuery("from KeyCard WHERE rfid=:rfid", KeyCard.class);
-			qry.setParameter("rfid", rfid);
 			k = (KeyCard) qry.getSingleResult();
 		} catch (NonUniqueResultException e) {
-			return false;
+			return null;
 		} catch (NoResultException e) {
-			return false;
+			return null;
 		}
+
+		return k;
+	}
+
+	public boolean hasAccess(String rfid) {
+
+		User user = null;
+		Membership membership = null;
+		List<Subscription> subscriptions = null;
+		KeyCard k = loadKeyCardFromRFID(rfid);
+
+		try {
+			user = new UserManagement().loadUserFromKeycard(rfid);
+			membership = user.getMembership();
+			subscriptions = new SubscriptionManagement().getAllSubscriptionsFromMember(user.getMembership().getId());
+
+		} catch (NullPointerException e) {
+			// Keycard der Putzfrau ist niemandem zugeordnet.
+		}
+
+		return hasAccess(k, membership, subscriptions);
+	}
+
+	public boolean hasAccess(KeyCard k, Membership membership, List<Subscription> subscriptions) {
+		boolean result = false;
 
 		/**
 		 * 1. known Keycard?
@@ -104,21 +124,17 @@ public class KeycardManagement implements Serializable {
 		if (!k.isActive())
 			return false;
 
-		System.err.println("2. Keycard Active");
-
 		/**
 		 * 3. Check the Access Times
 		 */
-		/*
-		result = false;
-
-		List<AccessGrant> agList = k.getAccessgrants();
+		if (k.getAccessgrants() == null)
+			return false;
 
 		Calendar a = new GregorianCalendar();
 		Calendar b = new GregorianCalendar();
 		Calendar n = new GregorianCalendar();
 
-		for (AccessGrant ag : agList) {
+		for (AccessGrant ag : k.getAccessgrants()) {
 			if (ag.getDayOfWeek().ordinal() == n.get(Calendar.DAY_OF_WEEK) - 1) {
 
 				a.setTime(ag.getTimeFrom());
@@ -133,8 +149,6 @@ public class KeycardManagement implements Serializable {
 				a.set(Calendar.YEAR, n.get(Calendar.YEAR));
 				b.set(Calendar.YEAR, n.get(Calendar.YEAR));
 
-				//				System.err.println("COMPARE: " + a.getTime().toString() + " " + b.getTime().toString() + " " + n.getTime().toString());
-
 				if (n.after(a) && n.before(b)) {
 					result = true;
 					break;
@@ -146,63 +160,43 @@ public class KeycardManagement implements Serializable {
 		if (!result)
 			return false;
 
-		*/
-		
 		/**
-		 * 4a. Membership subscribed to a valid Access Package?
-		 */
-		try {
-			qry = em.createQuery("from User where Keycard_id=:keycard_id", User.class);
-			qry.setParameter("keycard_id", k.getId());
-
-			user = (User) qry.getSingleResult();
-
-		} catch (NoResultException e) {
-			// there is no user, therefore only the access times of this keycards count
-			return result;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
-
-		member = user.getMembership();
-
-		if (member == null)
-			return true; // Keycards die keinem User zugeteilt sind (z.B. für Putzfrau)
-
-		//		System.err.println("3a. Membership found");
-
-		/**
-		 * 4b. Check the Subscriptions for a valid ACCESS Package
+		 * 4. Membership subscribed to a valid Access Package?
 		 */
 
-		try {
-			qry = em.createQuery("FROM Subscription WHERE Bookedby_ID = :memberid", Subscription.class);
-			qry.setParameter("memberid", member.getId());
+		if (membership != null) {
 
-			subscriptions = new ArrayList<Subscription>(qry.getResultList());
-		} catch (NoResultException e) {
-			return false;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+			/**
+			 * 4a. Do we have subscriptions?
+			 */
+			if (subscriptions != null) {
+				if (subscriptions.size() == 0)
+					return false;
+			} else
+				return false; // no subscriptions
 
-		result = false;
+			/**
+			 * 4b. Check the Subscriptions for a valid ACCESS Package
+			 */
 
-		for (Subscription s : subscriptions) {
-			if (s.getBooksPackage().getPackageType() == PackageType.ACCESS) {
-				if (s.getValidTo() == null)
-					result = true;
-				else
-					result = s.getValidTo().before(new Date()); // Falls Subscription schon gekündigt wurde, noch aktiv?
+			result = false;
 
-				if (result)
-					return true;
-			} else {
-				result = false;
+			for (Subscription s : subscriptions) {
+				if (s.getBooksPackage().getPackageType() == PackageType.ACCESS) {
+					if (s.getValidTo() == null)
+						result = true;
+					else
+						result = s.getValidTo().before(new Date()); // Falls Subscription schon gekündigt wurde, noch aktiv?
+
+					if (result)
+						return true;
+				} else {
+					result = false;
+				}
 			}
+		} else { // Keycard for i.e. the cleaning lady has no membership
+			return true;
 		}
-
-		// System.err.println("3c. valid subscription found");
 
 		return false;
 	}

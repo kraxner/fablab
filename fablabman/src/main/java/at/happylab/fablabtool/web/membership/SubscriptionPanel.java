@@ -65,6 +65,7 @@ public class SubscriptionPanel extends Panel {
 		});
 
 		List<IColumn<String>> columns = new ArrayList<IColumn<String>>();
+		columns.add(new PropertyColumn<String>(new Model<String>("ID"), "id", "id"));
 		columns.add(new PropertyColumn<String>(new Model<String>("Paket"), "booksPackage.name", "booksPackage.name"));
 		columns.add(new PropertyColumn<String>(new Model<String>("angemeldet seit"), "validFrom", "validFrom"));
 		columns.add(new PropertyColumn<String>(new Model<String>("angemeldet bis"), "validTo", "validTo"));

@@ -14,10 +14,14 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
+import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
+import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.web.BasePage;
+import at.happylab.fablabtool.web.membership.MembershipDetailPage;
 import at.happylab.fablabtool.web.membership.SubscriptionDetailPage;
 
 public class SubscriptionListPage extends BasePage {
@@ -25,14 +29,40 @@ public class SubscriptionListPage extends BasePage {
 	@Inject
 	SubscriptionProvider subscriptionProvider;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public SubscriptionListPage() {
 		navigation.selectSubscriptions();
 		
-		List<IColumn<Subscription>> columns = new ArrayList<IColumn<Subscription>>();
-		columns.add(new PropertyColumn<Subscription>(new Model<String>("Membership ID"), "memberId", "bookedBy.memberId"));
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Mitglid Nr."), "memberId", "bookedBy.memberId") {
+			private static final long serialVersionUID = -4135397597596972629L;
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Subscription s = (Subscription) model.getObject();
+				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+			}
+		});
+		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Vorname"), "firstname", "bookedBy.users[0].firstname"){
+			private static final long serialVersionUID = -4135397597596972629L;
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Subscription s = (Subscription) model.getObject();
+				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+			}
+		});
+		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Nachname"), "lastname", "bookedBy.users[0].lastname"){
+			private static final long serialVersionUID = -4135397597596972629L;
+
+			@Override
+			public void onClick(Item item, String componentId, IModel model) {
+				Subscription s = (Subscription) model.getObject();
+				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+			}
+		});
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Firmenname"), "bookedBy.companyName", "bookedBy.companyName"));
-		columns.add(new PropertyColumn<Subscription>(new Model<String>("Vorname"), "firstname", "bookedBy.users[0].firstname"));
-		columns.add(new PropertyColumn<Subscription>(new Model<String>("Nachname"), "lastname", "bookedBy.users[0].lastname"));
+		columns.add(new EnumPropertyColumn<MembershipType>(new Model<String>("Art"), "type", "bookedBy.membershipType", MembershipType.class, this));
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Paket"), "Package.name", "booksPackage.name"));
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("angemeldet seit"), "validFrom", "validFrom"));
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("angemeldet bis"), "validTo", "validTo"));
@@ -41,7 +71,6 @@ public class SubscriptionListPage extends BasePage {
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = -4135397597596972629L;
 
-			@SuppressWarnings("rawtypes")
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
@@ -50,8 +79,7 @@ public class SubscriptionListPage extends BasePage {
 			}
 		});
 
-
-		DefaultDataTable<Subscription> table = new DefaultDataTable<Subscription>("subscriptionTable", columns, subscriptionProvider, 50);
+		DefaultDataTable<Subscription> table = new DefaultDataTable("subscriptionTable", columns, subscriptionProvider, 50);
 		add(table);
 		
 		add(new Label("subscriptionCount", subscriptionProvider.size() + " Datensätze"));
