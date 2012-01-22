@@ -12,8 +12,7 @@ import javax.persistence.InheritanceType;
 @Inheritance(strategy=InheritanceType.JOINED)
 //INSERT INTO WEBUSER (username, password, firstname, lastname, admin) values ('mk', 'mk', 'Michael', 'Kraxner', '1')
 public class WebUser implements Serializable {
-	
-	private static final long serialVersionUID = -3464063998529477370L;
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue
 	private long id;

@@ -10,8 +10,8 @@
 
 			<div>
 				<div style="float: left;">
-					Anzeige: <input type="checkbox" name="chkPreRegistrations"/>
-					Vorameldungen <input type="checkbox" name="chkPostRegistrations"/>
+					Anzeige: <input wicket:id="showPreRegistrationsCheckbox" type="checkbox" name="chkPreRegistrations"/>
+					Vorameldungen <input wicket:id="showInactiveMembershipsCheckbox" type="checkbox" name="chkPostRegistrations"/>
 					ausgetretene Mitglieder
 				</div>
 				<div style="float: right;">
@@ -25,7 +25,7 @@
 				<table wicket:id="mitgliederTabelle"></table>
 			</div>
 
-			<br/> <span wicket:id="mitgliederAnzahl"></span> <br/>
+			<br/><!-- <span wicket:id="mitgliederAnzahl"></span>  --> <br/>
          <div>
             <button wicket:id="addPrivateMembershipLink" class="minimal">Neues Mitglied</button>
             <!-- 

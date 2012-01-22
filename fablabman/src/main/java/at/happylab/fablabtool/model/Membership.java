@@ -90,6 +90,7 @@ public class Membership implements Serializable{
 		membershipType = MembershipType.PRIVATE;
 		maxUser = 1;
 		entryDate = new Date();
+		confirmed = true;
 	}
 	
 	public boolean isPrivateMembership(){
