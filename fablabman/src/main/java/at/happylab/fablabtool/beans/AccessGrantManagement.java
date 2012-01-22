@@ -1,12 +1,12 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
+
 import at.happylab.fablabtool.model.AccessGrant;
 
 public class AccessGrantManagement implements Serializable {

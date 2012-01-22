@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.tests;
+package at.happylab.fablabtool.beans;
 
 import javax.persistence.EntityManager;
 import static org.junit.Assert.*;
@@ -11,7 +11,7 @@ import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 
-public class MembershipTests {
+public class MembershipManagementTest {
 
 	private static MembershipManagement mMgmt;
 	private static EntityManager em;

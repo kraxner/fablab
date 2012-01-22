@@ -1,4 +1,4 @@
-package at.happylab.fablabtool.tests;
+package at.happylab.fablabtool.beans;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +17,7 @@ import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.TimePeriod;
 import at.happylab.fablabtool.session.SessionScopeProducer;
 
-public class PackageTests {
+public class PackageManagementTest {
 
 	private static PackageManagement packageMgmt;
 	private static EntityManager em;

@@ -1,9 +1,12 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.Calendar;
+=======
+import java.util.ArrayList;
+>>>>>>> 7ee67a7fab12b4ea032a32d0bc53c101a69e48e5
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,7 +18,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
@@ -127,8 +129,15 @@ public class KeycardManagement implements Serializable {
 		/**
 		 * 3. Check the Access Times
 		 */
+<<<<<<< HEAD
 		if (k.getAccessgrants() == null)
 			return false;
+=======
+		/*
+		result = false;
+
+		List<AccessGrant> agList = k.getAccessgrants();
+>>>>>>> 7ee67a7fab12b4ea032a32d0bc53c101a69e48e5
 
 		Calendar a = new GregorianCalendar();
 		Calendar b = new GregorianCalendar();
@@ -160,6 +169,8 @@ public class KeycardManagement implements Serializable {
 		if (!result)
 			return false;
 
+		*/
+		
 		/**
 		 * 4. Membership subscribed to a valid Access Package?
 		 */
