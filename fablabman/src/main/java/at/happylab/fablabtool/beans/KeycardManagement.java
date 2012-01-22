@@ -2,9 +2,7 @@ package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +14,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
