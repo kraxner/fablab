@@ -1,6 +1,7 @@
 package at.happylab.fablabtool.web.access;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -62,7 +63,7 @@ public class AccessGrantDetailPage extends BasePage {
 			final DateTextField timeUntil = new DateTextField("TimeUntil", "HH:mm");
 			timeUntil.setRequired(true);
 			add(timeUntil);
-			
+
 			Link<String> goBackButton = new Link<String>("goBack") {
 				private static final long serialVersionUID = -3527050342774869192L;
 
@@ -71,11 +72,21 @@ public class AccessGrantDetailPage extends BasePage {
 				}
 			};
 			add(goBackButton);
-			
+
 		}
 
+		@SuppressWarnings("deprecation")
 		public void onSubmit() {
-			accessGrantMgmt.storeAccessGrant(ag);
+
+			if (ag.getTimeUntil().getHours() == 0 && ag.getTimeUntil().getMinutes() == 0)
+				ag.setTimeUntil(new Date(2012, 1, 1, 23, 59));
+
+			try {
+				accessGrantMgmt.storeAccessGrant(ag);
+			} catch (Exception e) {
+
+			}
+			
 			setResponsePage(new AccessGrantListPage(null));
 		}
 	}

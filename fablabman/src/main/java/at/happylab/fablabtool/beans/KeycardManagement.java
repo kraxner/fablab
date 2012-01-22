@@ -115,20 +115,26 @@ public class KeycardManagement implements Serializable {
 		/**
 		 * 1. known Keycard?
 		 */
-		if (k == null)
+		if (k == null) {
+			System.err.println("unknown keycard");
 			return false;
+		}
 
 		/**
 		 * 2. Keycard active?
 		 */
-		if (!k.isActive())
+		if (!k.isActive()) {
+			System.err.println("keycard not active");
 			return false;
+		}
 
 		/**
 		 * 3. Check the Access Times
 		 */
-		if (k.getAccessgrants() == null)
+		if (k.getAccessgrants() == null) {
+			System.err.println("no accessgrant times");
 			return false;
+		}
 
 		Calendar a = new GregorianCalendar();
 		Calendar b = new GregorianCalendar();
@@ -157,8 +163,10 @@ public class KeycardManagement implements Serializable {
 
 		}
 
-		if (!result)
+		if (!result) {
+			System.err.println("no access granttime valid");
 			return false;
+		}
 
 		/**
 		 * 4. Membership subscribed to a valid Access Package?

@@ -73,9 +73,9 @@ public class KeycardManagementAccessTests {
 		ArrayList<AccessGrant> accessgrants = new ArrayList<AccessGrant>();
 
 		GregorianCalendar n = new GregorianCalendar();
-		n.add(Calendar.HOUR, -1);
+		n.add(Calendar.MINUTE, -1);
 		ag.setTimeFrom(n.getTime());
-		n.add(Calendar.HOUR, 2);
+		n.add(Calendar.MINUTE, 5);
 		ag.setTimeUntil(n.getTime());
 
 		ag.setDayOfWeek(DayOfWeek.values()[DayOfWeekToday]);
@@ -190,9 +190,9 @@ public class KeycardManagementAccessTests {
 		ArrayList<AccessGrant> accessgrants = new ArrayList<AccessGrant>();
 
 		GregorianCalendar n = new GregorianCalendar();
-		n.add(Calendar.HOUR, -1);
+		n.add(Calendar.MINUTE, -1);
 		ag.setTimeFrom(n.getTime());
-		n.add(Calendar.HOUR, 2);
+		n.add(Calendar.MINUTE, 10);
 		ag.setTimeUntil(n.getTime());
 
 		ag.setDayOfWeek(DayOfWeek.values()[DayOfWeekToday]);
@@ -206,6 +206,7 @@ public class KeycardManagementAccessTests {
 
 		p.setPackageType(PackageType.ACCESS);
 		s.setBooksPackage(p);
+		s.setValidTo(null);
 
 		subscriptions.add(s);
 
