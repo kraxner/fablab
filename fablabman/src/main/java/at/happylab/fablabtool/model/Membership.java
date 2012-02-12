@@ -17,8 +17,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import net.micalo.persistence.dao.IIdentifiableEntity;
+
 @Entity
-public class Membership implements Serializable{
+public class Membership implements Serializable, IIdentifiableEntity<Long>{
 	
 	private static final long serialVersionUID = 2316667102976971988L;
 
@@ -368,5 +370,13 @@ public class Membership implements Serializable{
 
 	public void setMemberId(long memberId) {
 		this.memberId = memberId;
+	}
+
+	public void setIdent(Long id) {
+		this.id = id;
+	}
+	
+	public Long getIdent() {
+		return id;
 	}
 }

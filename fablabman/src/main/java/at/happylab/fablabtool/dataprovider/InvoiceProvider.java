@@ -248,7 +248,7 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		else
-			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
+			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getIdent() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		if (filter != null) {
 			CustomDateConverter cdc = new CustomDateConverter();

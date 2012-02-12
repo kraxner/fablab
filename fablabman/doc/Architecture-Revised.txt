@@ -8,7 +8,7 @@ Version: V1.0
   At the moment we keep entities in the Http session (by using direct references to entities), that is not a good approach:
   - the session gets bloated with entities (object graph!)
   - when the session is serialized, the entites get detached from the entity manager
-    -> this can lead to "detached entity passed to persist" errors
+    -> this can lead to "detached entity passed to persist" errors (can be bypassed by merging, but)
    
 => solution:
 

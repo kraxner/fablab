@@ -50,7 +50,7 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
 
 		if (member != null)
-			sqlString += " AND bookedby_id = " + member.getId();
+			sqlString += " AND bookedby_id = " + member.getIdent();
 
 		List<Subscription> results = em.createQuery(sqlString).getResultList();
 
@@ -145,7 +145,7 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
 
 		if (member != null)
-			sqlString += " AND bookedby_id = " + member.getId();
+			sqlString += " AND bookedby_id = " + member.getIdent();
 
 		count = (Long) em.createQuery(sqlString).getSingleResult();
 

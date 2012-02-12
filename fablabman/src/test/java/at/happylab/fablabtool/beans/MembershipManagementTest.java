@@ -49,7 +49,7 @@ public class MembershipManagementTest {
 		
 		countAfter = mMgmt.getAllMemberships().size();
 
-		membershipID = m.getId();
+		membershipID = m.getIdent();
 		
 		assertEquals(countBefore + 1, countAfter);
 		assertNotSame(0, membershipID);

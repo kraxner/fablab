@@ -100,7 +100,7 @@ public class KeycardManagement implements Serializable {
 		try {
 			user = new UserManagement().loadUserFromKeycard(rfid);
 			membership = user.getMembership();
-			subscriptions = new SubscriptionManagement().getAllSubscriptionsFromMember(user.getMembership().getId());
+			subscriptions = new SubscriptionManagement().getAllSubscriptionsFromMember(user.getMembership().getIdent());
 
 		} catch (NullPointerException e) {
 			// Keycard der Putzfrau ist niemandem zugeordnet.
