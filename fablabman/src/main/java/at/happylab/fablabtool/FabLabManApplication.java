@@ -124,6 +124,7 @@ public class FabLabManApplication extends AuthenticatedWebApplication
 	        resourceSettings.addResourceFolder("");
 	        // register nice names for bookmarkable pages here (to prevent that the fully qualified classname is shown) 
     		mount(new QueryStringUrlCodingStrategy("membership",MembershipDetailPage.class));
+    		mount(new QueryStringUrlCodingStrategy("signin", FablabSignInPage.class));
 	    }	
     
     @Override

@@ -20,6 +20,7 @@ import org.apache.wicket.model.Model;
 
 import at.happylab.fablabtool.dataprovider.utils.FilterExpressionBuilder;
 import at.happylab.fablabtool.dataprovider.utils.FilteredDateField;
+import at.happylab.fablabtool.dataprovider.utils.FilteredNumberField;
 import at.happylab.fablabtool.dataprovider.utils.SortableDataProviderComparator;
 import at.happylab.fablabtool.model.User;
 
@@ -44,7 +45,7 @@ public class UserProvider extends SortableDataProvider<User> implements
 		setSort("id", true);
 
 		FilterExpressionBuilder filterBuilder = new FilterExpressionBuilder();
-		filterBuilder.addFilteredTextField("membership.memberId");
+		filterBuilder.add(new FilteredNumberField("membership.memberId"));
 		filterBuilder.addFilteredTextField("firstname");
 		filterBuilder.addFilteredTextField("lastname");
 		filterBuilder.addFilteredTextField("membership.companyName");
