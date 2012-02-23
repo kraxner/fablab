@@ -67,7 +67,6 @@ public class WebUserListPage extends BasePage {
 						protected void onConfirm() {
 							WebUser webUser = (WebUser) model.getObject();
 							webUserMgmt.removeWebUser(webUser);
-							
 							setResponsePage(WebUserListPage.this);
 						}
 

@@ -2,7 +2,11 @@ package at.happylab.fablabtool.web.device;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -17,7 +21,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.DeviceManagement;
 import at.happylab.fablabtool.dataprovider.DeviceProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -31,10 +34,9 @@ import at.happylab.fablabtool.web.util.WarningPage;
 
 public class DeviceListPage extends BasePage {
 
-	@Inject
-	DeviceManagement deviceMgmt;
-	@Inject
-	DeviceProvider deviceProvider;
+	@Inject private EntityManager em;
+	private	 BaseDAO<Device> deviceDAO = new BaseDAO<Device>(Device.class, em);
+	@Inject private	DeviceProvider deviceProvider;
 
 	private User member;
 
@@ -118,7 +120,8 @@ public class DeviceListPage extends BasePage {
 							protected void onConfirm() {
 								Device k = (Device) model.getObject();
 								try {
-									deviceMgmt.removeDevice(k);
+									deviceDAO.remove(k);
+									deviceDAO.commit();
 									setResponsePage(DeviceListPage.this);
 									
 								} catch (Exception e) {

@@ -2,8 +2,8 @@ package net.micalo.persistence.dao;
 
 import javax.persistence.Id;
 
+import net.micalo.persistence.IIdentifiableEntity;
 import net.micalo.persistence.dao.BaseDAO;
-import net.micalo.persistence.dao.IIdentifiableEntity;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,10 +24,10 @@ public class BaseDAOTest {
 		}
 	}
 	
-	class TestDAO extends BaseDAO<TestEntity, Long> {
+	class TestDAO extends BaseDAO<TestEntity> {
 		private static final long serialVersionUID = 1L;
 		public TestDAO() {
-			entityClass = TestEntity.class;
+			super(TestEntity.class);
 		}
 		
 	}

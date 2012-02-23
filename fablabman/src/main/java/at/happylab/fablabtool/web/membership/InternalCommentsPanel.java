@@ -1,19 +1,21 @@
 package at.happylab.fablabtool.web.membership;
 
+import javax.inject.Inject;
+
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.dao.MembershipDAO;
 import at.happylab.fablabtool.model.Membership;
 
 public class InternalCommentsPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	
-	private MembershipManagement membershipMgmt;
 	private Membership membership;
+	@Inject MembershipDAO membershipDAO;
 
 	class InternalCommentForm extends Form<Membership> {
 		private static final long serialVersionUID = 1L;
@@ -28,7 +30,8 @@ public class InternalCommentsPanel extends Panel {
 
 				@Override
 				public void onSubmit() {
-					membershipMgmt.storeMembership(membership);;
+					membershipDAO.store(membership);
+					membershipDAO.commit();
 				}
 			});
 			
@@ -42,11 +45,10 @@ public class InternalCommentsPanel extends Panel {
 	 * @param membership
 	 * @param membershipMgmt
 	 */
-	public InternalCommentsPanel(String id, Membership member,  MembershipManagement membershipMgmt) {
+	public InternalCommentsPanel(String id, Membership member) {
 		super(id);
 		
 		this.membership = member;
-		this.membershipMgmt = membershipMgmt;
 		
 		InternalCommentForm form = new InternalCommentForm("form", membership);
 		add(form);

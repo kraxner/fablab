@@ -8,28 +8,32 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import net.micalo.persistence.EntityManagerProducer;
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.TimePeriod;
-import at.happylab.fablabtool.session.SessionScopeProducer;
 
 public class PackageManagementTest {
 
-	private static PackageManagement packageMgmt;
+	private static BaseDAO<Package> packageDAO;
 	private static EntityManager em;
 
 	private static long packageID;
+	
+	private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("fablabman");	
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		SessionScopeProducer p = new SessionScopeProducer();
-		em = p.getEm();
+		em = entityManagerFactory.createEntityManager();
 
-		packageMgmt = new PackageManagement(em);
+		packageDAO = new BaseDAO<Package>(Package.class, em);
 
 	}
 
@@ -39,7 +43,7 @@ public class PackageManagementTest {
 		int countBefore = 0;
 		int countAfter = 0;
 
-		countBefore = packageMgmt.getAllPackages().size();
+		countBefore = packageDAO.getAll().size();
 
 		Package p = new Package();
 
@@ -50,11 +54,11 @@ public class PackageManagementTest {
 		p.setCancelationPeriodAdvance(TimePeriod.ANNUAL);
 		p.setCancelationPeriod(2);
 
-		packageMgmt.storePackage(p);
+		packageDAO.store(p);
 
 		packageID = p.getId();
 
-		countAfter = packageMgmt.getAllPackages().size();
+		countAfter = packageDAO.getAll().size();
 
 		assertEquals(countBefore + 1, countAfter);
 
@@ -64,7 +68,7 @@ public class PackageManagementTest {
 
 	@Test
 	public void testLoadPackage() {
-		Package p = packageMgmt.loadPackage(packageID);
+		Package p = packageDAO.load(packageID);
 
 		assertEquals(packageID, p.getId());
 		assertEquals("UNIT TEST PACKAGE NAME", p.getName());
@@ -80,7 +84,7 @@ public class PackageManagementTest {
 
 		int size = 0;
 
-		List<Package> lst = packageMgmt.getAllPackages();
+		List<Package> lst = packageDAO.getAll();
 
 		size = lst.size();
 
@@ -94,18 +98,19 @@ public class PackageManagementTest {
 	public void testRemovePackage() {
 		int countBefore = 0;
 		int countAfter = 0;
-		Package p = packageMgmt.loadPackage(packageID);
+		Package p = packageDAO.load(packageID);
 
-		countBefore = packageMgmt.getAllPackages().size();
+		countBefore = packageDAO.getAll().size();
 
-		packageMgmt.removePackage(p);
+		packageDAO.remove(p);
+		packageDAO.commit();
 
-		countAfter = packageMgmt.getAllPackages().size();
+		countAfter = packageDAO.getAll().size();
 
 		assertEquals(countBefore - 1, countAfter);
 
 		p = null;
-		p = packageMgmt.loadPackage(packageID);
+		p = packageDAO.load(packageID);
 
 		assertEquals(null, p);
 	}
@@ -126,7 +131,7 @@ public class PackageManagementTest {
 		 * => nächster Kündigungstermin am 31.1.2012
 		 */
 
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.JANUARY, expected.get(Calendar.MONTH));
@@ -151,7 +156,7 @@ public class PackageManagementTest {
 		 */
 
 		p.setCancelationPeriod(1);
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(29, expected.get(Calendar.DATE));
 		assertEquals(Calendar.FEBRUARY, expected.get(Calendar.MONTH));
@@ -175,7 +180,7 @@ public class PackageManagementTest {
 		 */
 
 		p.setCancelationPeriod(3);
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.MAY, expected.get(Calendar.MONTH));
@@ -200,7 +205,7 @@ public class PackageManagementTest {
 		 * Quartals)
 		 */
 
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.MARCH, expected.get(Calendar.MONTH));
@@ -224,7 +229,7 @@ public class PackageManagementTest {
 		 */
 
 		p.setCancelationPeriod(1);
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.MARCH, expected.get(Calendar.MONTH));
@@ -250,7 +255,7 @@ public class PackageManagementTest {
 		 */
 
 		p.setCancelationPeriod(3);
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(30, expected.get(Calendar.DATE));
 		assertEquals(Calendar.JUNE, expected.get(Calendar.MONTH));
@@ -274,7 +279,7 @@ public class PackageManagementTest {
 		 * => nächster Kündigungstermin am 31.3.2012 (am Ende des Jahres)
 		 */
 
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.DECEMBER, expected.get(Calendar.MONTH));
@@ -298,7 +303,7 @@ public class PackageManagementTest {
 		 * => nächster Kündigungstermin am 31.3.2012 (am Ende des Jahres)
 		 */
 
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.DECEMBER, expected.get(Calendar.MONTH));
@@ -322,7 +327,7 @@ public class PackageManagementTest {
 		 * => nächster Kündigungstermin am 31.3.2013 (nächstes Jahr)
 		 */
 
-		expected.setTime(packageMgmt.getNextCancelationDate(p, c));
+		expected.setTime(p.getNextCancelationDate(c));
 
 		assertEquals(31, expected.get(Calendar.DATE));
 		assertEquals(Calendar.DECEMBER, expected.get(Calendar.MONTH));

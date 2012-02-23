@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -25,8 +26,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
-import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -41,18 +41,14 @@ public class EntryPanel extends Panel {
 	private Invoice invoice;
 	private Membership member;
 	
-	@Inject 
-	private MembershipManagement membershipMgmt;
-	
 	@Inject
 	ConsumationEntryProvider entryFromMembershipProvider;
 	
-	@Inject 
-	InvoiceManagement invoiceMgmt;
+	@Inject private InvoiceDAO invoiceDAO;
 	
 	private Set<ConsumationEntry> selected = new HashSet<ConsumationEntry>();
 
-	public EntryPanel(String id, final Membership member,  final MembershipManagement membershipMgmt) {
+	public EntryPanel(String id, final Membership member) {
 		super(id);
 
 		entryFromMembershipProvider.setMember(member);
@@ -110,7 +106,7 @@ public class EntryPanel extends Panel {
 			@Override
 			public void onClick(Item<ConsumationEntry> item, String componentId, IModel<ConsumationEntry> model) {
 				ConsumationEntry e = (ConsumationEntry) model.getObject();
-				setResponsePage(new ConsumationEntryDetailPage(member, membershipMgmt, e));
+				setResponsePage(new ConsumationEntryDetailPage(member, e));
 			}
 			 
 		});
@@ -122,7 +118,7 @@ public class EntryPanel extends Panel {
 
 			public void onClick() {
 				ConsumationEntry entry = new ConsumationEntry();
-                setResponsePage(new ConsumationEntryDetailPage(member, membershipMgmt, entry));
+                setResponsePage(new ConsumationEntryDetailPage(member, entry));
             }
         });
 	}
@@ -155,9 +151,9 @@ public class EntryPanel extends Panel {
 			List<ConsumationEntry> list = new ArrayList<ConsumationEntry>(selected);
 			invoice.setIncludesConsumationEntries(list);
 			
-			invoiceMgmt.storeInvoice(invoice);
-
-			setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+			invoiceDAO.store(invoice);
+			invoiceDAO.commit();
+			setResponsePage(MembershipDetailPage.class, new PageParameters("id=" +  member.getId()));
 		}
 	}
 

@@ -44,6 +44,7 @@ public class UserProvider extends SortableDataProvider<User> implements
 		setSort("id", true);
 
 		FilterExpressionBuilder filterBuilder = new FilterExpressionBuilder();
+		filterBuilder.addFilteredTextField("membership.memberId");
 		filterBuilder.addFilteredTextField("firstname");
 		filterBuilder.addFilteredTextField("lastname");
 		filterBuilder.addFilteredTextField("membership.companyName");
@@ -97,6 +98,9 @@ public class UserProvider extends SortableDataProvider<User> implements
 	}
 
 	public int size() {
+		if (!em.getTransaction().isActive()) {
+			em.getTransaction().begin();
+		}
 		Query query = em.createQuery("select count(*) from User" + makeFilter());
 		query.setParameter("confirmed", !showPreRegistrations.getObject());
 		query.setParameter("today", new Date());

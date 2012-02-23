@@ -1,6 +1,9 @@
 package at.happylab.fablabtool.web.device;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -11,14 +14,14 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import at.happylab.fablabtool.beans.DeviceManagement;
+
 import at.happylab.fablabtool.model.Device;
 import at.happylab.fablabtool.web.BasePage;
 
 public class DeviceDetailPage extends BasePage {
-	
-	@Inject
-	private DeviceManagement deviceMgmt;
+
+	@Inject private EntityManager em;
+	private BaseDAO<Device> deviceDAO = new BaseDAO<Device>(Device.class, em);
 	
 	private Device device;
 
@@ -65,8 +68,8 @@ public class DeviceDetailPage extends BasePage {
 		}
 
 		public void onSubmit() {
-			deviceMgmt.storeDevice(device);
-			
+			deviceDAO.store(device);
+			deviceDAO.commit();
 			setResponsePage(new DeviceListPage(null));
 		}
 	}

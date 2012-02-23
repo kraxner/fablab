@@ -6,24 +6,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
+import net.micalo.persistence.dao.BaseDAO;
+import at.happylab.fablabtool.dao.MembershipDAO;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.Subscription;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class CreateTestDataPage extends AdminBasePage {
 
-	@Inject
-	private MembershipManagement membershipMgmt;
+	@Inject	private MembershipDAO membershipDAO;
 	
-	@Inject
-	SubscriptionManagement subscriptionMgmt;
-	
-	@Inject
-	PackageManagement packageMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<Package> packageDAO = new BaseDAO<Package>(Package.class, em);
+	private BaseDAO<Subscription> subscriptionDAO = new BaseDAO<Subscription>(Subscription.class, em);
 	
 	
 	public CreateTestDataPage() {
@@ -107,7 +105,7 @@ public class CreateTestDataPage extends AdminBasePage {
 					m.setPaymentMethod(PaymentMethod.CASH_IN_ADVANCE);
 				}
 				
-				membershipMgmt.storeMembership(m);
+				membershipDAO.storeMembership(m);
 			}
 			
 			
@@ -125,19 +123,19 @@ public class CreateTestDataPage extends AdminBasePage {
 			while ((line = in.readLine()) != null) {
 				items = line.split(";");
 				
-				Membership member = membershipMgmt.loadMembershipFromMemberId(Integer.parseInt(items[0]));
+				Membership member = membershipDAO.loadMembershipFromMemberId(Integer.parseInt(items[0]));
 				System.out.println(member);
 				System.out.println(line);
 				
 				// hardcoded subscriptions
 				// 1 = Ad Infinitum
-				at.happylab.fablabtool.model.Package ai = packageMgmt.loadPackage(1);
+				at.happylab.fablabtool.model.Package ai = packageDAO.load(1);
 				
 				// 2 = Carpe Diem
-				at.happylab.fablabtool.model.Package cd = packageMgmt.loadPackage(2);
+				at.happylab.fablabtool.model.Package cd = packageDAO.load(2);
 				
 				// 3 = Storage
-				at.happylab.fablabtool.model.Package st = packageMgmt.loadPackage(3);
+				at.happylab.fablabtool.model.Package st = packageDAO.load(3);
 				
 				
 				try {
@@ -149,7 +147,7 @@ public class CreateTestDataPage extends AdminBasePage {
 						s.setValidFrom(dateFormat.parse("01.01.12"));
 						s.setPriceOverruled(ai.getPrice());
 						
-						subscriptionMgmt.storeSubscription(s);
+						subscriptionDAO.store(s);
 					}
 				}
 				catch (Exception e1) {
@@ -166,7 +164,7 @@ public class CreateTestDataPage extends AdminBasePage {
 						s.setPriceOverruled(cd.getPrice());
 						s.setDescription(items[9]);
 						
-						subscriptionMgmt.storeSubscription(s);
+						subscriptionDAO.store(s);
 					}
 				}
 				catch (Exception e1) {
@@ -183,13 +181,14 @@ public class CreateTestDataPage extends AdminBasePage {
 						s.setPriceOverruled(st.getPrice());
 						s.setDescription(items[8]);
 						
-						subscriptionMgmt.storeSubscription(s);
+						subscriptionDAO.store(s);
 					}
 				}
 				catch (Exception e1) {
 						
 				}
 			}
+			subscriptionDAO.commit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

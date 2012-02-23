@@ -1,6 +1,5 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,22 +9,18 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import net.micalo.persistence.dao.IIdentifiableEntity;
+import net.micalo.persistence.IdentifiableEntity;
 
 @Entity
-public class Membership implements Serializable, IIdentifiableEntity<Long>{
+public class Membership extends IdentifiableEntity{
 	
-	private static final long serialVersionUID = 2316667102976971988L;
-
-	@Id @GeneratedValue
-	private long id;
+	private static final long serialVersionUID = 1L;
 
 	private long memberId;
 	
@@ -82,6 +77,9 @@ public class Membership implements Serializable, IIdentifiableEntity<Long>{
 	 */
 	@OneToMany(mappedBy="membership",cascade=CascadeType.ALL)
 	private List<User> users = new ArrayList<User>();
+	
+	@OneToMany(mappedBy="bookedBy", fetch=FetchType.LAZY)
+	private List<Subscription> subscriptions = new ArrayList<Subscription>();
 	
 	public Membership() {
 		companyAddress = new Address();
@@ -207,14 +205,6 @@ public class Membership implements Serializable, IIdentifiableEntity<Long>{
 		
 		companyName = m.companyName;
 		contactPerson = m.contactPerson;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public boolean isConfirmed() {
@@ -372,11 +362,11 @@ public class Membership implements Serializable, IIdentifiableEntity<Long>{
 		this.memberId = memberId;
 	}
 
-	public void setIdent(Long id) {
-		this.id = id;
+	public List<Subscription> getSubscriptions() {
+		return subscriptions;
 	}
-	
-	public Long getIdent() {
-		return id;
+
+	public void setSubscriptions(List<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
 	}
 }

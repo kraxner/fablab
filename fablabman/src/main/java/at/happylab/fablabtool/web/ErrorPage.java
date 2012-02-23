@@ -3,9 +3,11 @@ package at.happylab.fablabtool.web;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.apache.wicket.markup.html.basic.Label;
+import net.micalo.persistence.EntityManagerProducer;
+
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -23,6 +25,12 @@ import at.happylab.fablabtool.web.membership.MembershipListPage;
  *
  */
 public class ErrorPage extends BasePage {
+	
+	@Inject EntityManager em;
+
+	public ErrorPage(RuntimeException e) {
+		add(new ErrorForm("form", e));
+	}
 	
 	class ErrorForm extends Form<ErrorLog> {
 		private static final long serialVersionUID = 1L;
@@ -53,15 +61,8 @@ public class ErrorPage extends BasePage {
 		
         @Override
         public void onSubmit() {
-    		EntityManager em = null;
-            if (getSession() instanceof FablabAuthenticatedWebSession) {
-            	FablabAuthenticatedWebSession fablabSession = (FablabAuthenticatedWebSession)getSession();
-            	if (fablabSession.getSessionScopeProducer() != null) {
-            		em = fablabSession.getSessionScopeProducer().getEm();
-            	}
-            } 
             if (em == null){
-            	em = SessionScopeProducer.getInstance().getEm();
+            	em = EntityManagerProducer.createContextualEntityManager();
             }
             if (! em.getTransaction().isActive()) {
             	em.getTransaction().begin();
@@ -70,13 +71,6 @@ public class ErrorPage extends BasePage {
             
             em.getTransaction().commit();
             setResponsePage(new MembershipListPage());
-        	
         }
-		
 	}
-	
-	public ErrorPage(RuntimeException e) {
-		add(new ErrorForm("form", e));
-	}
-
 }

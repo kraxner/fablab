@@ -16,13 +16,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
-import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
-import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.web.BasePage;
 

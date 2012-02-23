@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,9 +17,8 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-
 import org.apache.wicket.validation.validator.StringValidator;
-import at.happylab.fablabtool.beans.AccessGrantManagement;
+
 import at.happylab.fablabtool.model.AccessGrant;
 import at.happylab.fablabtool.model.DayOfWeek;
 import at.happylab.fablabtool.web.BasePage;
@@ -26,8 +28,8 @@ public class AccessGrantDetailPage extends BasePage {
 	@Inject
 	private AccessGrant ag;
 
-	@Inject
-	private AccessGrantManagement accessGrantMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<AccessGrant> accessGrantDAO = new BaseDAO<AccessGrant>(AccessGrant.class, em);
 
 	public AccessGrantDetailPage(AccessGrant a) {
 		this.ag = a;
@@ -82,7 +84,8 @@ public class AccessGrantDetailPage extends BasePage {
 				ag.setTimeUntil(new Date(2012, 1, 1, 23, 59));
 
 			try {
-				accessGrantMgmt.storeAccessGrant(ag);
+				accessGrantDAO.store(ag);
+				accessGrantDAO.commit();
 			} catch (Exception e) {
 
 			}

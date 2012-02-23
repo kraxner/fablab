@@ -1,6 +1,5 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,20 +12,17 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-public class Invoice implements Serializable{
-	private static final long serialVersionUID = -3982998472620768008L;
+import net.micalo.persistence.IdentifiableEntity;
 
-	@Id @GeneratedValue
-	private long id;
-	
+@Entity
+public class Invoice extends IdentifiableEntity{
+	private static final long serialVersionUID = 1L;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
@@ -105,14 +101,6 @@ public class Invoice implements Serializable{
 		date = new Date();
 		state = InvoiceState.OPEN;
 
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public Date getDate() {

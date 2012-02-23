@@ -1,22 +1,18 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-public class AccessGrant implements Serializable {
-	
-	private static final long serialVersionUID = -6434558465566036904L;
+import net.micalo.persistence.IdentifiableEntity;
 
-	@Id @GeneratedValue
-	private long id;
+@Entity
+public class AccessGrant extends IdentifiableEntity{
 	
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	private DayOfWeek dayOfWeek;
@@ -31,12 +27,6 @@ public class AccessGrant implements Serializable {
 		
 	}
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}

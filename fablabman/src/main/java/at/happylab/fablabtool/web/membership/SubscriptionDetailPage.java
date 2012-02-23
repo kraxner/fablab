@@ -4,8 +4,14 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
+import net.micalo.wicket.model.EntityNotFoundException;
+import net.micalo.wicket.model.SmartModel;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,9 +25,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.beans.PackageManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
+import at.happylab.fablabtool.dao.MembershipDAO;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PaymentMethod;
@@ -30,27 +34,41 @@ import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class SubscriptionDetailPage extends AdminBasePage {
 
-	private Subscription subs;
-	private Membership member;
+	private SmartModel<Subscription> subscriptionModel;
 
-	@Inject
-	private PackageManagement packageMgmt;
-	@Inject
-	private MembershipManagement membershipMgmt;
-	@Inject
-	private SubscriptionManagement subscriptionMgmt;
+	@Inject private MembershipDAO membershipDAO;
 
-	public SubscriptionDetailPage(Membership member, Subscription sub) {
+	@Inject private EntityManager em;
+	
+	private BaseDAO<Package> packageDAO = new BaseDAO<Package>(Package.class, em);
+	private BaseDAO<Subscription> subscriptionDAO = new BaseDAO<Subscription>(Subscription.class, em);
 
-		this.subs = sub;
-		this.member = member;
+	public SubscriptionDetailPage(PageParameters params) {
+		if (params.containsKey("id")) {
+		    long id = params.getLong("id");
+	    	Subscription subscription = subscriptionDAO.load(id);
+	    	if (subscription == null) {
+	    		throw new EntityNotFoundException("Subscription id: " + id);
+	    	}
+		    subscriptionModel = new SmartModel<Subscription>(subscriptionDAO, subscription);
+		} else if (params.containsKey("membershipId")) {
+			// a new subscription for the given membership
+			Membership membership = membershipDAO.load(params.getLong("membershipId"));
+			if (membership == null) {
+				throw new EntityNotFoundException("Cannot create new subscription, membership not found. id: " + params.getLong("membershipId"));
+			}
+		    subscriptionModel = new SmartModel<Subscription>(subscriptionDAO, new Subscription(membership));
+		}
+		add(new Label("pageHeader", "Subscription bearbeiten"));
+		add(new FeedbackPanel("feedback"));
+		add(new SubscriptionForm("form"));
+	}
+	
+	public SubscriptionDetailPage(SmartModel<Subscription> sub) {
 
-		subs.setBookedBy(member);
-
-		if (this.subs.getPaymentMethod() == null)
-			this.subs.setPaymentMethod(this.member.getPaymentMethod());
+		this.subscriptionModel = sub;
 		
-		if (sub.getId() == 0)
+		if (subscriptionModel.getObject().getIdent() == null)
 			add(new Label("pageHeader", "Neue Subscription"));
 		else
 			add(new Label("pageHeader", "Subscription bearbeiten"));
@@ -58,28 +76,28 @@ public class SubscriptionDetailPage extends AdminBasePage {
 		add(new FeedbackPanel("feedback"));
 
 		add(new SubscriptionForm("form"));
-
 	}
 	
-	class SubscriptionForm extends Form<Object> {
-		private static final long serialVersionUID = -416444319008642513L;
+	class SubscriptionForm extends Form<Subscription> {
+		private static final long serialVersionUID = 1L;
 
 		public SubscriptionForm(String s) {
-			super(s, new CompoundPropertyModel<Object>(subs));
+			super(s, new CompoundPropertyModel<Subscription>(subscriptionModel));
+			
+			Subscription subscription = subscriptionModel.getObject();
 
 			final RequiredTextField<BigDecimal> PriceOverruled = new RequiredTextField<BigDecimal>("priceOverruled", BigDecimal.class);
 			add(PriceOverruled);
 
-			final DropDownChoice<Package> availablePackages = new DropDownChoice<Package>("booksPackage", packageMgmt.getAllPackages()) {
-				private static final long serialVersionUID = -385671748734684239L;
+			final DropDownChoice<Package> availablePackages = new DropDownChoice<Package>("booksPackage", packageDAO.getAll()) {
+				private static final long serialVersionUID = 1L;
 
 				protected boolean wantOnSelectionChangedNotifications() {
 					return true;
 				}
 
-				protected void onSelectionChanged(final Package p) {
-					subs.setPriceOverruled(p.getPrice());
-
+				protected void onSelectionChanged( Package p) {
+					subscriptionModel.getObject().setPriceOverruled(p.getPrice());
 					PriceOverruled.setModelValue(new String[] { p.getPrice().toPlainString().replace(",", "") });
 				}
 			};
@@ -91,16 +109,16 @@ public class SubscriptionDetailPage extends AdminBasePage {
 			add(validFrom);
 
 			MarkupContainer enclosure = new WebMarkupContainer("cancelSubscription") {
-				private static final long serialVersionUID = 8577316899811450774L;
+				private static final long serialVersionUID = 1L;
 
 				public boolean isVisible() {
-					return (subs.getValidTo() != null);
+					return (subscriptionModel.getObject().getValidTo() != null);
 				}
 			};
 
 			final DateTextField ValidTo = new DateTextField("ValidTo", "dd.MM.yyyy");
-
 			enclosure.add(ValidTo);
+
 			add(enclosure);
 			
 			final DateTextField payedUntil = new DateTextField("payedUntil", "dd.MM.yyyy");
@@ -113,11 +131,13 @@ public class SubscriptionDetailPage extends AdminBasePage {
 			add(details);
 
 			final Button btnSave = new Button("submit", Model.of("Speichern")) {
-				private static final long serialVersionUID = -9206366064931940268L;
+				private static final long serialVersionUID = 1L;
 
 				public void onSubmit() {
-					subscriptionMgmt.storeSubscription(subs);
-					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 1)); // Panel Pakete laden
+					Subscription sub = subscriptionModel.getObject();
+					subscriptionDAO.store(sub);
+					subscriptionDAO.commit();
+					setResponsePage(MembershipDetailPage.class, new PageParameters("id="+sub.getBookedBy().getId() + ",tab=1")); // Panel Pakete laden
 				}
 			};
 			add(btnSave);
@@ -125,46 +145,47 @@ public class SubscriptionDetailPage extends AdminBasePage {
 			/**
 			 * Cancelation of Subscription
 			 */
-			if (subs.getValidTo() == null) {
-				final Button btnCancelCancelation = new Button("cancelCancelation", Model.of("Paket kündigen")) {
-					private static final long serialVersionUID = -9206366064931940268L;
+			final Button btnCancelCancelation;
+			// FIXME: display a different label depending on validTo should be done differently
+			if (subscription.getValidTo() == null) {
+				btnCancelCancelation = new Button("cancelCancelation", Model.of("Paket kündigen")) {
+					private static final long serialVersionUID = 1L;
 
 					public void onSubmit() {
-						subs.setValidTo(packageMgmt.getNextCancelationDate(subs.getBooksPackage()));
-						setResponsePage(new SubscriptionDetailPage(member, subs));
+						subscriptionModel.getObject().setValidTo(subscriptionModel.getObject().getBooksPackage().getNextCancelationDate());
+						// that is not necessary, is it? we are already on this page
+						//setResponsePage(new SubscriptionDetailPage(member, subscriptionModel));
 					}
 				};
 
-				// Button nur bei einer bestehenden Subscription anzeigen
-				btnCancelCancelation.setVisible(subs.getId() > 0);
-
-				add(btnCancelCancelation);
 			} else {
-				final Button btnCancelCancelation = new Button("cancelCancelation", Model.of("Kündigung abbrechen")) {
-					private static final long serialVersionUID = -9206366064931940268L;
+				btnCancelCancelation = new Button("cancelCancelation", Model.of("Kündigung abbrechen")) {
+					private static final long serialVersionUID = 1L;
 
 					public void onSubmit() {
-						subs.setValidTo(null);
-						setResponsePage(new SubscriptionDetailPage(member, subs));
+						subscriptionModel.getObject().setValidTo(null);
+						// that is not necessary, is it? we are already on this page
+						//setResponsePage(new SubscriptionDetailPage(member, subscriptionModel));
 					}
 				};
 
-				// Button nur bei einer bestehenden Subscription anzeigen
-				btnCancelCancelation.setVisible(subs.getId() > 0);
-
-				add(btnCancelCancelation);
 			}
+			add(btnCancelCancelation);
+			// Button nur bei einer bestehenden Subscription anzeigen
+			btnCancelCancelation.setVisible(subscription.getId() > 0);
 
 			final Button btnDeleteSubscription = new Button("deleteSubscription", Model.of("Löschen")) {
-				private static final long serialVersionUID = -9206366064931940268L;
+				private static final long serialVersionUID = 1L;
 
 				public void onSubmit() {
-					subscriptionMgmt.removeMembership(subs);
-					setResponsePage(new MembershipDetailPage(member, membershipMgmt, 1)); // Panel  Pakete laden
+					Subscription sub = subscriptionModel.getObject();
+					subscriptionDAO.remove(sub);
+					subscriptionDAO.commit();
+					setResponsePage(MembershipDetailPage.class, new PageParameters("id="+sub.getBookedBy().getId() + ",tab=1")); // Panel Pakete laden
 				}
 			};
 
-			btnDeleteSubscription.setVisible(subs.getId() > 0);
+			btnDeleteSubscription.setVisible(subscription.getId() > 0);
 			add(btnDeleteSubscription);
 		}
 	}

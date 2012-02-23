@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.inject.Inject;
 
 import org.apache.wicket.AbortException;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -26,9 +27,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.http.WebResponse;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
-import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
+import at.happylab.fablabtool.dao.InvoiceDAO;
+import at.happylab.fablabtool.dao.MembershipDAO;
 import at.happylab.fablabtool.dataprovider.InvoiceProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.DropDownColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -47,11 +48,10 @@ public class InvoiceListPage extends AdminBasePage{
 	@Inject
 	private InvoiceProvider invoices;
 	
-	@Inject
-	private InvoiceManagement invoiceMgmt;
+	@Inject	private InvoiceDAO invoiceDAO;
 	
 	@Inject
-	private MembershipManagement membershipMgmt;
+	private MembershipDAO membershipMgmt;
 	
 	private InvListForm invForm;
 	/**
@@ -108,8 +108,7 @@ public class InvoiceListPage extends AdminBasePage{
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice)model.getObject();
 					Membership m = inv.getRelatedTo();
-					setResponsePage(new MembershipDetailPage(m, membershipMgmt));
-					
+					setResponsePage(MembershipDetailPage.class, new PageParameters("id=" +  m.getId() +",tab=0"));
 				}
 			};
 			columns[1] = new PropertyColumn<Invoice>(new Model<String>("Vorname"), "first", ""){
@@ -199,8 +198,9 @@ public class InvoiceListPage extends AdminBasePage{
 				public void onSubmit() {
 					Iterator<Invoice> invIter = invoices.iterator(0, invoices.size());
 					while(invIter.hasNext()){
-						invoiceMgmt.storeInvoice(invIter.next());
+						invoiceDAO.store(invIter.next());
 					}
+					invoiceDAO.commit();
 					WebResponse response = (WebResponse) getResponse();
 					response.setAttachmentHeader("bankExport.csv");
 					response.setContentType("text/csv");
@@ -218,8 +218,9 @@ public class InvoiceListPage extends AdminBasePage{
 				public void onSubmit() {
 					Iterator<Invoice> invIter = invoices.iterator(0, invoices.size());
 					while(invIter.hasNext()){
-						invoiceMgmt.storeInvoice(invIter.next());
+						invoiceDAO.store(invIter.next());
 					}
+					invoiceDAO.commit();
 					WebResponse response = (WebResponse) getResponse();
 					response.setAttachmentHeader("fullExport.csv");
 					response.setContentType("text/csv");
@@ -237,8 +238,9 @@ public class InvoiceListPage extends AdminBasePage{
 		public void onSubmit() {
 			Iterator<Invoice> invIter = invoices.iterator(0, invoices.size());
 			while(invIter.hasNext()){
-				invoiceMgmt.storeInvoice(invIter.next());
+				invoiceDAO.store(invIter.next());
 			}
+			invoiceDAO.commit();
 		}
 	}
 	

@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.Iterator;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -11,8 +14,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.Billing;
-import at.happylab.fablabtool.beans.ConsumationEntryManagement;
-import at.happylab.fablabtool.beans.InvoiceManagement;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
@@ -23,11 +25,10 @@ import at.happylab.fablabtool.model.Subscription;
 
 public class AccountingPage extends BasePage {
 
-	@Inject
-	SubscriptionProvider subscriptionProvider;
+	@Inject private SubscriptionProvider subscriptionProvider;
 	
-	@Inject
-	private ConsumationEntryManagement consumationEntryMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<ConsumationEntry> consumationEntryDAO = new BaseDAO<ConsumationEntry>(ConsumationEntry.class, em);
 	
 	
 	@Inject
@@ -36,8 +37,7 @@ public class AccountingPage extends BasePage {
 	@Inject
 	ConsumationEntryProvider entryFromMembershipProvider;
 	
-	@Inject 
-	InvoiceManagement invoiceMgmt;
+	@Inject private InvoiceDAO invoiceDAO;
 	
 	public AccountingPage() {
 		navigation.selectAufgaben();
@@ -70,9 +70,10 @@ public class AccountingPage extends BasePage {
 				ConsumationEntry entry = Billing.createEntryFromSubscription(subscriptions.next(), accountUntil);
 				
 				if (entry != null) {
-					consumationEntryMgmt.storeConsumationEntry(entry);
+					consumationEntryDAO.store(entry);
 					count++;
 				}
+				consumationEntryDAO.commit();
 			}
 			
 			addOrReplace(new Label("entryCount", "Es wurden " + count + " Buchungen erstellt."));
@@ -114,10 +115,10 @@ public class AccountingPage extends BasePage {
 					invoice.addConsumationEntry(entries.next());
 				}
 				
-				invoiceMgmt.storeInvoice(invoice);
+				invoiceDAO.store(invoice);
 				count++;
 			}
-			
+			invoiceDAO.commit();
 			addOrReplace(new Label("invoiceCount", "Es wurden " + count + " Rechnungen erstellt."));
 			
 			// while alle members mit entries, die noch auf keine rechnung stehen

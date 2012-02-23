@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -18,8 +21,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.AccessGrantManagement;
-import at.happylab.fablabtool.beans.KeycardManagement;
+import at.happylab.fablabtool.dao.KeyCardDAO;
 import at.happylab.fablabtool.dataprovider.AccessGrantProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.DateTimeColumn;
@@ -34,12 +36,10 @@ import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class AccessGrantListPage extends BasePage {
 
-	@Inject
-	AccessGrantProvider accessGrantProvider;
-	@Inject
-	AccessGrantManagement accessGrantMgmt;
-	@Inject
-	KeycardManagement keycardMgmt;
+	@Inject private	AccessGrantProvider accessGrantProvider;
+	@Inject private KeyCardDAO keycardDAO;
+	@Inject private EntityManager em;
+	private BaseDAO<AccessGrant> accessGrantDAO = new BaseDAO<AccessGrant>(AccessGrant.class, em);
 
 	private KeyCard keycard;
 
@@ -134,7 +134,7 @@ public class AccessGrantListPage extends BasePage {
 							@Override
 							protected void onConfirm() {
 								AccessGrant ag = (AccessGrant) model.getObject();
-								accessGrantMgmt.removeAccessGrant(ag);
+								accessGrantDAO.remove(ag);
 
 								setResponsePage(AccessGrantListPage.this);
 							}
@@ -182,7 +182,8 @@ public class AccessGrantListPage extends BasePage {
 
 			} else {
 				try {
-					keycardMgmt.storeKeyCard(keycard);
+					keycardDAO.store(keycard);
+					keycardDAO.commit();
 				} catch (Exception e) {
 
 				}

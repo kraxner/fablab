@@ -18,8 +18,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.KeycardManagement;
-import at.happylab.fablabtool.beans.UserManagement;
+import at.happylab.fablabtool.dao.KeyCardDAO;
+import at.happylab.fablabtool.dao.UserDAO;
 import at.happylab.fablabtool.dataprovider.TrainedDevicesFromUserProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Device;
@@ -29,11 +29,9 @@ import at.happylab.fablabtool.web.device.DeviceListPage;
 
 public class UserDetailPage extends AdminBasePage {
 
-	@Inject
-	UserManagement userMgmt;
+	@Inject private UserDAO userDAO;
 
-	@Inject
-	KeycardManagement keycardMgmt;
+	@Inject	KeyCardDAO keycardDAO;
 
 	private User member;
 
@@ -110,10 +108,10 @@ public class UserDetailPage extends AdminBasePage {
 			if (member.getKeyCard() == null)
 				member.setKeyCard(null);
 			else
-				keycardMgmt.storeKeyCard(member.getKeyCard());
+				keycardDAO.store(member.getKeyCard());
 
-			userMgmt.storeUser(member);
-			
+			userDAO.store(member);
+			userDAO.commit();
 			setResponsePage(new UserListPage());
 
 		}

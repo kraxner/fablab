@@ -1,29 +1,19 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
+import net.micalo.persistence.IdentifiableEntity;
 
 @Entity
-public class Package implements Serializable{
-	
-	private static final long serialVersionUID = 355872449251526129L;
-	
-	public Package() {
-		
-	}
-	
-	public Package(String n) {
-		name = n;
-	}
-	
-	@Id @GeneratedValue
-	private long id;
+public class Package extends IdentifiableEntity{
+	private static final long serialVersionUID = 1L;
 	
 	private String name;
 	private String description;
@@ -40,13 +30,62 @@ public class Package implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private PackageType type;
 
-	public long getId() {
-		return id;
+	public Package() {
+		
+	}
+	
+	public Package(String n) {
+		name = n;
+	}	
+	
+	
+	/**
+	 * Methode liefert das nächstmögliche Kündigungsdatum eines Paketes zurück.
+	 * 
+	 * @return das errechnete Kündigungsdatum
+	 * 
+	 * @author Johannes Bauer
+	 */
+	public Date getNextCancelationDate() {
+		return getNextCancelationDate(new GregorianCalendar());
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+	public Date getNextCancelationDate(GregorianCalendar c) {
+
+		/**
+		 * Zum aktuellen Datum die Kündigungsfrist in Monaten dazuzählen.
+		 */
+		c.add(Calendar.MONTH, getCancelationPeriod());
+
+		/**
+		 * Kündigung nur zu bestimmten Zeiten möglich nur am Ende von
+		 * Monat/Quartal/Jahr
+		 */
+		if (getCancelationPeriodAdvance() == TimePeriod.MONTHLY) {
+			//c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DATE));
+
+		} else if (getCancelationPeriodAdvance() == TimePeriod.QUARTER) {
+
+			if (c.get(Calendar.MONTH) <= Calendar.MARCH)
+				c.set(Calendar.MONTH, Calendar.MARCH);
+			else if (c.get(Calendar.MONTH) <= Calendar.JUNE)
+				c.set(Calendar.MONTH, Calendar.JUNE);
+			else if (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)
+				c.set(Calendar.MONTH, Calendar.SEPTEMBER);
+			else if (c.get(Calendar.MONTH) <= Calendar.DECEMBER)
+				c.set(Calendar.MONTH, Calendar.DECEMBER);
+
+		} else if (getCancelationPeriodAdvance() == TimePeriod.ANNUAL) {
+			c.set(Calendar.MONTH, Calendar.DECEMBER);
+		}
+
+		/**
+		 * Kündigung immer nur am letzten Tag eines Monats
+		 */
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+
+		return c.getTime();
+	}	
 
 	public String getName() {
 		return name;

@@ -1,6 +1,5 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,10 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class User extends WebUser implements Serializable {
-
-	private static final long serialVersionUID = 5102948341740922385L;
-
+public class User extends WebUser{
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String mobile;
 	private String fax;

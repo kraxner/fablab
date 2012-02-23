@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -14,7 +15,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -26,8 +26,7 @@ import at.happylab.fablabtool.web.membership.SubscriptionDetailPage;
 
 public class SubscriptionListPage extends BasePage {
 
-	@Inject
-	SubscriptionProvider subscriptionProvider;
+	@Inject private	SubscriptionProvider subscriptionProvider;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public SubscriptionListPage() {
@@ -40,7 +39,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
 			}
 		});
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Vorname"), "firstname", "bookedBy.users[0].firstname"){
@@ -49,7 +48,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
 			}
 		});
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Nachname"), "lastname", "bookedBy.users[0].lastname"){
@@ -58,7 +57,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new MembershipDetailPage(s.getBookedBy(), new MembershipManagement()));
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
 			}
 		});
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Firmenname"), "bookedBy.companyName", "bookedBy.companyName"));
@@ -75,7 +74,7 @@ public class SubscriptionListPage extends BasePage {
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
 				
-				setResponsePage(new SubscriptionDetailPage(s.getBookedBy(), s));
+				setResponsePage(SubscriptionDetailPage.class, new PageParameters("id="+s.getDescription()));
 			}
 		});
 
