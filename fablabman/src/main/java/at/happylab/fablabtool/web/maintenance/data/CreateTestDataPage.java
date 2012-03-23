@@ -10,8 +10,14 @@ import javax.inject.Inject;
 import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.beans.SubscriptionManagement;
+import at.happylab.fablabtool.model.Address;
+import at.happylab.fablabtool.model.DebitInfo;
+import at.happylab.fablabtool.model.Gender;
 import at.happylab.fablabtool.model.Membership;
+import at.happylab.fablabtool.model.MembershipType;
+import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.model.Subscription;
+import at.happylab.fablabtool.model.User;
 import at.happylab.fablabtool.web.authentication.AdminBasePage;
 
 public class CreateTestDataPage extends AdminBasePage {
@@ -31,7 +37,7 @@ public class CreateTestDataPage extends AdminBasePage {
 		
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
 		
-		/*
+		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("/Users/karim/Dropbox/University/ASE/dev/workspace/qse-ase-ws11-07/data.csv"));
 			String line;
@@ -115,7 +121,7 @@ public class CreateTestDataPage extends AdminBasePage {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
+		
 		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("/Users/karim/Dropbox/University/ASE/dev/workspace/qse-ase-ws11-07/pakete.csv"));

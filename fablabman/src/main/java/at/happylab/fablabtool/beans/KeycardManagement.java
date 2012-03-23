@@ -131,7 +131,7 @@ public class KeycardManagement implements Serializable {
 		/**
 		 * 3. Check the Access Times
 		 */
-		if (k.getAccessgrants() == null) {
+		/*if (k.getAccessgrants() == null) {
 			System.err.println("no accessgrant times");
 			return false;
 		}
@@ -166,7 +166,7 @@ public class KeycardManagement implements Serializable {
 		if (!result) {
 			System.err.println("no access granttime valid");
 			return false;
-		}
+		}*/
 
 		/**
 		 * 4. Membership subscribed to a valid Access Package?
