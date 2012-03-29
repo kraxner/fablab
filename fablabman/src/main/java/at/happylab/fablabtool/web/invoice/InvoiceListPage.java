@@ -8,6 +8,8 @@ import java.util.Iterator;
 
 import javax.inject.Inject;
 
+import net.micalo.wicket.model.SmartModel;
+
 import org.apache.wicket.AbortException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -45,13 +47,11 @@ import at.happylab.fablabtool.web.membership.MembershipDetailPage;
 
 public class InvoiceListPage extends AdminBasePage{
 
-	@Inject
-	private InvoiceProvider invoices;
+	@Inject	private InvoiceProvider invoices;
 	
 	@Inject	private InvoiceDAO invoiceDAO;
 	
-	@Inject
-	private MembershipDAO membershipMgmt;
+	@Inject	private MembershipDAO membershipMgmt;
 	
 	private InvListForm invForm;
 	/**
@@ -77,7 +77,7 @@ public class InvoiceListPage extends AdminBasePage{
 	}
 	
 	private void addFilterForm(){
-		Form<InvoiceProvider> filterForm = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoices));
+		Form<Invoice> filterForm = new Form<Invoice>("filterForm");
 		filterForm.add(new TextField<Date>("fromFilter"));
 		filterForm.add(new TextField<Date>("toFilter"));
 		filterForm.add(new TextField<String>("filter"));
@@ -180,8 +180,7 @@ public class InvoiceListPage extends AdminBasePage{
 
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
-					Invoice inv = (Invoice) model.getObject();
-					setResponsePage(new InvoiceDetailPage(inv));
+					setResponsePage(new InvoiceDetailPage((SmartModel<Invoice>)model));
 				}
 				 
 			};

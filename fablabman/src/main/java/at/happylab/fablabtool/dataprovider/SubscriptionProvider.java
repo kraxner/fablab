@@ -6,12 +6,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import net.micalo.persistence.dao.BaseDAO;
+import net.micalo.wicket.model.SmartModel;
+
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
@@ -20,8 +23,8 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 
 	private static final long serialVersionUID = 8746292597567302072L;
 
-	@Inject
-	private EntityManager em;
+	@Inject	private EntityManager em;
+	private BaseDAO<Subscription> subscriptionDAO;
 
 	private IModel<Membership> membershipModel;
 	private boolean showCancelledSubscriptions;
@@ -31,6 +34,11 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 		this.showCancelledSubscriptions = false;
 
 		setSort("validFrom", true);
+	}
+	
+	@PostConstruct
+	protected void init() {
+		subscriptionDAO = new BaseDAO<Subscription>(Subscription.class, em);		
 	}
 
 	public void setMembershipModel(IModel<Membership> model) {
@@ -127,14 +135,8 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 
 	}
 
-	public IModel<Subscription> model(final Subscription object) {
-		return new LoadableDetachableModel<Subscription>() {
-			private static final long serialVersionUID = 2245677208590656096L;
-
-			protected Subscription load() {
-				return object;
-			}
-		};
+	public IModel<Subscription> model(Subscription object) {
+		return new SmartModel<Subscription>(subscriptionDAO, object);
 	}
 
 	public int size() {
