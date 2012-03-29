@@ -181,7 +181,7 @@ public class InvoiceListPage extends AdminBasePage{
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice) model.getObject();
-					setResponsePage(new InvoiceDetailPage(inv));
+					setResponsePage(new InvoiceDetailPage(new PageParameters("id=" + inv.getId())));
 				}
 				 
 			};
