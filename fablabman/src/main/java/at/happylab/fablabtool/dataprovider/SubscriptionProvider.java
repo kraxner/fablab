@@ -51,15 +51,16 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 
 	@SuppressWarnings("unchecked")
 	public Iterator<Subscription> iterator(int first, int count) {
-		Membership membership = membershipModel.getObject();
 
 		String sqlString = "FROM Subscription WHERE 1=1";
 
 		if (!this.showCancelledSubscriptions)
 			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
 
-		if (membershipModel != null)
+		if (membershipModel != null) {
+			Membership membership = membershipModel.getObject();
 			sqlString += " AND bookedby_id = " + membership.getId();
+		}
 
 		List<Subscription> results = em.createQuery(sqlString).getResultList();
 
