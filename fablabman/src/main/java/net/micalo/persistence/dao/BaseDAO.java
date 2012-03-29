@@ -74,6 +74,7 @@ public class BaseDAO<T extends IIdentifiableEntity<?>> implements Serializable{
 	public void store(T entity){
 		onBeforeStore(entity);
 		
+		
 		if (! em.getTransaction().isActive()) {
 			em.getTransaction().begin();
 		}
@@ -88,6 +89,10 @@ public class BaseDAO<T extends IIdentifiableEntity<?>> implements Serializable{
     
 	public void remove(T entity) {
     	log.info("removing entity " + String.valueOf(entityClass) + " id: " + String.valueOf(entity.getIdent()));
+		if (! em.getTransaction().isActive()) {
+			em.getTransaction().begin();
+		}
+    	
     	em.remove(entity);
     }
     
