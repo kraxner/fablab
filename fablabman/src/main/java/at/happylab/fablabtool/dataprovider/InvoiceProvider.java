@@ -18,9 +18,9 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
 import at.happylab.fablabtool.converter.CustomDateConverter;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.InvoiceState;
@@ -40,7 +40,7 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	private EntityManager em;
 
 	@Inject
-	private InvoiceManagement invoiceMgmt;
+	private InvoiceDAO invoiceDAO;
 	
 	private Membership member;
 	
@@ -181,8 +181,9 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 				writer.append("\r\n");
 				inv.setState(InvoiceState.PAID);
 				inv.setPayedAt(inv.getDueDate());
-				invoiceMgmt.storeInvoice(inv);
+				invoiceDAO.store(inv);
 			}
+			invoiceDAO.commit();
 		}
 	}
 	
@@ -248,7 +249,7 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		else
-			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getId() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
+			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getIdent() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		if (filter != null) {
 			CustomDateConverter cdc = new CustomDateConverter();

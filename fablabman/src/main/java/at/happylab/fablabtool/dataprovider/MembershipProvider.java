@@ -43,7 +43,7 @@ public class MembershipProvider extends SortableDataProvider<Membership> impleme
 				} else if ("status".equals(getSort().getProperty())) {
 					return dir * (m1.getStatus().compareTo(m2.getStatus()));
 				} else {
-					if (m1.getId() > m2.getId())
+					if (m1.getIdent() > m2.getIdent())
 						return dir;
 					else
 						return -dir;

@@ -1,22 +1,17 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import net.micalo.persistence.IdentifiableEntity;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 //INSERT INTO WEBUSER (username, password, firstname, lastname, admin) values ('mk', 'mk', 'Michael', 'Kraxner', '1')
-public class WebUser implements Serializable {
+public class WebUser extends IdentifiableEntity {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue
-	private long id;
-	
 	private String username;
 	private String password;
 	
@@ -73,12 +68,6 @@ public class WebUser implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public boolean isAdmin() {
 		return admin;
@@ -87,5 +76,4 @@ public class WebUser implements Serializable {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-
 }

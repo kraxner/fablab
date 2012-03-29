@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -14,7 +17,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.dataprovider.PackageProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -26,10 +28,9 @@ import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class PackageList extends BasePage {
 
-	@Inject
-	PackageProvider packageProvider;
-	@Inject
-	PackageManagement packageMgmt;
+	@Inject private	PackageProvider packageProvider;
+	@Inject EntityManager em;
+	private	BaseDAO<Package> packageDAO = new BaseDAO<Package>(Package.class, em);
 	
 
 	public PackageList() {
@@ -67,8 +68,8 @@ public class PackageList extends BasePage {
 					@Override
 					protected void onConfirm() {
 						Package p = (Package) model.getObject();
-						packageMgmt.removePackage(p);
-						
+						packageDAO.remove(p);
+						packageDAO.commit();
 						setResponsePage(PackageList.this);
 					}
 

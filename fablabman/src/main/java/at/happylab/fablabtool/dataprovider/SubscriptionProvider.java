@@ -23,18 +23,18 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 	@Inject
 	private EntityManager em;
 
-	private Membership member;
+	private IModel<Membership> membershipModel;
 	private boolean showCancelledSubscriptions;
 
 	public SubscriptionProvider() {
-		this.member = null;
+		this.membershipModel = null;
 		this.showCancelledSubscriptions = false;
 
 		setSort("validFrom", true);
 	}
 
-	public void setMember(Membership member) {
-		this.member = member;
+	public void setMembershipModel(IModel<Membership> model) {
+		this.membershipModel = model;
 	}
 
 	public void setShowCancelledSubscriptions(boolean showCancelledSubscriptions) {
@@ -43,14 +43,15 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 
 	@SuppressWarnings("unchecked")
 	public Iterator<Subscription> iterator(int first, int count) {
+		Membership membership = membershipModel.getObject();
 
 		String sqlString = "FROM Subscription WHERE 1=1";
 
 		if (!this.showCancelledSubscriptions)
 			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
 
-		if (member != null)
-			sqlString += " AND bookedby_id = " + member.getId();
+		if (membershipModel != null)
+			sqlString += " AND bookedby_id = " + membership.getId();
 
 		List<Subscription> results = em.createQuery(sqlString).getResultList();
 
@@ -144,8 +145,8 @@ public class SubscriptionProvider extends SortableDataProvider<Subscription> imp
 		if (!this.showCancelledSubscriptions)
 			sqlString += " AND ((ValidTo is null)  OR (DATEDIFF('dd', ValidTo, CURRENT_DATE) < 0))";
 
-		if (member != null)
-			sqlString += " AND bookedby_id = " + member.getId();
+		if (membershipModel != null)
+			sqlString += " AND bookedby_id = " + membershipModel.getObject().getId();
 
 		count = (Long) em.createQuery(sqlString).getSingleResult();
 

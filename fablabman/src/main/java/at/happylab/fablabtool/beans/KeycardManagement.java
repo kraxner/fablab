@@ -1,21 +1,14 @@
 package at.happylab.fablabtool.beans;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 
-import org.apache.log4j.Logger;
-
-import at.happylab.fablabtool.model.AccessGrant;
+import at.happylab.fablabtool.dao.KeyCardDAO;
+import at.happylab.fablabtool.dao.UserDAO;
 import at.happylab.fablabtool.model.KeyCard;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PackageType;
@@ -26,8 +19,10 @@ public class KeycardManagement implements Serializable {
 
 	private static final long serialVersionUID = -3130705490590748129L;
 
-	@Inject
-	private EntityManager em;
+	@Inject private EntityManager em;
+	
+	@Inject private KeyCardDAO keyCardDAO;
+	@Inject private UserDAO userDAO;
 
 	public KeycardManagement() {
 	}
@@ -36,76 +31,20 @@ public class KeycardManagement implements Serializable {
 		this.em = em;
 	}
 
-	public void storeKeyCard(KeyCard k) {
-		if (!em.getTransaction().isActive()) {
-			em.getTransaction().begin();
-		}
-		try {
-			em.persist(k);
-		} catch (PersistenceException e) {
-
-		}
-
-		em.getTransaction().commit();
-		Logger.getLogger(" KeycardManagement").info("number of  Keycards: " + String.valueOf(em.createQuery("select count(k) from KeyCard k").getSingleResult()));
-	}
-
-	/**
-	 * Removes a KeyCard
-	 * 
-	 * @param KeyCard
-	 */
-	public void removeKeycard(KeyCard k) {
-		if (!em.getTransaction().isActive()) {
-			em.getTransaction().begin();
-		}
-		em.remove(k);
-		em.getTransaction().commit();
-	}
-
-	public KeyCard loadKeyCard(long id) {
-		return em.find(KeyCard.class, id);
-	}
-
-	public List<KeyCard> getAllKeyCards() {
-		return em.createQuery("from KeyCard", KeyCard.class).getResultList();
-
-	}
-
-	public KeyCard loadKeyCardFromRFID(String rfid) {
-
-		KeyCard k = null;
-		Query qry = em.createQuery("from KeyCard WHERE rfid=:rfid", KeyCard.class);
-
-		qry.setParameter("rfid", rfid);
-
-		try {
-			k = (KeyCard) qry.getSingleResult();
-		} catch (NonUniqueResultException e) {
-			return null;
-		} catch (NoResultException e) {
-			return null;
-		}
-
-		return k;
-	}
-
 	public boolean hasAccess(String rfid) {
 
 		User user = null;
 		Membership membership = null;
 		List<Subscription> subscriptions = null;
-		KeyCard k = loadKeyCardFromRFID(rfid);
+		KeyCard k = keyCardDAO.loadFromRFID(rfid);
 
-		try {
-			user = new UserManagement().loadUserFromKeycard(rfid);
-			membership = user.getMembership();
-			subscriptions = new SubscriptionManagement().getAllSubscriptionsFromMember(user.getMembership().getId());
-
-		} catch (NullPointerException e) {
-			// Keycard der Putzfrau ist niemandem zugeordnet.
+		user = userDAO.loadFromKeycard(rfid);
+		membership = user.getMembership();
+		if (membership != null) {
+			// Keycards of staff members might have no membership, this is ok
+			// but if there is a membership, we have to check for existing subscriptions
+			subscriptions = membership.getSubscriptions();
 		}
-
 		return hasAccess(k, membership, subscriptions);
 	}
 

@@ -8,6 +8,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import net.micalo.wicket.model.SmartModel;
+
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -25,8 +28,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
-import at.happylab.fablabtool.beans.MembershipManagement;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.CheckBoxColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -35,30 +37,24 @@ import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PaymentMethod;
 
-public class EntryPanel extends Panel {
+public class EntryPanel extends MembershipPanel {
 	private static final long serialVersionUID = -9180787774643758400L;
 	
 	private Invoice invoice;
-	private Membership member;
-	
-	@Inject 
-	private MembershipManagement membershipMgmt;
 	
 	@Inject
 	ConsumationEntryProvider entryFromMembershipProvider;
 	
-	@Inject 
-	InvoiceManagement invoiceMgmt;
+	@Inject private InvoiceDAO invoiceDAO;
 	
 	private Set<ConsumationEntry> selected = new HashSet<ConsumationEntry>();
 
-	public EntryPanel(String id, final Membership member,  final MembershipManagement membershipMgmt) {
-		super(id);
+	public EntryPanel(String id, SmartModel<Membership> model) {
+		super(id, model);
 
-		entryFromMembershipProvider.setMember(member);
+		entryFromMembershipProvider.setMembershipModel(model);
 
-		this.invoice = new Invoice(member);
-		this.member = member;
+		this.invoice = new Invoice(model.getObject());
 		
 		Form<Invoice> form = new InvoiceForm("form", invoice);
 		add(form);
@@ -110,7 +106,9 @@ public class EntryPanel extends Panel {
 			@Override
 			public void onClick(Item<ConsumationEntry> item, String componentId, IModel<ConsumationEntry> model) {
 				ConsumationEntry e = (ConsumationEntry) model.getObject();
-				setResponsePage(new ConsumationEntryDetailPage(member, membershipMgmt, e));
+				
+				setResponsePage(ConsumationEntryDetailPage.class, new PageParameters("id=" + e.getId()));
+				
 			}
 			 
 		});
@@ -121,8 +119,7 @@ public class EntryPanel extends Panel {
 			private static final long serialVersionUID = 9170539765267094210L;
 
 			public void onClick() {
-				ConsumationEntry entry = new ConsumationEntry();
-                setResponsePage(new ConsumationEntryDetailPage(member, membershipMgmt, entry));
+                setResponsePage(ConsumationEntryDetailPage.class, new PageParameters("membershipId=" + membershipModel.getObject().getId()));
             }
         });
 	}
@@ -155,9 +152,9 @@ public class EntryPanel extends Panel {
 			List<ConsumationEntry> list = new ArrayList<ConsumationEntry>(selected);
 			invoice.setIncludesConsumationEntries(list);
 			
-			invoiceMgmt.storeInvoice(invoice);
-
-			setResponsePage(new MembershipDetailPage(member, membershipMgmt));
+			invoiceDAO.store(invoice);
+			invoiceDAO.commit();
+			setResponsePage(MembershipDetailPage.class, new PageParameters("id=" +  membershipModel.getObject().getId()));
 		}
 	}
 

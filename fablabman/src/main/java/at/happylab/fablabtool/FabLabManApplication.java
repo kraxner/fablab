@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
+import org.apache.wicket.request.target.coding.QueryStringUrlCodingStrategy;
 import org.apache.wicket.settings.IResourceSettings;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
@@ -29,6 +30,7 @@ import at.happylab.fablabtool.converter.CustomDateConverter;
 import at.happylab.fablabtool.converter.CustomDoubleConverter;
 import at.happylab.fablabtool.session.FablabAuthenticatedWebSession;
 import at.happylab.fablabtool.web.authentication.FablabSignInPage;
+import at.happylab.fablabtool.web.membership.MembershipDetailPage;
 import at.happylab.fablabtool.web.membership.MembershipListPage;
 
 /**
@@ -118,8 +120,11 @@ public class FabLabManApplication extends AuthenticatedWebApplication
 	    {
 	        super.init();
 	        getDebugSettings().setDevelopmentUtilitiesEnabled(true);
-	    	 IResourceSettings resourceSettings = getResourceSettings();
-	         resourceSettings.addResourceFolder("");    	
+	    	IResourceSettings resourceSettings = getResourceSettings();
+	        resourceSettings.addResourceFolder("");
+	        // register nice names for bookmarkable pages here (to prevent that the fully qualified classname is shown) 
+    		mount(new QueryStringUrlCodingStrategy("membership",MembershipDetailPage.class));
+    		mount(new QueryStringUrlCodingStrategy("signin", FablabSignInPage.class));
 	    }	
     
     @Override

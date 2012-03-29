@@ -1,19 +1,13 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import net.micalo.persistence.IdentifiableEntity;
+
 @Entity
-public class ErrorLog  implements Serializable{
-	
+public class ErrorLog  extends IdentifiableEntity{
 	private static final long serialVersionUID = 1L;
-	
-	@Id @GeneratedValue
-	private long id;
 	
 	private String comment;
 	
@@ -21,14 +15,6 @@ public class ErrorLog  implements Serializable{
 	private String cause;
 	
 	private String user;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getComment() {
 		return comment;

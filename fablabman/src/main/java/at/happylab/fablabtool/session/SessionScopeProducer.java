@@ -3,12 +3,8 @@ package at.happylab.fablabtool.session;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 import org.jboss.seam.wicket.util.NonContextual;
@@ -27,11 +23,10 @@ import at.happylab.fablabtool.model.WebUser;
 public class SessionScopeProducer implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("fablabman");
 
 	private WebUser user = null;
 	
-	public static SessionScopeProducer getInstance() {
+	public static SessionScopeProducer getContextualInstance() {
 		NonContextual<SessionScopeProducer> sessionScopeProducerRef;
 		
 	    BeanManager manager = new BeanManagerLocator().getBeanManager();
@@ -40,23 +35,23 @@ public class SessionScopeProducer implements Serializable{
 		return sessionScopeProducerRef.newInstance().produce().inject().get(); 		
 	}
 	
-	/**
-	 * Responsible for creating an EntityManager instance
-	 * 
-	 * @return
-	 */
-	@Produces @SessionScoped
-	public EntityManager getEm(){
-		//emf = Persistence.createEntityManagerFactory("fablabman");
-		return emf.createEntityManager();
-	}
+//	/**
+//	 * Responsible for creating an EntityManager instance
+//	 * 
+//	 * @return
+//	 */
+//	@Produces @SessionScoped
+//	public EntityManager getEm(){
+//		//emf = Persistence.createEntityManagerFactory("fablabman");
+//		return emf.createEntityManager();
+//	}
 	
 	
 	
-	public void destroy(@Disposes EntityManager em) {
-		em.close();
-	}
-	
+//	public void destroy(@Disposes EntityManager em) {
+//		em.close();
+//	}
+//	
 	/**
 	 * Provides the currently logged in user
 	 * @return

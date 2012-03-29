@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -17,7 +20,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.beans.PackageManagement;
 import at.happylab.fablabtool.model.Package;
 import at.happylab.fablabtool.model.PackageType;
 import at.happylab.fablabtool.model.TimePeriod;
@@ -25,8 +27,9 @@ import at.happylab.fablabtool.web.BasePage;
 
 public class PackageAddPage extends BasePage {
 
-	@Inject
-	private PackageManagement packageMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<Package> packageDAO = new BaseDAO<Package>(Package.class, em);
+	
 	private Package pkg;
 
 	public PackageAddPage(Package p) {
@@ -89,7 +92,8 @@ public class PackageAddPage extends BasePage {
 		}
 
 		public void onSubmit() {
-			packageMgmt.storePackage(pkg);
+			packageDAO.store(pkg);
+			packageDAO.commit();
 			setResponsePage(new PackageList());
 		}
 	}

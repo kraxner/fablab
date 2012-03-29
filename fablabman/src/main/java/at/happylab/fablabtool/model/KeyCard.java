@@ -1,25 +1,21 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import net.micalo.persistence.IdentifiableEntity;
+
 @Entity
-public class KeyCard implements Serializable{
+public class KeyCard extends IdentifiableEntity{
 	
 	private static final long serialVersionUID = -1408771679299915583L;
 
-	@Id @GeneratedValue
-	private long id;
-	
 	private String rfid;
 	private boolean active;
 	private String description;
@@ -30,12 +26,6 @@ public class KeyCard implements Serializable{
 		inverseJoinColumns={@JoinColumn(name="ACCESSGRANT_ID", referencedColumnName="ID")})
 	private List<AccessGrant> accessgrants = new ArrayList<AccessGrant>();
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getRfid() {
 		return rfid;
 	}

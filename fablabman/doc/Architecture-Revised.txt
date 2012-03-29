@@ -1,0 +1,37 @@
+FabLab Management Tool 
+Version: V1.0
+
+1 Architectural considerations:
+
+1.1 Handling of Entities (concerns Lazy Loading)
+
+  At the moment we keep entities in the Http session (by using direct references to entities), that is not a good approach:
+  - the session gets bloated with entities (object graph!)
+  - when the session is serialized, the entites get detached from the entity manager
+    -> this can lead to "detached entity passed to persist" errors (can be bypassed by merging, but)
+   
+=> solution:
+
+* We need "smart" entitiy models
+  -> derived from DetachableModel
+  -> implementing an interface like Identifiable (providing the id so it can be reloaded)
+  -> on detach: set null (keep id!)
+  -> getModelObject(): reload model object using the stored id
+  
+* We need to be more carefully when passing references to entities around
+  -> avoid: final Entity ...
+  -> pass (detachable !) model instead
+
+* We need a common interface for DAO
+  -> so we can use them in the smart entity models
+  
+* finally: we can use lazy loading for OneToMany, ManyToMany relationships
+  -> because the "parent" object was loaded in the same EntityManager session,
+     the collection can be loaded on access...
+  -> in places where needed we can give hints to the persistence layer to load additional objects of the object graph
+
+1.2 Transaction handling:
+  Could be started, ended for each request. (Open Session in View Pattern)
+  -> we do NOT use Spring, so we cannot use its OpenSessionInViewFilter!
+  Better approach would be, to only open sessions when needed. (like it is done here: http://code.google.com/p/perfbench/source/browse/trunk/perfbench/wicket-jpa/src/main/java/wicketjpa/wicket/JpaRequestCycle.java)
+  -> Extend our RequestCycle

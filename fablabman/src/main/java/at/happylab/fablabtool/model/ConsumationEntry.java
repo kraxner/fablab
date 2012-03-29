@@ -1,23 +1,19 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-public class ConsumationEntry implements Serializable{
-	private static final long serialVersionUID = -8117193946412652454L;
+import net.micalo.persistence.IdentifiableEntity;
 
-	@Id @GeneratedValue
-	private long id;
-	
+@Entity
+public class ConsumationEntry extends IdentifiableEntity{
+	private static final long serialVersionUID = 1L;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
@@ -41,14 +37,11 @@ public class ConsumationEntry implements Serializable{
 		date = new Date();
 	}
 	
-	public long getId() {
-		return id;
+	public ConsumationEntry(Membership member) {
+		super();
+		setConsumedBy(member);
 	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
+	
 	public Date getDate() {
 		return date;
 	}

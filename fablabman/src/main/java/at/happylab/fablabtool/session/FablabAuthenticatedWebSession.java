@@ -3,8 +3,11 @@
  */
 package at.happylab.fablabtool.session;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import net.micalo.persistence.EntityManagerProducer;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
@@ -21,7 +24,7 @@ import at.happylab.fablabtool.model.WebUser;
 public class FablabAuthenticatedWebSession extends AuthenticatedWebSession {
 	private static final long serialVersionUID = 1L;
 	
-	private SessionScopeProducer sessionScopeProducer;
+	@Inject private SessionScopeProducer sessionScopeProducer;
 	
 	public FablabAuthenticatedWebSession(Request request) {
 		super(request);
@@ -35,8 +38,12 @@ public class FablabAuthenticatedWebSession extends AuthenticatedWebSession {
 	@Override
 	public boolean authenticate(final String username, final String password) {
 		try {
-			sessionScopeProducer = SessionScopeProducer.getInstance();
-			EntityManager em = sessionScopeProducer.getEm();
+			sessionScopeProducer = SessionScopeProducer.getContextualInstance();
+			EntityManager em = EntityManagerProducer.createContextualEntityManager();
+			
+			if (!em.getTransaction().isActive()) {
+				em.getTransaction().begin();
+			}
 			
 			// sic! sql injection is a topic for us!
 			Query qry = em.createQuery("select u from WebUser u where u.username=:username and u.password = :password");

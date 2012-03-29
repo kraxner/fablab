@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -20,7 +21,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.MembershipManagement;
 import at.happylab.fablabtool.dataprovider.UserProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.EnumPropertyColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -37,7 +37,6 @@ import at.happylab.fablabtool.web.authentication.AdminBasePage;
 public class MembershipListPage extends AdminBasePage {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Inject private MembershipManagement membershipMgmt;
 	@Inject private UserProvider userProvider;
 	
 	public MembershipListPage() {
@@ -54,7 +53,7 @@ public class MembershipListPage extends AdminBasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = ((User) model.getObject()).getMembership();
-				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
+				setResponsePage(MembershipDetailPage.class, new PageParameters("id="+m.getId()));
 			}
 		});
 		columns.add(new PropertyColumn<String>(new Model<String>("Vorname"), "firstname", "firstname"));
@@ -72,7 +71,7 @@ public class MembershipListPage extends AdminBasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Membership m = ((User) model.getObject()).getMembership();
-				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
+				setResponsePage(MembershipDetailPage.class, new PageParameters("id="+m.getId()));
 
 			}
 		});
@@ -127,10 +126,7 @@ public class MembershipListPage extends AdminBasePage {
 			private static final long serialVersionUID = -146742357652575068L;
 
 			public void onClick() {
-				Membership m = new Membership();
-				m.addUser(new User());
-				m.setMembershipType(MembershipType.PRIVATE);
-				setResponsePage(new MembershipDetailPage(m, membershipMgmt));
+				setResponsePage(MembershipDetailPage.class);
 			}
 		});
 		

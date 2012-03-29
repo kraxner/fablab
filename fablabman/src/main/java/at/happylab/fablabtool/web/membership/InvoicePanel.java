@@ -23,8 +23,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import at.happylab.fablabtool.beans.InvoiceManagement;
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.dataprovider.InvoiceProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.DropDownColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -39,11 +39,9 @@ import at.happylab.fablabtool.web.invoice.InvoiceDetailPage;
 public class InvoicePanel extends Panel {
 	private static final long serialVersionUID = -7129490579199414107L;
 	
-	@Inject
-	private InvoiceProvider invoicesOfMember;
+	@Inject private InvoiceProvider invoicesOfMember;
 	
-	@Inject
-	private InvoiceManagement invoiceMgmt;
+	@Inject	private InvoiceDAO invoiceDAO;
 	
 	private InvForm invForm;
 	/**
@@ -131,8 +129,9 @@ public class InvoicePanel extends Panel {
 		public void onSubmit() {
 			Iterator<Invoice> invIter = invoicesOfMember.iterator(0, invoicesOfMember.size());
 			while(invIter.hasNext()){
-				invoiceMgmt.storeInvoice(invIter.next());
+				invoiceDAO.store(invIter.next());
 			}
+			invoiceDAO.commit();			
 		}
 	}
 }

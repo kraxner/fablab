@@ -14,7 +14,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.KeycardManagement;
+import at.happylab.fablabtool.dao.KeyCardDAO;
 import at.happylab.fablabtool.dataprovider.KeycardProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.KeyCard;
@@ -25,10 +25,8 @@ import at.happylab.fablabtool.web.util.WarningPage;
 
 public class KeycardListPage extends AdminBasePage {
 
-	@Inject
-	KeycardProvider keycardProvider;
-	@Inject
-	KeycardManagement keycardMgmt;
+	@Inject private KeycardProvider keycardProvider;
+	@Inject private KeyCardDAO keycardDAO;
 
 	public KeycardListPage() {
 
@@ -61,7 +59,8 @@ public class KeycardListPage extends AdminBasePage {
 						KeyCard k = (KeyCard) model.getObject();
 
 						try {
-							keycardMgmt.removeKeycard(k);
+							keycardDAO.remove(k);
+							keycardDAO.commit();
 							setResponsePage(KeycardListPage.this);
 							
 						} catch (Exception e) {

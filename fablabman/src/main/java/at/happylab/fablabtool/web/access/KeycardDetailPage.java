@@ -21,7 +21,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.beans.KeycardManagement;
+import at.happylab.fablabtool.dao.KeyCardDAO;
 import at.happylab.fablabtool.dataprovider.AccessGrantsFromKeycardProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.DateTimeColumn;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
@@ -33,11 +33,9 @@ public class KeycardDetailPage extends BasePage {
 
 	private KeyCard keycard;
 
-	@Inject
-	AccessGrantsFromKeycardProvider accessGrantsFromKeycardProvider;
+	@Inject private AccessGrantsFromKeycardProvider accessGrantsFromKeycardProvider;
 
-	@Inject
-	KeycardManagement keycardMgmt;
+	@Inject private KeyCardDAO keycardDAO;
 
 	public KeycardDetailPage(KeyCard keycard) {
 		this.keycard = keycard;
@@ -119,7 +117,8 @@ public class KeycardDetailPage extends BasePage {
 		}
 
 		public void onSubmit() {
-			keycardMgmt.storeKeyCard(keycard);
+			keycardDAO.store(keycard);
+			keycardDAO.commit();
 			
 			setResponsePage(KeycardListPage.class);
 		}

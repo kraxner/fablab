@@ -1,24 +1,20 @@
 package at.happylab.fablabtool.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-public class Subscription implements Serializable{
-	private static final long serialVersionUID = -624431396684560629L;
+import net.micalo.persistence.IdentifiableEntity;
 
-	@Id @GeneratedValue
-	private long id;
-	
+@Entity
+public class Subscription extends IdentifiableEntity{
+	private static final long serialVersionUID = 1L;
+
 	private BigDecimal priceOverruled;
 	
 	@Temporal(TemporalType.DATE)
@@ -45,14 +41,19 @@ public class Subscription implements Serializable{
 		
 	}
 	
-	public long getId() {
-		return id;
+	/**
+	 * Creates a subscription for the given owner
+	 * - with the specified {@link Membership#getPaymentMethod() payment method} 
+	 * - current date as start date {@link #validFrom}
+	 * 
+	 * @param owner
+	 */
+	public Subscription(Membership owner) {
+		setBookedBy(owner);
+		setPaymentMethod(owner.getPaymentMethod());
+		setValidFrom(new Date());
 	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
+	
 	public BigDecimal getPriceOverruled() {
 		return priceOverruled;
 	}
@@ -116,5 +117,7 @@ public class Subscription implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+
 
 }

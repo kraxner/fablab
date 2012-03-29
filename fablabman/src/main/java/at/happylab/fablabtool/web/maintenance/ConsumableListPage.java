@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -14,7 +17,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.dataprovider.ConsumableProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.Consumable;
@@ -23,10 +25,9 @@ import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 
 public class ConsumableListPage extends BasePage {
 
-	@Inject
-	ConsumableProvider consumableProvider;
-	@Inject
-	ConsumableManagement consumableMgmt;
+	@Inject private ConsumableProvider consumableProvider;
+	@Inject private EntityManager em;
+	private BaseDAO<Consumable> consumableDAO = new BaseDAO<Consumable>(Consumable.class, em);
 
 	public ConsumableListPage() {
 
@@ -59,8 +60,8 @@ public class ConsumableListPage extends BasePage {
 					@Override
 					protected void onConfirm() {
 						Consumable c = (Consumable) model.getObject();
-						consumableMgmt.removeConsumable(c);
-						
+						consumableDAO.remove(c);
+						consumableDAO.commit();
 						setResponsePage(ConsumableListPage.this);
 					}
 

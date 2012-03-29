@@ -6,7 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
+import net.micalo.persistence.dao.BaseDAO;
+import net.micalo.wicket.model.SmartModel;
+
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -15,45 +20,35 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.Billing;
-import at.happylab.fablabtool.beans.ConsumationEntryManagement;
-import at.happylab.fablabtool.beans.MembershipManagement;
-import at.happylab.fablabtool.beans.SubscriptionManagement;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
 import at.happylab.fablabtool.markup.html.repeater.data.table.LinkPropertyColumn;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.Subscription;
 
-public class SubscriptionPanel extends Panel {
+public class SubscriptionPanel extends MembershipPanel {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -7129490579199414107L;
-
-	@Inject
-	SubscriptionProvider subscriptionsFromMembershipProvider;
-
-	@Inject
-	SubscriptionManagement subscriptionMgmt;
+	@Inject private SubscriptionProvider subscriptionsFromMembershipProvider;
 	
-	@Inject
-	private ConsumationEntryManagement consumationEntryMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<ConsumationEntry> consumationEntryDAO = new BaseDAO<ConsumationEntry>(ConsumationEntry.class, em);
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public SubscriptionPanel(String id, final Membership member, final MembershipManagement membershipMgmt) {
-		super(id);
+	public SubscriptionPanel(String id, SmartModel<Membership> model) {
+		super(id, model);
 
-		subscriptionsFromMembershipProvider.setMember(member);
+		subscriptionsFromMembershipProvider.setMembershipModel(model);
 
 		Form<String> form = new Form<String>("main");
 
 		form.add(new CheckBox("showCancelledPackages", new Model<Boolean>()) {
-			private static final long serialVersionUID = 9170539765267094210L;
+			private static final long serialVersionUID = 1L;
 
 			protected boolean wantOnSelectionChangedNotifications() {
 				return true;
@@ -78,7 +73,7 @@ public class SubscriptionPanel extends Panel {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(new SubscriptionDetailPage(member, s));
+				setResponsePage(SubscriptionDetailPage.class, new PageParameters("id=" + s.getId()));
 			}
 
 		});
@@ -88,12 +83,10 @@ public class SubscriptionPanel extends Panel {
 		form.add(new Label("subscriptionsCount", subscriptionsFromMembershipProvider.size() + " Datensätze"));
 
 		form.add(new Link<String>("addSubscription") {
-			private static final long serialVersionUID = 9170539765267094210L;
+			private static final long serialVersionUID = 1L;
 
 			public void onClick() {
-				Subscription s = new Subscription();
-				s.setValidFrom(new Date());
-				setResponsePage(new SubscriptionDetailPage(member, s));
+				setResponsePage(SubscriptionDetailPage.class, new PageParameters("membershipId=" + membershipModel.getObject().getId()));
 			}
 		});
 
@@ -121,10 +114,12 @@ public class SubscriptionPanel extends Panel {
 			Iterator<Subscription> subscriptions = subscriptionsFromMembershipProvider.iterator(0, subscriptionsFromMembershipProvider.size());
 			
 			while (subscriptions.hasNext()) {
+				// passing all subscriptions looks strange, but Billing.createEntryFromSubscription returns null, if the subscription should not be billed
 				ConsumationEntry entry = Billing.createEntryFromSubscription(subscriptions.next(), accountUntil); 
 				
 				if (entry != null) {
-					consumationEntryMgmt.storeConsumationEntry(entry);
+					consumationEntryDAO.store(entry);
+					consumationEntryDAO.commit();
 				}
 			}
 		}

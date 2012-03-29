@@ -3,6 +3,9 @@ package at.happylab.fablabtool.web.maintenance;
 import java.math.BigDecimal;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import net.micalo.persistence.dao.BaseDAO;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -12,14 +15,13 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import at.happylab.fablabtool.beans.ConsumableManagement;
 import at.happylab.fablabtool.model.Consumable;
 import at.happylab.fablabtool.web.BasePage;
 
 public class ConsumableAddPage extends BasePage {
 
-	@Inject
-	private ConsumableManagement consumableMgmt;
+	@Inject private EntityManager em;
+	private BaseDAO<Consumable> consumableDAO = new BaseDAO<Consumable>(Consumable.class, em);
 	
 	private Consumable consumable;
 
@@ -69,8 +71,8 @@ public class ConsumableAddPage extends BasePage {
 		}
 
 		public void onSubmit() {
-			consumableMgmt.storeConsumable(consumable);
-
+			consumableDAO.store(consumable);
+			consumableDAO.commit();
 			setResponsePage(new ConsumableListPage());
 		}
 	}
