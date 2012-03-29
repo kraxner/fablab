@@ -42,7 +42,7 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	@Inject
 	private InvoiceDAO invoiceDAO;
 	
-	private Membership member;
+	private IModel<Membership> membershipModel;
 	
 	private Date fromFilter;
 	private Date toFilter;
@@ -52,7 +52,7 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	public InvoiceProvider()
 	{
 		setSort("invoiceNumber", true);
-		this.member = null;
+		this.membershipModel = null;
 		initFilter();
 	}
 	
@@ -88,9 +88,9 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		return sdf.format(toFilter);
 	}
 	
-	public void setMember(Membership member)
+	public void setMembershipModel(IModel<Membership> model) 
 	{
-		this.member=member;
+		this.membershipModel = model;
 	}
 	
 	/**
@@ -245,11 +245,11 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 	 */
 	private List<Invoice> filter() {
 		List<Invoice> filtered;
-		if(member == null)
+		if(membershipModel == null)
 			filtered = em.createQuery("SELECT i FROM Invoice i WHERE date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		else
-			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + member.getIdent() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
+			filtered = em.createQuery("SELECT i FROM Invoice i WHERE relatedto_id = " + membershipModel.getObject().getIdent() + " AND date BETWEEN '" + getFrom() + "' AND '" + getTo() + "'",Invoice.class)
 					.getResultList();
 		if (filter != null) {
 			CustomDateConverter cdc = new CustomDateConverter();

@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
+import net.micalo.wicket.model.EntityNotFoundException;
+import net.micalo.wicket.model.SmartModel;
+
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -17,18 +21,22 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.converter.CustomBigDecimalConverter;
+import at.happylab.fablabtool.dao.InvoiceDAO;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
 import at.happylab.fablabtool.model.MembershipType;
 import at.happylab.fablabtool.web.BasePage;
 
-public class InvoiceDetailPage extends WebPage{
+public class InvoiceDetailPage extends WebPage
+{	
+	private SmartModel<Invoice> invoiceModel;
 	
 	@Inject
 	private ConsumationEntryProvider consEntrOfInvoice;
 	
-	private Invoice inv;
+	@Inject	private InvoiceDAO invoiceDAO;
+	
 	private CustomBigDecimalConverter cv;
 	
 	private String totalSum;
@@ -37,10 +45,29 @@ public class InvoiceDetailPage extends WebPage{
 	private String iban;
 	private String bic;
 	
-	public InvoiceDetailPage(Invoice inv) {
+	public InvoiceDetailPage(PageParameters params) {
+		
+		if (params.containsKey("id")) {
+		    long id = params.getLong("id");
+	    	
+		    Invoice inv = invoiceDAO.load(id);
+	    	if (inv == null) {
+	    		throw new EntityNotFoundException("Invoice id: " + id);
+	    	}
+		    invoiceModel = new SmartModel<Invoice>(invoiceDAO, inv);
+		    
+		    add(new StyleSheetReference("stylesheetInv", BasePage.class, "/css/invoice.css"));
+		    this.cv = new CustomBigDecimalConverter();
+		    consEntrOfInvoice.setInvoiceModel(invoiceModel);
+		    init();
+		} 
+	}
+	
+	public InvoiceDetailPage(SmartModel<Invoice> model) {
 		add(new StyleSheetReference("stylesheetInv", BasePage.class, "/css/invoice.css"));
 		
-		this.inv = inv;
+		this.invoiceModel = model;
+		
 		this.cv = new CustomBigDecimalConverter();
 		
 		contactPerson = "";
@@ -49,11 +76,14 @@ public class InvoiceDetailPage extends WebPage{
 		iban = "";
 		bic = "";
 		
-		consEntrOfInvoice.setInvoice(inv);
+		consEntrOfInvoice.setInvoiceModel(invoiceModel);
 		init();
 	}
 
-	private void init(){
+	private void init()
+	{
+		Invoice inv = invoiceModel.getObject();
+		
 		add(new Label("recipient", new PropertyModel<Invoice>(inv,"recipient")));
 		if(inv.getRelatedTo().getMembershipType().equals(MembershipType.BUSINESS)){
 			contactPerson = "z.Hd. " + inv.getRelatedTo().getContactPerson();

@@ -89,7 +89,7 @@ public class MembershipDetailPage extends AdminBasePage {
 			private static final long serialVersionUID = 7504247263312822569L;
 
 			public Panel getPanel(String panelId) {
-				  return new InvoicePanel(panelId, membershipModel.getObject());
+				  return new InvoicePanel(panelId, membershipModel);
 			  }
 		   });
 		
@@ -97,7 +97,7 @@ public class MembershipDetailPage extends AdminBasePage {
 			private static final long serialVersionUID = 1L;
 
 			public Panel getPanel(String panelId) {
-				return new InternalCommentsPanel(panelId, membershipModel.getObject());
+				return new InternalCommentsPanel(panelId, membershipModel);
 			}
 		});
 		AjaxTabbedPanelWithContext panel = new AjaxTabbedPanelWithContext("tabs", tabs, new Model<String>(membershipModel.getObject().getName()));

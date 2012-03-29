@@ -125,8 +125,7 @@ public class Billing {
 			return null;
 		}
 		
-		ConsumationEntry entry = new ConsumationEntry();
-		entry.setConsumedBy(sub.getBookedBy());
+		ConsumationEntry entry = new ConsumationEntry(sub.getBookedBy());
 		entry.setText(sub.getBooksPackage().getName() + " (" + text + ")");
 		entry.setDate(new Date());
 		entry.setPrice(sub.getPriceOverruled());

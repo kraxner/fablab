@@ -198,7 +198,7 @@ public class Invoice extends IdentifiableEntity{
 	public void setIncludesConsumationEntries(List<ConsumationEntry> includesConsumationEntries) {
 		
 		// remove old Entries
-		final List<ConsumationEntry> clone = new ArrayList<ConsumationEntry>(includesConsumationEntries);
+		List<ConsumationEntry> clone = new ArrayList<ConsumationEntry>(includesConsumationEntries);
 		for (ConsumationEntry e : clone) {
 			removeConsumationEntry(e);
 		}

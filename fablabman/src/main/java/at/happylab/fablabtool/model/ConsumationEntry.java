@@ -31,14 +31,14 @@ public class ConsumationEntry extends IdentifiableEntity{
 	@ManyToOne(optional=true)
 	private Invoice invoice;
 
-	// initialize with default values
 	public ConsumationEntry() {
-		quantity = 1;
-		date = new Date();
+		
 	}
 	
+	// initialize with default values
 	public ConsumationEntry(Membership member) {
-		super();
+		quantity = 1;
+		date = new Date();
 		setConsumedBy(member);
 	}
 	

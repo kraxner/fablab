@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 import javax.inject.Inject;
 
+import net.micalo.wicket.model.SmartModel;
+
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -16,7 +19,6 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.PopupSettings;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -36,10 +38,10 @@ import at.happylab.fablabtool.model.Membership;
 import at.happylab.fablabtool.model.PaymentMethod;
 import at.happylab.fablabtool.web.invoice.InvoiceDetailPage;
 
-public class InvoicePanel extends Panel {
+public class InvoicePanel extends MembershipPanel {
 	private static final long serialVersionUID = -7129490579199414107L;
 	
-	@Inject private InvoiceProvider invoicesOfMember;
+	@Inject private InvoiceProvider invoicesOfMemberProvider;
 	
 	@Inject	private InvoiceDAO invoiceDAO;
 	
@@ -50,23 +52,23 @@ public class InvoicePanel extends Panel {
 	private String numOfRows;
 	private Label resultDiv;
 
-	public InvoicePanel(String id, Membership member) {
-		super(id);
+	public InvoicePanel(String id, SmartModel<Membership> model) {
+		super(id, model);
 		
-		invoicesOfMember.setMember(member);
+		invoicesOfMemberProvider.setMembershipModel(model);
 
 		addFilterForm();
 		
 		invForm = new InvForm("form");
 		add(invForm);
 		
-		numOfRows = invoicesOfMember.size() + " Datensätze";
+		numOfRows = invoicesOfMemberProvider.size() + " Datensätze";
 		resultDiv = new Label("invCount", new PropertyModel<String>(this,"numOfRows") );
 		add(resultDiv);
 	}
 	
 	private void addFilterForm(){
-		Form<InvoiceProvider> form = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoicesOfMember));
+		Form<InvoiceProvider> form = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoicesOfMemberProvider));
 		form.add(new TextField<Date>("fromFilter"));
 		form.add(new TextField<Date>("toFilter"));
 		form.add(new TextField<String>("filter"));
@@ -74,7 +76,7 @@ public class InvoicePanel extends Panel {
 		private static final long serialVersionUID = 1L;
 			public void onSubmit() {
 				invForm = new InvForm("form");
-				numOfRows = invoicesOfMember.size() + " Datensätze";
+				numOfRows = invoicesOfMemberProvider.size() + " Datensätze";
 			}
 		};
 		form.add(apply);
@@ -116,18 +118,18 @@ public class InvoicePanel extends Panel {
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice) model.getObject();
-					setResponsePage(new InvoiceDetailPage(inv));
+					setResponsePage(InvoiceDetailPage.class, new PageParameters("id=" + inv.getId()));
 				}
 				 
 			};
 			
-			add(new DefaultDataTable<Invoice>("invTable", columns, invoicesOfMember, 5));
+			add(new DefaultDataTable<Invoice>("invTable", columns, invoicesOfMemberProvider, 5));
 			
 			add(new Button("submit"));
 		}
 
 		public void onSubmit() {
-			Iterator<Invoice> invIter = invoicesOfMember.iterator(0, invoicesOfMember.size());
+			Iterator<Invoice> invIter = invoicesOfMemberProvider.iterator(0, invoicesOfMemberProvider.size());
 			while(invIter.hasNext()){
 				invoiceDAO.store(invIter.next());
 			}

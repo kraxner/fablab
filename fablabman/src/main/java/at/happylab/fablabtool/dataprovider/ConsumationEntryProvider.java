@@ -21,18 +21,18 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 	@Inject
 	private EntityManager em;
 
-	private Invoice inv;
-	
 	private IModel<Membership> membershipModel;
+	private IModel<Invoice> invoiceModel;
 	
 	public ConsumationEntryProvider()
 	{
-		this.inv=null;
+		this.invoiceModel = null;
+		this.membershipModel = null;
 	}
 	
-	public void setInvoice(Invoice inv)
+	public void setInvoiceModel(IModel<Invoice> model)
 	{
-		this.inv=inv;
+		this.invoiceModel = model;
 	}
 	
 	public void setMembershipModel(IModel<Membership> model) {
@@ -42,18 +42,16 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 	
 	@SuppressWarnings("unchecked")
 	public Iterator<ConsumationEntry> iterator(int first, int count) {
-		Membership member = membershipModel.getObject();
-		
-		if(inv == null && member == null) {
+		if(invoiceModel == null && membershipModel == null) {
 			return em.createQuery("FROM ConsumationEntry").setFirstResult(first)
 					.setMaxResults(count).getResultList().iterator();
 		}
 		else {
-			if (inv != null) {
-				return inv.getIncludesConsumationEntries().iterator();
+			if (invoiceModel != null) {
+				return invoiceModel.getObject().getIncludesConsumationEntries().iterator();
 			}
 			else {
-				return em.createQuery("FROM ConsumationEntry WHERE invoice_id is NULL AND consumedBy_id = " + member.getIdent()).setFirstResult(first)
+				return em.createQuery("FROM ConsumationEntry WHERE invoice_id is NULL AND consumedBy_id = " + membershipModel.getObject().getIdent()).setFirstResult(first)
 						.setMaxResults(count).getResultList().iterator();
 			}
 		}
@@ -72,13 +70,13 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 	public int size() {
 		Long count = 0L;
 		
-		if(inv == null && membershipModel == null) {
+		if(invoiceModel == null && membershipModel == null) {
 			count = (Long) em.createQuery("SELECT count(*) FROM ConsumationEntry")
 				.getSingleResult();
 		} 
 		else {
-			if (inv != null) {
-				count = (long) inv.getIncludesConsumationEntries().size();
+			if (invoiceModel != null) {
+				count = (long) invoiceModel.getObject().getIncludesConsumationEntries().size();
 			}
 			else {
 				count = (Long) em.createQuery("SELECT count(*) FROM ConsumationEntry WHERE consumedBy_id = " + membershipModel.getObject().getId())
