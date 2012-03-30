@@ -3,12 +3,15 @@ package at.happylab.fablabtool.dataprovider;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import net.micalo.persistence.dao.BaseDAO;
+import net.micalo.wicket.model.SmartModel;
+
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 
 import at.happylab.fablabtool.model.ConsumationEntry;
 import at.happylab.fablabtool.model.Invoice;
@@ -20,15 +23,23 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 
 	@Inject
 	private EntityManager em;
+	private BaseDAO<ConsumationEntry> consumationEntryDAO;
 
 	private IModel<Membership> membershipModel;
 	private IModel<Invoice> invoiceModel;
+
 	
 	public ConsumationEntryProvider()
 	{
 		this.invoiceModel = null;
 		this.membershipModel = null;
 	}
+
+	@PostConstruct
+	protected void init() {
+		consumationEntryDAO = new BaseDAO<ConsumationEntry>(ConsumationEntry.class, em);		
+	}
+	
 	
 	public void setInvoiceModel(IModel<Invoice> model)
 	{
@@ -57,14 +68,8 @@ public class ConsumationEntryProvider extends SortableDataProvider<ConsumationEn
 		}
 	}
 	
-	public IModel<ConsumationEntry> model(final ConsumationEntry object) {
-		return new LoadableDetachableModel<ConsumationEntry>() {
-			private static final long serialVersionUID = 2245677208590656096L;
-		
-			protected ConsumationEntry load() {
-				return object;
-			}
-		};
+	public IModel<ConsumationEntry> model(ConsumationEntry object) {
+		return new SmartModel<ConsumationEntry>(consumationEntryDAO,  object);
 	}
 	
 	public int size() {

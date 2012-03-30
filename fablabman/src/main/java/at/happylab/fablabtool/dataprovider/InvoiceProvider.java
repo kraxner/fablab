@@ -14,6 +14,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import net.micalo.wicket.model.SmartModel;
+
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -133,14 +135,8 @@ public class InvoiceProvider extends SortableDataProvider<Invoice> implements Se
 		return data.subList(first, Math.min(first + count, data.size())).iterator();
 	}
 	
-	public IModel<Invoice> model(final Invoice object) {
-		return new LoadableDetachableModel<Invoice>() {
-			private static final long serialVersionUID = 2245677208590656096L;
-		
-			protected Invoice load() {
-				return object;
-			}
-		};
+	public IModel<Invoice> model(Invoice object) {
+		return new SmartModel<Invoice>(invoiceDAO, object);
 	}
 	
 	public int size() {

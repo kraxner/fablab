@@ -87,7 +87,7 @@ public class SmartModel<T extends IIdentifiableEntity<?>> extends LoadableDetach
 	public void detach() {
 		if (isAttached()) {
 			if (ident != null) {
-				log.debug("detaching: " + getObject().toString());
+				log.debug("detaching: " + String.valueOf(getObject()));
 				super.detach();
 			}
 		}
