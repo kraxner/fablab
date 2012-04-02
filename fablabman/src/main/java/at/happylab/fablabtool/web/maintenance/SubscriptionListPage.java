@@ -39,7 +39,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy().getId()) );
 			}
 		});
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Vorname"), "firstname", "bookedBy.users[0].firstname"){
@@ -48,7 +48,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy().getId()) );
 			}
 		});
 		columns.add(new LinkPropertyColumn<Subscription>(new Model<String>("Nachname"), "lastname", "bookedBy.users[0].lastname"){
@@ -57,7 +57,7 @@ public class SubscriptionListPage extends BasePage {
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
-				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy()) );
+				setResponsePage(MembershipDetailPage.class,  new PageParameters("id=" + s.getBookedBy().getId()) );
 			}
 		});
 		columns.add(new PropertyColumn<Subscription>(new Model<String>("Firmenname"), "bookedBy.companyName", "bookedBy.companyName"));
@@ -74,7 +74,7 @@ public class SubscriptionListPage extends BasePage {
 			public void onClick(Item item, String componentId, IModel model) {
 				Subscription s = (Subscription) model.getObject();
 				
-				setResponsePage(SubscriptionDetailPage.class, new PageParameters("id="+s.getDescription()));
+				setResponsePage(SubscriptionDetailPage.class, new PageParameters("id="+s.getId()));
 			}
 		});
 

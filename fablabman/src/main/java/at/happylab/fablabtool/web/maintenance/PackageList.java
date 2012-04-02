@@ -29,14 +29,15 @@ import at.happylab.fablabtool.web.util.ConfirmDeletePage;
 public class PackageList extends BasePage {
 
 	@Inject private	PackageProvider packageProvider;
+	
 	@Inject EntityManager em;
+	
 	private	BaseDAO<Package> packageDAO = new BaseDAO<Package>(Package.class, em);
 	
-
 	public PackageList() {
 		navigation.selectMasterData();
 
-		@SuppressWarnings("rawtypes")
+
 		List<IColumn> columns = new ArrayList<IColumn>();
 		columns.add(new PropertyColumn<Package>(new Model<String>("ID"), "id", "id"));
 		columns.add(new PropertyColumn<Package>(new Model<String>("Name"), "name", "name"));
@@ -48,7 +49,7 @@ public class PackageList extends BasePage {
 		columns.add(new LinkPropertyColumn<Package>(new Model<String>("Bearbeiten"), new Model<String>("edit")) {
 			private static final long serialVersionUID = -302452659162757001L;
 
-			@SuppressWarnings("rawtypes")
+
 			@Override
 			public void onClick(Item item, String componentId, IModel model) {
 				Package p = (Package) model.getObject();
@@ -59,7 +60,7 @@ public class PackageList extends BasePage {
 		columns.add(new LinkPropertyColumn<Package>(new Model<String>("Entfernen"), new Model<String>("delete")) {
 			private static final long serialVersionUID = -302452659162757001L;
 
-			@SuppressWarnings("rawtypes")
+
 			@Override
 			public void onClick(Item item, String componentId, final IModel model) {
 				setResponsePage(new ConfirmDeletePage("Wollen sie dieses Paket wirklich löschen?") {
@@ -83,7 +84,7 @@ public class PackageList extends BasePage {
 			}
 		});
 
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+
 		DefaultDataTable<Package> table = new DefaultDataTable("packageTable", columns, packageProvider, 5);
 		add(table);
 

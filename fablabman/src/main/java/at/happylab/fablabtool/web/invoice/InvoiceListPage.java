@@ -54,6 +54,7 @@ public class InvoiceListPage extends AdminBasePage{
 	@Inject	private MembershipDAO membershipMgmt;
 	
 	private InvListForm invForm;
+	
 	/**
 	 * is used for display of the row count (by wicket)
 	 */
@@ -77,10 +78,12 @@ public class InvoiceListPage extends AdminBasePage{
 	}
 	
 	private void addFilterForm(){
-		Form<Invoice> filterForm = new Form<Invoice>("filterForm");
+		Form<InvoiceProvider> filterForm = new Form<InvoiceProvider>("filterForm", new CompoundPropertyModel<InvoiceProvider>(invoices));
+		
 		filterForm.add(new TextField<Date>("fromFilter"));
 		filterForm.add(new TextField<Date>("toFilter"));
 		filterForm.add(new TextField<String>("filter"));
+		
 		Button apply = new Button("apply"){
 			private static final long serialVersionUID = 1L;
 			public void onSubmit() {
@@ -181,7 +184,7 @@ public class InvoiceListPage extends AdminBasePage{
 				@Override
 				public void onClick(Item item, String componentId, IModel model) {
 					Invoice inv = (Invoice) model.getObject();
-					setResponsePage(new InvoiceDetailPage(new PageParameters("id=" + inv.getId())));
+					setResponsePage(InvoiceDetailPage.class, new PageParameters("id=" + inv.getId()));
 				}
 				 
 			};

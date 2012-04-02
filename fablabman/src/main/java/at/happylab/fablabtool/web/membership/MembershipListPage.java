@@ -108,7 +108,7 @@ public class MembershipListPage extends AdminBasePage {
 
 		final TextField<String> filterInput = new TextField<String>("filterInput", userProvider.getFilterModel());
 		form.add( filterInput );
-		filterInput.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+		filterInput.add(new AjaxFormComponentUpdatingBehavior("onkeyup"){
 			private static final long serialVersionUID = 1L;
 
 			@Override

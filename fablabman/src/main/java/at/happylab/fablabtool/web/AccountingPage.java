@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import net.micalo.persistence.dao.BaseDAO;
+import net.micalo.wicket.model.SmartModel;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -15,6 +16,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import at.happylab.fablabtool.beans.Billing;
 import at.happylab.fablabtool.dao.InvoiceDAO;
+import at.happylab.fablabtool.dao.MembershipDAO;
 import at.happylab.fablabtool.dataprovider.ConsumationEntryProvider;
 import at.happylab.fablabtool.dataprovider.MembershipProvider;
 import at.happylab.fablabtool.dataprovider.SubscriptionProvider;
@@ -38,6 +40,8 @@ public class AccountingPage extends BasePage {
 	ConsumationEntryProvider entryFromMembershipProvider;
 	
 	@Inject private InvoiceDAO invoiceDAO;
+	
+	@Inject	private MembershipDAO membershipDAO;
 	
 	public AccountingPage() {
 		navigation.selectAufgaben();
@@ -108,7 +112,9 @@ public class AccountingPage extends BasePage {
 				Membership member = members.next();
 				Invoice invoice = new Invoice(member);
 				
-				entryFromMembershipProvider.setMember(member);
+				SmartModel<Membership> membershipModel = new SmartModel<Membership>(membershipDAO, member);
+				
+				entryFromMembershipProvider.setMembershipModel(membershipModel);
 				
 				Iterator<ConsumationEntry> entries = entryFromMembershipProvider.iterator(0, entryFromMembershipProvider.size());
 				while (entries.hasNext()) {
